@@ -12,62 +12,38 @@ namespace Hearts.Model
 
         public Player()
         {
-            this.Hand = new Card[0];
+            this.Hand = new List<Card>();
             this.guid = Guid.NewGuid();
         }
 
         public Guid Guid { get { return this.guid; } }
 
-        public Card[] Hand { get; private set; }
+        public List<Card> Hand { get; private set; }
 
         public string DebuggerDisplay { get { return string.Join(" ", this.Hand); } }
 
         public void Receive(Card card)
         {
-            this.AddToHand(card);
+            this.Hand.Add(card);
         }
 
         public void Receive(List<Card> cards)
         {
-            this.AddToHand(cards);
+            this.Hand.AddRange(cards);
         }
 
         public Card Play(Card card)
         {
-            this.RemoveFromHand(card);
+            this.Hand.Remove(card);
 
             return card;
         }
 
         public IEnumerable<Card> Pass(IEnumerable<Card> cards)
         {
-            foreach (var card in cards)
-            {
-                this.RemoveFromHand(card);
-            }
+            this.Hand = this.Hand.Except(cards).ToList();
 
             return cards;
-        }
-
-        private void AddToHand(Card card)
-        {
-            var elements = this.Hand.ToList();
-            elements.Add(card);
-            this.Hand = elements.ToArray();
-        }
-
-        private void AddToHand(IEnumerable<Card> cards)
-        {
-            var elements = this.Hand.ToList();
-            elements.AddRange(cards);
-            this.Hand = elements.ToArray();
-        }
-
-        private void RemoveFromHand(Card card)
-        {
-            var elements = this.Hand.ToList();
-            elements.Remove(card);
-            this.Hand = elements.ToArray();
         }
     }
 }

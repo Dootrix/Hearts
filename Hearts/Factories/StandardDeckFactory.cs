@@ -13,7 +13,7 @@ namespace Hearts.Factories
             var hearts = Enum.GetValues(typeof(Kind)).Cast<Kind>().Select(k => new Card(k, Suit.Hearts));
             var spades = Enum.GetValues(typeof(Kind)).Cast<Kind>().Select(k => new Card(k, Suit.Spades));
 
-            return new Deck(clubs.Union(diamonds).Union(hearts).Union(spades));
+            return new Deck(clubs.Union(diamonds).Union(hearts).Union(spades).ToList());
         }
     }
 }

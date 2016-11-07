@@ -12,18 +12,18 @@ namespace Hearts.Model
             this.ClearPiles();
         }
 
-        public Card[] CardsInPlay { get; private set; }
+        public List<Card> CardsInPlay { get; private set; }
 
-        public Card[] DiscardPile { get; private set; }
+        public List<Card> DiscardPile { get; private set; }
 
         public Card Discard(Card card)
         {
             if (this.CardsInPlay.Contains(card))
             {
-                this.RemoveFromCardsInPlay(card);
+                this.CardsInPlay.Remove(card);
             }
 
-            this.AddToDiscards(card);
+            this.DiscardPile.Add(card);
 
             return card;
         }
@@ -34,25 +34,25 @@ namespace Hearts.Model
             {
                 if (this.CardsInPlay.Contains(card))
                 {
-                    this.RemoveFromCardsInPlay(card);
+                    this.CardsInPlay.Remove(card);
                 }
             }
 
-            this.AddToDiscards(cards);
+            this.DiscardPile.AddRange(cards.ToList());
 
             return cards;
         }
 
         public Card Play(Card card)
         {
-            this.AddToCardsInPlay(card);
+            this.CardsInPlay.Add(card);
 
             return card;
         }
 
         public IEnumerable<Card> Play(IEnumerable<Card> cards)
         {
-            this.AddToCardsInPlay(cards);
+            this.CardsInPlay.AddRange(cards);
 
             return cards;
         }
@@ -64,7 +64,7 @@ namespace Hearts.Model
                 throw new InvalidOperationException("Cannot pickup Card In Play. Card {0} is not in play.");
             }
 
-            this.RemoveFromCardsInPlay(card);
+            this.CardsInPlay.Remove(card);
             player.Receive(card);
 
             return card;
@@ -72,43 +72,8 @@ namespace Hearts.Model
 
         private void ClearPiles()
         {
-            this.CardsInPlay = new Card[0];
-            this.DiscardPile = new Card[0];
-        }
-
-        private void AddToDiscards(Card card)
-        {
-            var elements = this.DiscardPile.ToList();
-            elements.Add(card);
-            this.DiscardPile = elements.ToArray();
-        }
-
-        private void AddToDiscards(IEnumerable<Card> cards)
-        {
-            var elements = this.DiscardPile.ToList();
-            elements.AddRange(cards);
-            this.DiscardPile = elements.ToArray();
-        }
-
-        private void AddToCardsInPlay(Card card)
-        {
-            var elements = this.CardsInPlay.ToList();
-            elements.Add(card);
-            this.CardsInPlay = elements.ToArray();
-        }
-
-        private void AddToCardsInPlay(IEnumerable<Card> cards)
-        {
-            var elements = this.CardsInPlay.ToList();
-            elements.AddRange(cards);
-            this.CardsInPlay = elements.ToArray();
-        }
-
-        private void RemoveFromCardsInPlay(Card card)
-        {
-            var elements = this.CardsInPlay.ToList();
-            elements.Remove(card);
-            this.CardsInPlay = elements.ToArray();
+            this.CardsInPlay = new List<Card>();
+            this.DiscardPile = new List<Card>();
         }
     }
 }

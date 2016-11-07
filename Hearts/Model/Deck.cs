@@ -6,19 +6,19 @@ namespace Hearts.Model
 {
     public struct Deck 
     {
-        public Deck(IEnumerable<Card> cards)
+        public Deck(List<Card> cards)
         {
-            this.Cards = cards.ToArray();
+            this.Cards = cards;
         }
 
         // An array for security - prevents values being changed
-        public Card[] Cards { get; private set; }
+        public List<Card> Cards { get; private set; }
 
         public bool HasCardsRemaining { get { return this.Cards.Any(); } }
 
         public Card Deal(Card card)
         {
-            this.Remove(card);
+            this.Cards.Remove(card);
 
             return card;
         }
@@ -31,7 +31,7 @@ namespace Hearts.Model
             }
 
             var lastCard = this.Cards.Last();
-            this.Remove(lastCard);
+            this.Cards.Remove(lastCard);
 
             return lastCard;
         }
@@ -39,13 +39,6 @@ namespace Hearts.Model
         public void Shuffle()
         {
             this.Cards.Shuffle();
-        }
-
-        private void Remove(Card card)
-        {
-            var elements = this.Cards.ToList();
-            elements.Remove(card);
-            this.Cards = elements.ToArray();
         }
     }
 }
