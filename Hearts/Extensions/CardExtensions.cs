@@ -1,4 +1,6 @@
-﻿namespace Hearts
+﻿using Hearts.Model;
+
+namespace Hearts.Extensions
 {
     public static class CardExtensions
     {

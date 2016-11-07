@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Hearts
+namespace Hearts.Extensions
 {
     /*public static class ArrayExtensions
     {

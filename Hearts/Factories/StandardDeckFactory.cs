@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Hearts.Model;
+using System;
 using System.Linq;
 
-namespace Hearts
+namespace Hearts.Factories
 {
     public class StandardDeckFactory : IFactory<Deck>
     {

@@ -1,6 +1,7 @@
-﻿using System.Reflection;
+﻿using Hearts.Model;
+using System.Reflection;
 
-namespace Hearts
+namespace Hearts.Extensions
 {
     public static class KindExtensions
     {

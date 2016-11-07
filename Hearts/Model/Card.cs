@@ -4,8 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Hearts.Extensions;
 
-namespace Hearts
+namespace Hearts.Model
 {
     [DebuggerDisplay("{DebuggerDisplay}")]
     public struct Card

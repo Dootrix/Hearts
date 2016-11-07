@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hearts
+namespace Hearts.Model
 {
     public enum Kind
     {

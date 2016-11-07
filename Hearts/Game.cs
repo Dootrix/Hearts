@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Hearts.Deal;
+using Hearts.Factories;
+using Hearts.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 

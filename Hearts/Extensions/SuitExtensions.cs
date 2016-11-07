@@ -1,6 +1,7 @@
 ﻿using Hearts;
+using Hearts.Model;
 
-namespace Hearts
+namespace Hearts.Extensions
 {
     public static class SuitExtensions
     {

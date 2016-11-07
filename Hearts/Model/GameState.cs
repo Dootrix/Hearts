@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hearts.Factories
+namespace Hearts.Model
 {
-    public interface IFactory<out T>
+    public class GameState
     {
-        T Create();
     }
 }

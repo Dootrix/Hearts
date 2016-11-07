@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Hearts
+namespace Hearts.Model
 {
     [DebuggerDisplay("{DebuggerDisplay}")]
     public class Player

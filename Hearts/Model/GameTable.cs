@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Hearts
+namespace Hearts.Model
 {
     public class GameTable
     {

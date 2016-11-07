@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Hearts;
+using Hearts.Extensions;
 
 namespace Hearts.Console
 {

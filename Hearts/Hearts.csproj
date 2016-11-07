@@ -42,10 +42,10 @@
   <ItemGroup>
     <Compile Include="Attributes\AbbreviationAttribute.cs" />
     <Compile Include="Model\Card.cs" />
-    <Compile Include="Dealer\Dealer.cs" />
-    <Compile Include="Dealer\EvenHandDealAlgorithm.cs" />
-    <Compile Include="Dealer\IDealAlgorithm.cs" />
-    <Compile Include="Dealer\NaiveWholeDeckDealAlgorithm.cs" />
+    <Compile Include="Deal\Dealer.cs" />
+    <Compile Include="Deal\EvenHandDealAlgorithm.cs" />
+    <Compile Include="Deal\IDealAlgorithm.cs" />
+    <Compile Include="Deal\NaiveWholeDeckDealAlgorithm.cs" />
     <Compile Include="Model\Deck.cs" />
     <Compile Include="Extensions\KindExtensions.cs" />
     <Compile Include="Extensions\CardExtensions.cs" />
@@ -54,12 +54,14 @@
     <Compile Include="Extensions\SuitExtensions.cs" />
     <Compile Include="Factories\IFactory.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="Model\GameState.cs" />
     <Compile Include="Model\GameTable.cs" />
     <Compile Include="Model\Kind.cs" />
     <Compile Include="Model\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Factories\StandardDeckFactory.cs" />
     <Compile Include="Model\Suit.cs" />
+    <Compile Include="Rules\IGameRule.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
