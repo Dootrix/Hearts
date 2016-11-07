@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hearts", "Hearts\Hearts.csproj", "{38962076-4DF1-404B-A06E-C3C8771DC366}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hearts.Console", "Hearts.Console\Hearts.Console.csproj", "{67EDE0FB-0E49-4161-9362-DF10F082ABBD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{38962076-4DF1-404B-A06E-C3C8771DC366}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38962076-4DF1-404B-A06E-C3C8771DC366}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38962076-4DF1-404B-A06E-C3C8771DC366}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38962076-4DF1-404B-A06E-C3C8771DC366}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67EDE0FB-0E49-4161-9362-DF10F082ABBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67EDE0FB-0E49-4161-9362-DF10F082ABBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67EDE0FB-0E49-4161-9362-DF10F082ABBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67EDE0FB-0E49-4161-9362-DF10F082ABBD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
