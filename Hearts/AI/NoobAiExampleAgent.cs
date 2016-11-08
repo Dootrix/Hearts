@@ -3,7 +3,7 @@ using Hearts.Model;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Hearts.Deal
+namespace Hearts.AI
 {
     public class NoobAiExampleAgent : IAgent
     {

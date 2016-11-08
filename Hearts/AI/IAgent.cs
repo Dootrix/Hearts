@@ -2,7 +2,7 @@
 using Hearts.Model;
 using System.Collections.Generic;
 
-namespace Hearts.Deal
+namespace Hearts.AI
 {
     public interface IAgent
     {

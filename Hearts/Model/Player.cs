@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Hearts.Extensions;
+using Hearts.AI;
 
 namespace Hearts.Model
 {
@@ -10,8 +11,8 @@ namespace Hearts.Model
     public class Player
     {
         private Guid guid;
-
-        public Player()
+        
+        public Player(IAgent agent)
         {
             this.RemainingCards = new List<Card>();
             this.guid = Guid.NewGuid();
@@ -24,6 +25,8 @@ namespace Hearts.Model
         public Player PreviousPlayer { get; set; }
 
         public List<Card> RemainingCards { get; private set; }
+
+        public IAgent Agent { get; private set; }
 
         public string DebuggerDisplay
         {

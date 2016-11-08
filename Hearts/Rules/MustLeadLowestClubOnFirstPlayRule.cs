@@ -11,7 +11,12 @@ namespace Hearts.Rules
     {
         public IEnumerable<Card> FilterCards(IEnumerable<Card> cards, Game gameState)
         {
-            return new List<Card> { cards.Where(i => i.Suit == Suit.Clubs).OrderBy(i => i.Kind).First() };
+            // TODO - generalise incase there are not 4 players.
+            // changed this as I think it needs to return a card only if the player has the lowest card in the deck 
+            // (after pruning cards based on the number of players)
+            return cards
+                .Where(i => i == new Card(Kind.Two, Suit.Clubs))
+                .ToArray();
         }
 
         public bool Applies(Game gameState)

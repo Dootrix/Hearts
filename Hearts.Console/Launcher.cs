@@ -12,12 +12,12 @@ namespace Hearts.Console
     { 
         public static void Main()
         {
-            var game = new Game();
+            //var game = new Game();
 
-            var card = game.Players.First().RemainingCards.First();
-            string test1 = card.ToString();
-            string test2 = card.DebuggerDisplay;
-            int remainingCardCount = game.Players.First().RemainingCards.Count();
+            //var card = game.Players.First().RemainingCards.First();
+            //string test1 = card.ToString();
+            //string test2 = card.DebuggerDisplay;
+            //int remainingCardCount = game.Players.First().RemainingCards.Count();
         }
     }
 }

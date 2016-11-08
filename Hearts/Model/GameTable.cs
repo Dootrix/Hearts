@@ -15,6 +15,10 @@ namespace Hearts.Model
             this.ClearPiles();
         }
 
+        // I think this should be just the cards for the current hand
+        // instead of PlayedHand being created early before the hand is complete.
+        // => it needs the player Guid (or bring over the PlayedCard class).
+        // this would mean PlayedHand could be created from it.
         public List<Card> CardsInPlay { get; private set; }
 
         public List<PlayedHand> PlayedHands { get; private set; }
@@ -22,6 +26,16 @@ namespace Hearts.Model
         public Card Play(Player player, Card card)
         {
             this.CardsInPlay.Add(card);
+
+        //    if (self.handInPlay.count == players.count)
+        //    {
+        //        let winner = HandWinEvaluator().evaluateWinner(self.handInPlay)
+        //    let playedHand = PlayedHand(playedCards: self.handInPlay, winner: winner)
+        //    self.playedHands.append(playedHand)
+        //    self.handInPlay.removeAll()
+        //    self.eventQueue.handFinished(playedHand)
+        //}
+
 
             var lastPlayedHand = this.PlayedHands.LastOrDefault();
 

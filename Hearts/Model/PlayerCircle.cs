@@ -8,12 +8,10 @@ namespace Hearts.Model
     public class PlayerCircle
     {
         private List<Player> players;
-        private Game gameState;
 
-        public PlayerCircle(Game gameState)
+        public PlayerCircle()
         {
             this.players = new List<Player>();
-            this.gameState = gameState;
         }
 
         public void AddPlayer(Player player)

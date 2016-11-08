@@ -1,6 +1,7 @@
 ﻿using Hearts.Deal;
 using Hearts.Factories;
 using Hearts.Model;
+using Hearts.Rules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +10,16 @@ namespace Hearts
 {
     public class Game
     {
+        private PlayerCircle playerCircle;
+
         public GameTable GameTable;
         public Dealer Dealer;
-        public Player[] Players;
 
         public Game()
         {
-            this.Init();
+            this.Dealer = new Dealer(new StandardDeckFactory(), new EvenHandDealAlgorithm());
+            this.playerCircle = new PlayerCircle();
+            //this.Players = new List<Player> { new Player(), new Player(), new Player(), new Player() }.ToArray();
         }
         
         public bool IsHeartsBroken
@@ -64,7 +68,7 @@ namespace Hearts
             {
                 var lastHand = this.GameTable.PlayedHands.LastOrDefault();
 
-                if (lastHand == null && this.Players.First().RemainingCards.Count > 0)
+                if (lastHand == null && this.playerCircle.FirstPlayer.RemainingCards.Count > 0)
                 {
                     lastHand = new PlayedHand();
                     this.GameTable.PlayedHands.Add(lastHand);
@@ -74,11 +78,40 @@ namespace Hearts
             }
         }
 
+        public void AddPlayer(Player player)
+        {
+            this.playerCircle.AddPlayer(player);
+        }
+
+        public void Play()
+        {
+            var players = this.playerCircle.AllPlayers;
+
+            this.GameTable = new GameTable(players.Count);
+            this.Dealer.DealStartingHands(players);
+
+            // TODO - pass the cards.
+
+            var startingPlayer = this.GetStartingPlayer();
+
+            while(players.Sum(i => i.RemainingCards.Count) > 0)
+            {
+                foreach (var player in this.playerCircle.GetOrderedPlayersStartingWith(startingPlayer))
+                {
+                    var card = player.Agent.ChooseCardToPlay(this, player.RemainingCards);
+                    this.GameTable.Play(player, card);
+                }
+
+                //TODO - get the new starting player
+            }
+        }
+
+        // TODO - I think this logic can be inside GameTable.Play
         public void PlayCard(Player player, Card card)
         {
             this.CurrentHand.Cards.Add(player.Guid, card);
 
-            if (this.CurrentHand.Cards.Count == this.Players.Count())
+            if (this.CurrentHand.Cards.Count == this.playerCircle.AllPlayers.Count())
             {
                 // TODO: Implement the following - but check my way of using CurrentHand doesn't break stuff:
                 /*
@@ -93,12 +126,21 @@ namespace Hearts
             }
         }
 
-        private void Init()
+        private Player GetStartingPlayer()
         {
-            this.Dealer = new Dealer(new StandardDeckFactory(), new EvenHandDealAlgorithm());
-            this.Players = new List<Player> { new Player(), new Player(), new Player(), new Player() }.ToArray();
-            this.GameTable = new GameTable(this.Players.Count());
-            this.Dealer.DealStartingHands(this.Players);
+            // A complicated way of finding who has the two of clubs :) ...
+            // but this avoids duplicating the game rule logic.
+            var evaluator = new CardPlayEvaluator();
+
+            foreach (var player in this.playerCircle.AllPlayers)
+            {
+                if(evaluator.GetPossibleCards(player.RemainingCards, this).Count() > 0)
+                {
+                    return player;
+                }
+            }
+
+            return null;
         }
     }
 }
