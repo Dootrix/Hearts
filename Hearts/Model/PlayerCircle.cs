@@ -18,42 +18,41 @@ namespace Hearts.Model
 
         public void AddPlayer(Player player)
         {
-            var previousPlayer = this.players.Last();
+            var previousPlayer = this.players.LastOrDefault();
+            player.PreviousPlayer = previousPlayer ?? player;
             player.NextPlayer = this.players.Count == 0 ? player : this.players.First();
             this.players.Add(player);
 
-            // TODO: Tony, what on Earth does this mean?
-            /*
-            if let previousPlayer = previousPlayer {
-                previousPlayer.nextPlayer = player
+            if (previousPlayer != null)
+            {
+                previousPlayer.NextPlayer = player;
             }
 
-            self.eventQueue.playerAddedToGame(player.name)
-            }
+            this.players.First().PreviousPlayer = player;
+        }
+        
+        public List<Player> AllPlayers
+        {
+            get { return this.players; }
+        }
 
-           var firstPlayer : Player? {
-            get { return self.players.first
-            */
+        public Player FirstPlayer
+        {
+            get { return this.players.First(); }
+        }
+        
+        public List<Player> GetOrderedPlayersStartingWith(Player initialPlayer)
+        {
+            var tempPlayers = new List<Player>();
+            var player = initialPlayer;
+
+            do
+            {
+                tempPlayers.Add(player);
+                player = player.NextPlayer;
+            } while (player != initialPlayer);
+
+            return tempPlayers;
         }
     }
-}
-
-var allPlayers : [Player] {
-        get { return self.players }
-    }
-    
-    func getPlayersStartingWith(initialPlayer: Player) -> [Player] {
-        
-        var players: [Player] = []
-var player = initialPlayer
-
-
-        repeat {
-            players.append(player)
-            player = player.nextPlayer
-        } while player != initialPlayer
-        
-        return players
-    }
-}
 }
