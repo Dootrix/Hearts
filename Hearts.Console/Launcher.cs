@@ -14,10 +14,10 @@ namespace Hearts.Console
         {
             var game = new Game();
 
-            var card = game.Players.First().Hand.First();
+            var card = game.Players.First().RemainingCards.First();
 
             var test = card.ToAbbreviation();
-            int i = game.Players.First().Hand.Count();
+            int i = game.Players.First().RemainingCards.Count();
         }
     }
 }

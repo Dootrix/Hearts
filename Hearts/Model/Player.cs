@@ -12,36 +12,36 @@ namespace Hearts.Model
 
         public Player()
         {
-            this.Hand = new List<Card>();
+            this.RemainingCards = new List<Card>();
             this.guid = Guid.NewGuid();
         }
 
         public Guid Guid { get { return this.guid; } }
 
-        public List<Card> Hand { get; private set; }
+        public List<Card> RemainingCards { get; private set; }
 
-        public string DebuggerDisplay { get { return string.Join(" ", this.Hand); } }
+        public string DebuggerDisplay { get { return string.Join(" ", this.RemainingCards); } }
 
         public void Receive(Card card)
         {
-            this.Hand.Add(card);
+            this.RemainingCards.Add(card);
         }
 
         public void Receive(List<Card> cards)
         {
-            this.Hand.AddRange(cards);
+            this.RemainingCards.AddRange(cards);
         }
 
         public Card Play(Card card)
         {
-            this.Hand.Remove(card);
+            this.RemainingCards.Remove(card);
 
             return card;
         }
 
         public IEnumerable<Card> Pass(IEnumerable<Card> cards)
         {
-            this.Hand = this.Hand.Except(cards).ToList();
+            this.RemainingCards = this.RemainingCards.Except(cards).ToList();
 
             return cards;
         }

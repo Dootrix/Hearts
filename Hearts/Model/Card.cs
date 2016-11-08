@@ -9,7 +9,7 @@ using Hearts.Extensions;
 namespace Hearts.Model
 {
     [DebuggerDisplay("{DebuggerDisplay}")]
-    public struct Card
+    public class Card
     {
         public Suit Suit;
         public Kind Kind;
