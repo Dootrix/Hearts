@@ -19,6 +19,10 @@ namespace Hearts.Model
 
         public Guid Guid { get { return this.guid; } }
 
+        public Player NextPlayer { get; set; }
+
+        public Player PreviousPlayer { get; set; }
+
         public List<Card> RemainingCards { get; private set; }
 
         public string DebuggerDisplay
