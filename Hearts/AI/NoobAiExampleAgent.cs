@@ -24,6 +24,12 @@ namespace Hearts.Deal
         {
             var remainingAvailableCards = availableCards.ToList();
 
+            // Lead lowest club, assuming that a game manager intelligently selects the correct starting player
+            if (gameState.IsFirstLeadHand)
+            {
+                return remainingAvailableCards.Where(i => i.Suit == Suit.Clubs).OrderBy(i => i.Kind).First();
+            }
+
             // Cut cards down to matching suit if appropriate
             if (!gameState.IsLeadTurn)
             {
@@ -42,7 +48,13 @@ namespace Hearts.Deal
                         return remainingAvailableCards.Single(i => i.Kind == Kind.Queen && i.Suit == Suit.Spades);
                     }
                 }
-            }            
+            }
+
+            // Don't lead with a Heart if not broken
+            if (!gameState.IsHeartsBroken && remainingAvailableCards.Any(i => i.Suit != Suit.Hearts))
+            {
+                remainingAvailableCards = remainingAvailableCards.Where(i => i.Suit != Suit.Hearts).ToList();
+            }
 
             // Return any low card
             // Terrible plan in long term for a game, but gives a half chance of dodging the queen against other noob AIs
