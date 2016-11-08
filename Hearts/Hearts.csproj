@@ -43,6 +43,15 @@
     <Compile Include="AI\NoobAiExampleAgent.cs" />
     <Compile Include="AI\IAgent.cs" />
     <Compile Include="Attributes\AbbreviationAttribute.cs" />
+    <Compile Include="GameEventHandlers\ShowHandHandler.cs" />
+    <Compile Include="GameEventHandlers\HandsChangedHandler.cs" />
+    <Compile Include="GameEventHandlers\HandFinishedHandler.cs" />
+    <Compile Include="GameEventHandlers\CardPlayedByPlayerHandler.cs" />
+    <Compile Include="GameEventHandlers\CardDealtToPlayerHandler.cs" />
+    <Compile Include="GameEventHandlers\PlayerAddedToGameHandler.cs" />
+    <Compile Include="GameEventHandlers\CardAddedToDeckHandler.cs" />
+    <Compile Include="GameEventHandlers\IGameEventHandler.cs" />
+    <Compile Include="Model\GameEventType.cs" />
     <Compile Include="Model\Card.cs" />
     <Compile Include="Deal\Dealer.cs" />
     <Compile Include="Deal\EvenHandDealAlgorithm.cs" />

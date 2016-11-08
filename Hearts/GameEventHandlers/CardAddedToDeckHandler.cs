@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 using Hearts.Model;
 using Hearts.Extensions;
 
-namespace Hearts.GameEvents
+namespace Hearts.GameEventHandlers
 {
-    public interface IGameEvent
+    public class CardAddedToDeckHandler : IGameEventHandler
     {
-        GameEventType GameEventType { get; }
+        public GameEventType GameEventType { get { return GameEventType.CardAddedToDeck; } }
     }
 }
