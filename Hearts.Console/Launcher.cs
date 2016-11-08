@@ -15,9 +15,9 @@ namespace Hearts.Console
             var game = new Game();
 
             var card = game.Players.First().RemainingCards.First();
-
-            var test = card.ToAbbreviation();
-            int i = game.Players.First().RemainingCards.Count();
+            string test1 = card.ToString();
+            string test2 = card.DebuggerDisplay;
+            int remainingCardCount = game.Players.First().RemainingCards.Count();
         }
     }
 }

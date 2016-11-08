@@ -8,16 +8,16 @@ namespace Hearts.Model
 {
     public enum Suit
     {
-        [Abbreviation("C")]
+        [Abbreviation("♣")]
         Clubs,
 
-        [Abbreviation("D")]
+        [Abbreviation("♦")]
         Diamonds,
 
-        [Abbreviation("S")]
+        [Abbreviation("♠")]
         Spades,
 
-        [Abbreviation("H")]
+        [Abbreviation("♥")]
         Hearts
     }
 }
