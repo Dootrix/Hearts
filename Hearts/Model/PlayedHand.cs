@@ -13,5 +13,7 @@ namespace Hearts.Model
         }
 
         public Dictionary<Guid, Card> Cards { get; set; }
+
+        public Player Winner { get; set; }
     }
 }

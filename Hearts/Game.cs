@@ -12,14 +12,12 @@ namespace Hearts
         public GameTable GameTable;
         public Dealer Dealer;
         public Player[] Players;
-        //private EventQueue eventQueue;
 
         public Game()
         {
             this.Init();
         }
-
-        // Note: Player may still play a Heart if Hearts not broken, IF they have no non-Hearts left
+        
         public bool IsHeartsBroken
         {
             get
@@ -82,9 +80,11 @@ namespace Hearts
 
             if (this.CurrentHand.Cards.Count == this.Players.Count())
             {
-                // TODO: Implement the following:
+                // TODO: Implement the following - but check my way of using CurrentHand doesn't break stuff:
                 /*
-                let winner = HandWinEvaluator().evaluateWinner(self.handInPlay)
+                let winner = HandWinEvaluator().evaluateWinner(self.handInPlay);
+                this.CurrentHand.Winner = winner;
+
                 let playedHand = PlayedHand(playedCards: self.handInPlay, winner: winner)
                 self.playedHands.append(playedHand)
                 self.handInPlay.removeAll()
