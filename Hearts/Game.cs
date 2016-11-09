@@ -11,22 +11,20 @@ namespace Hearts
     public class Game
     {
         private PlayerCircle playerCircle;
-
-        public GameTable GameTable;
-        public Dealer Dealer;
+        private GameTable gameTable;
+        private Dealer dealer;
 
         public Game()
         {
-            this.Dealer = new Dealer(new StandardDeckFactory(), new EvenHandDealAlgorithm());
+            this.dealer = new Dealer(new StandardDeckFactory(), new EvenHandDealAlgorithm());
             this.playerCircle = new PlayerCircle();
-            //this.Players = new List<Player> { new Player(), new Player(), new Player(), new Player() }.ToArray();
         }
         
         public bool IsHeartsBroken
         {
             get
             {
-                return this.GameTable.PlayedHands.Any(i => i.Cards.Any(j => j.Value.Suit == Suit.Hearts));
+                return this.gameTable.PlayedHands.Any(i => i.Cards.Any(j => j.Value.Suit == Suit.Hearts));
             }
         }
 
@@ -34,7 +32,7 @@ namespace Hearts
         {
             get
             {
-                return this.CurrentHand.Cards.Count() == 0;
+                return this.gameTable.CurrentHand.Count() == 0;
             }
         }
 
@@ -42,7 +40,7 @@ namespace Hearts
         {
             get
             {
-                return this.CurrentHand.Cards.Count() > 0;
+                return this.gameTable.CurrentHand.Count() > 0;
             }
         }
 
@@ -50,7 +48,7 @@ namespace Hearts
         {
             get
             {
-                return this.GameTable.PlayedHands.Count == 0;
+                return this.gameTable.PlayedHands.Count == 0;
             }
         }
 
@@ -62,19 +60,11 @@ namespace Hearts
             }
         }
 
-        public PlayedHand CurrentHand
+        public List<Card> CurrentHand
         {
             get
             {
-                var lastHand = this.GameTable.PlayedHands.LastOrDefault();
-
-                if (lastHand == null && this.playerCircle.FirstPlayer.RemainingCards.Count > 0)
-                {
-                    lastHand = new PlayedHand();
-                    this.GameTable.PlayedHands.Add(lastHand);
-                }
-
-                return lastHand;
+                return this.gameTable.CurrentHand;
             }
         }
 
@@ -87,8 +77,8 @@ namespace Hearts
         {
             var players = this.playerCircle.AllPlayers;
 
-            this.GameTable = new GameTable(players.Count);
-            this.Dealer.DealStartingHands(players);
+            this.gameTable = new GameTable(players.Count);
+            this.dealer.DealStartingHands(players);
 
             // TODO - pass the cards.
 
@@ -99,32 +89,32 @@ namespace Hearts
                 foreach (var player in this.playerCircle.GetOrderedPlayersStartingWith(startingPlayer))
                 {
                     var card = player.Agent.ChooseCardToPlay(this, player.RemainingCards);
-                    this.GameTable.Play(player, card);
+                    this.gameTable.Play(player, card);
                 }
 
                 //TODO - get the new starting player
             }
         }
 
-        // TODO - I think this logic can be inside GameTable.Play
-        public void PlayCard(Player player, Card card)
-        {
-            this.CurrentHand.Cards.Add(player.Guid, card);
+        //// TODO - I think this logic can be inside GameTable.Play
+        //public void PlayCard(Player player, Card card)
+        //{
+        //    this.CurrentHand.Cards.Add(player.Guid, card);
 
-            if (this.CurrentHand.Cards.Count == this.playerCircle.AllPlayers.Count())
-            {
-                // TODO: Implement the following - but check my way of using CurrentHand doesn't break stuff:
-                /*
-                let winner = HandWinEvaluator().evaluateWinner(self.handInPlay);
-                this.CurrentHand.Winner = winner;
+        //    if (this.CurrentHand.Cards.Count == this.playerCircle.AllPlayers.Count())
+        //    {
+        //        // TODO: Implement the following - but check my way of using CurrentHand doesn't break stuff:
+        //        /*
+        //        let winner = HandWinEvaluator().evaluateWinner(self.handInPlay);
+        //        this.CurrentHand.Winner = winner;
 
-                let playedHand = PlayedHand(playedCards: self.handInPlay, winner: winner)
-                self.playedHands.append(playedHand)
-                self.handInPlay.removeAll()
-                self.eventQueue.handFinished(playedHand)
-                */
-            }
-        }
+        //        let playedHand = PlayedHand(playedCards: self.handInPlay, winner: winner)
+        //        self.playedHands.append(playedHand)
+        //        self.handInPlay.removeAll()
+        //        self.eventQueue.handFinished(playedHand)
+        //        */
+        //    }
+        //}
 
         private Player GetStartingPlayer()
         {

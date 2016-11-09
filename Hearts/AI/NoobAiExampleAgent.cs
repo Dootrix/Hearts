@@ -33,7 +33,7 @@ namespace Hearts.AI
             // Cut cards down to matching suit if appropriate
             if (!gameState.IsLeadTurn)
             {
-                var constrainedSuit = gameState.CurrentHand.Cards.First().Value.Suit;
+                var constrainedSuit = gameState.CurrentHand.First().Suit;
 
                 if (remainingAvailableCards.Any(i => i.Suit == constrainedSuit))
                 {

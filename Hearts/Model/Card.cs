@@ -29,14 +29,29 @@ namespace Hearts.Model
 
         public override bool Equals(object obj)
         {
-            var other = obj as Card;
-            
-            return other != null && this.GetHashCode() == other.GetHashCode();
+            return obj is Card && this == (Card)obj;
+        }
+
+        public static bool operator ==(Card a, Card b)
+        {
+            return a.Kind == b.Kind && a.Suit == b.Suit;
+        }
+
+        public static bool operator !=(Card a, Card b)
+        {
+            return !(a == b);
         }
 
         public override int GetHashCode()
         {
-            return (int)this.Kind * 10 + (int)this.Suit;
+            //http://stackoverflow.com/questions/263400/what-is-the-best-algorithm-for-an-overridden-system-object-gethashcode
+            unchecked // Overflow is fine, just wrap
+            {
+                int hash = 17;
+                hash = hash * 23 + Kind.GetHashCode();
+                hash = hash * 23 + Suit.GetHashCode();
+                return hash;
+            }
         }
     }
 }

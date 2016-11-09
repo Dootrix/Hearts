@@ -30,6 +30,7 @@ namespace Hearts.Rules
                 if (rule.Applies(gameState))
                 {
                     filteredCards = rule.FilterCards(filteredCards, gameState);
+                    if (!filteredCards.Any()) break;
                 }
             }
 

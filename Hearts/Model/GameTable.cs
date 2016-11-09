@@ -19,13 +19,13 @@ namespace Hearts.Model
         // instead of PlayedHand being created early before the hand is complete.
         // => it needs the player Guid (or bring over the PlayedCard class).
         // this would mean PlayedHand could be created from it.
-        public List<Card> CardsInPlay { get; private set; }
+        public List<Card> CurrentHand { get; private set; }
 
         public List<PlayedHand> PlayedHands { get; private set; }
         
         public Card Play(Player player, Card card)
         {
-            this.CardsInPlay.Add(card);
+            this.CurrentHand.Add(card);
 
         //    if (self.handInPlay.count == players.count)
         //    {
@@ -53,7 +53,7 @@ namespace Hearts.Model
 
         private void ClearPiles()
         {
-            this.CardsInPlay = new List<Card>();
+            this.CurrentHand = new List<Card>();
             this.PlayedHands = new List<PlayedHand>();
         }
     }

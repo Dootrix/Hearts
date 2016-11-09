@@ -16,6 +16,7 @@ namespace Hearts.Model
         {
             this.RemainingCards = new List<Card>();
             this.guid = Guid.NewGuid();
+            this.Agent = agent;
         }
 
         public Guid Guid { get { return this.guid; } }
