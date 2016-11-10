@@ -7,6 +7,8 @@ namespace Hearts.AI
 {
     public class NoobAiExampleAgent : IAgent
     {
+        public string AgentName { get { return "Noob AI"; } }
+
         public List<Card> ChooseCardsToPass(List<Card> startingCards)
         {
             // Basic "pass your highest cards" strategy

@@ -13,7 +13,8 @@ namespace Hearts.Rules
 
         public CardPlayEvaluator()
         {
-            this.rules = new IGameRule[] {
+            this.rules = new IGameRule[] 
+            {
                 new MustLeadLowestClubOnFirstPlayRule(),
                 new MustFollowSuitIfPossibleRule(),
                 new CannotLeadHeartsUntilBrokenRule(),
@@ -30,7 +31,11 @@ namespace Hearts.Rules
                 if (rule.Applies(gameState))
                 {
                     filteredCards = rule.FilterCards(filteredCards, gameState);
-                    if (!filteredCards.Any()) break;
+
+                    if (!filteredCards.Any())
+                    {
+                        break;
+                    }
                 }
             }
 

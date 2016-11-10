@@ -2,6 +2,7 @@
 using Hearts.Factories;
 using Hearts.Model;
 using Hearts.Rules;
+using Hearts.Scoring;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace Hearts
             this.dealer = new Dealer(new StandardDeckFactory(), new EvenHandDealAlgorithm());
             this.playerCircle = new PlayerCircle();
         }
-        
+
         public bool IsHeartsBroken
         {
             get
@@ -76,61 +77,51 @@ namespace Hearts
         public void Play()
         {
             var players = this.playerCircle.AllPlayers;
-
             this.gameTable = new GameTable(players.Count);
             this.dealer.DealStartingHands(players);
 
             // TODO - pass the cards.
 
+            var handEvaluator = new HandWinEvaluator();
+
             var startingPlayer = this.GetStartingPlayer();
 
-            while(players.Sum(i => i.RemainingCards.Count) > 0)
+            while (players.Sum(i => i.RemainingCards.Count) > 0)
             {
                 foreach (var player in this.playerCircle.GetOrderedPlayersStartingWith(startingPlayer))
                 {
                     var card = player.Agent.ChooseCardToPlay(this, player.RemainingCards);
+                    player.Play(card);
                     this.gameTable.Play(player, card);
                 }
 
-                //TODO - get the new starting player
+                var trick = this.gameTable.PlayedHands.Last();
+                var trickWinnerId = handEvaluator.EvaluateWinnerId(trick);
+                trick.Winner = players.Single(i => i.Guid == trickWinnerId);
+                startingPlayer = trick.Winner;
             }
         }
 
-        //// TODO - I think this logic can be inside GameTable.Play
-        //public void PlayCard(Player player, Card card)
-        //{
-        //    this.CurrentHand.Cards.Add(player.Guid, card);
-
-        //    if (this.CurrentHand.Cards.Count == this.playerCircle.AllPlayers.Count())
-        //    {
-        //        // TODO: Implement the following - but check my way of using CurrentHand doesn't break stuff:
-        //        /*
-        //        let winner = HandWinEvaluator().evaluateWinner(self.handInPlay);
-        //        this.CurrentHand.Winner = winner;
-
-        //        let playedHand = PlayedHand(playedCards: self.handInPlay, winner: winner)
-        //        self.playedHands.append(playedHand)
-        //        self.handInPlay.removeAll()
-        //        self.eventQueue.handFinished(playedHand)
-        //        */
-        //    }
-        //}
-
         private Player GetStartingPlayer()
         {
-            // A complicated way of finding who has the two of clubs :) ...
-            // but this avoids duplicating the game rule logic.
-            var evaluator = new CardPlayEvaluator();
+            return this.playerCircle.AllPlayers
+                .Where(i => i.RemainingCards
+                    .Any(j => j.Suit == Suit.Clubs))
+                .OrderBy(i => i.RemainingCards
+                    .Where(j => j.Suit == Suit.Clubs)
+                    .Min(k => k.Kind))
+                .First();
+        }
 
-            foreach (var player in this.playerCircle.AllPlayers)
-            {
-                if(evaluator.GetPossibleCards(player.RemainingCards, this).Count() > 0)
-                {
-                    return player;
-                }
-            }
+        private Player GetStartingPlayer2()
+        {
+            var lowestClub = this.playerCircle.AllPlayers
+                .SelectMany(i => i.RemainingCards)
+                .Where(j => j.Suit == Suit.Clubs)
+                .Min(k => k.Kind);
 
-            return null;
+            return this.playerCircle.AllPlayers
+                .Single(i => i.RemainingCards.Any(j => j.Suit == Suit.Clubs && j.Kind == lowestClub));
         }
     }
 }

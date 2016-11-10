@@ -6,6 +6,8 @@ namespace Hearts.AI
 {
     public interface IAgent
     {
+        // An fixed (optionally arbitrary) name for your AI, that allows other AIs to adjust to it
+        string AgentName { get; }
         List<Card> ChooseCardsToPass(List<Card> startingCards);
         Card ChooseCardToPlay(Game gameState, List<Card> availableCards);
     }
