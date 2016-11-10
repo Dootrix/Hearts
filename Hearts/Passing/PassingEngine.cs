@@ -1,4 +1,5 @@
-﻿using Hearts.Model;
+﻿using Hearts.Logging;
+using Hearts.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,8 +38,12 @@ namespace Hearts.Passing
             for (int i = 0; i < players.Count; i++)
             {
                 var pass = playerFrom.Agent.ChooseCardsToPass(startingHands[playerFrom]);
-
-                // TODO: Validate passed cards
+                
+                if (!pass.All(j => startingHands[playerFrom].Contains(j)) || pass.Distinct().Count() != 3)
+                {
+                    // TODO: Handle illegal move
+                    Log.IllegalPass(playerFrom, pass);
+                }
 
                 passedCards.Add(pass);
                 playerFrom.Pass(pass);

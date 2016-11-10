@@ -25,9 +25,9 @@ namespace Hearts.Console
             return new List<Player>
                 {
                     new Player("A", new TerribleRandomAiAgent()),
-                    new Player("B", new TerribleRandomAiAgent()),
+                    new Player("B", new Noob1AiExampleAgent()),
                     new Player("C", new TerribleRandomAiAgent()),
-                    new Player("D", new TerribleRandomAiAgent())
+                    new Player("D", new Noob2AiExampleAgent())
                 };
         }
     }

@@ -44,6 +44,16 @@ namespace Hearts.Logging
             Console.WriteLine(string.Empty);
         }
 
+        public static void IllegalPass(Player player, IEnumerable<Card> cards)
+        {
+            Console.WriteLine(player.Name + " made an ILLEGAL PASS! (" + string.Join(", ", cards.Select(i => i.DebuggerDisplay)) + ") - " + player.DebuggerDisplay);
+        }
+
+        public static void IllegalPlay(Player player, Card card)
+        {
+            Console.WriteLine(player.Name + " played an ILLEGAL CARD! (" + card.DebuggerDisplay + ") - " + player.DebuggerDisplay);
+        }
+
         public static void PointsForRound(Dictionary<Player, int> scores)
         {
             foreach (var score in scores)
