@@ -14,7 +14,7 @@ namespace Hearts.Passing
         private static Func<Player, Player> twoToLeft = (i) => { return i.NextPlayer.NextPlayer; };
         private static Func<Player, Player> twoToRight = (i) => { return i.PreviousPlayer.PreviousPlayer; };
         private static Func<Player, Player> noPass = (i) => { return i; };
-
+        
         private List<Func<Player, Player>> threePlayer = new List<Func<Player, Player>>
         {
             oneToLeft, oneToRight, noPass
@@ -30,7 +30,24 @@ namespace Hearts.Passing
             oneToLeft, oneToRight, twoToLeft, twoToRight, noPass
         };
 
-        public Player GetPassRecipient(int roundNumber, int playerCount, Player fromPlayer)
+        public void HandlePassing(int roundNumber, List<Player> players, Dictionary<Player, List<Card>> startingHands, Player playerFrom)
+        {
+            var passedCards = new List<List<Card>>();
+
+            for (int i = 0; i < players.Count; i++)
+            {
+                passedCards.Add(playerFrom.Agent.ChooseCardsToPass(startingHands[playerFrom]));
+                playerFrom = this.GetPassRecipient(roundNumber, players.Count, playerFrom);
+            }
+
+            for (int i = 0; i < players.Count; i++)
+            {
+                var receivingCards = passedCards[i + 1 == players.Count ? 0 : i + 1];
+                players[i].Receive(receivingCards);
+            }
+        }
+
+        private Player GetPassRecipient(int roundNumber, int playerCount, Player fromPlayer)
         {
             int passIndex = roundNumber % playerCount;
 

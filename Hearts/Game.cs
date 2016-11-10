@@ -80,23 +80,9 @@ namespace Hearts
             var players = this.playerCircle.AllPlayers;
             this.gameTable = new GameTable(players.Count);
             this.dealer.DealStartingHands(players);
-            var startingHands = players.ToDictionary(i => i, i => i.RemainingCards.ToList());            
-            var currentPassingPlayer = this.playerCircle.FirstPlayer;
-            var passedCards = new List<List<Card>> ();
-
-            var passService = new PassService();
-
-            for (int i = 0; i < players.Count; i++)
-            {
-                passedCards.Add(currentPassingPlayer.Agent.ChooseCardsToPass(startingHands[currentPassingPlayer]));
-                currentPassingPlayer = passService.GetPassRecipient(roundNumber, players.Count, currentPassingPlayer);
-            }
-
-            for (int i = 0; i < players.Count; i++)
-            {
-                var receivingCards = passedCards[i + 1 == players.Count ? 0 : i + 1];
-                players[i].Receive(receivingCards);
-            }
+            var startingHands = players.ToDictionary(i => i, i => i.RemainingCards.ToList());
+            
+            new PassService().HandlePassing(roundNumber, players, startingHands, this.playerCircle.FirstPlayer);
 
             var handEvaluator = new HandWinEvaluator();
             var rulesEngine = new GameRulesEngine();
@@ -117,6 +103,8 @@ namespace Hearts
                 trick.Winner = players.Single(i => i == trickWinnerId);
                 startingPlayer = trick.Winner;
             }
+
+            // TODO: Scoring
         }
 
         private Player GetStartingPlayer()
