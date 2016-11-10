@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Hearts.Rules
 {
-    public class CardPlayEvaluator
+    public class GameRulesEngine
     {
         private IGameRule[] rules;
 
-        public CardPlayEvaluator()
+        public GameRulesEngine()
         {
             this.rules = new IGameRule[] 
             {
@@ -22,7 +22,7 @@ namespace Hearts.Rules
             };
         }
 
-        public IEnumerable<Card> GetPossibleCards(IEnumerable<Card> cards, Game gameState)
+        public IEnumerable<Card> LegalMoves(IEnumerable<Card> cards, Game gameState)
         {
             var filteredCards = cards;
 

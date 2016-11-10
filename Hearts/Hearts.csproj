@@ -73,7 +73,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Factories\StandardDeckFactory.cs" />
     <Compile Include="Model\Suit.cs" />
-    <Compile Include="Rules\CardPlayEvaluator.cs" />
+    <Compile Include="Rules\GameRulesEngine.cs" />
     <Compile Include="Rules\MustLeadLowestClubOnFirstPlayRule.cs" />
     <Compile Include="Rules\MustFollowSuitIfPossibleRule.cs" />
     <Compile Include="Rules\CannotPlayQueenSpadesOrHeartsOnFirstHandIfPossibleRule.cs" />

@@ -79,18 +79,21 @@ namespace Hearts
             var players = this.playerCircle.AllPlayers;
             this.gameTable = new GameTable(players.Count);
             this.dealer.DealStartingHands(players);
+            var startingHands = players.ToDictionary(i => i, i => i.RemainingCards.ToList());
+
 
             // TODO - pass the cards.
 
             var handEvaluator = new HandWinEvaluator();
-
+            var rulesEngine = new GameRulesEngine();
             var startingPlayer = this.GetStartingPlayer();
 
             while (players.Sum(i => i.RemainingCards.Count) > 0)
             {
                 foreach (var player in this.playerCircle.GetOrderedPlayersStartingWith(startingPlayer))
                 {
-                    var card = player.Agent.ChooseCardToPlay(this, player.RemainingCards);
+                    var legalCards = rulesEngine.LegalMoves(player.RemainingCards, this);
+                    var card = player.Agent.ChooseCardToPlay(this, startingHands[player], player.RemainingCards, legalCards.ToList());
                     player.Play(card);
                     this.gameTable.Play(player, card);
                 }
