@@ -21,7 +21,7 @@ namespace Hearts.Console
             game.AddPlayer(CreateNoob());
             game.AddPlayer(CreateNoob());
 
-            game.Play(0);
+            var result = game.Play(0);
 
             //var card = game.Players.First().RemainingCards.First();
             //string test1 = card.ToString();
