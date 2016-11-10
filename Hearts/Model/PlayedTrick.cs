@@ -5,14 +5,14 @@ using System;
 
 namespace Hearts.Model
 {
-    public class PlayedHand
+    public class PlayedTrick
     {
-        public PlayedHand()
+        public PlayedTrick()
         {
-            this.Cards = new Dictionary<Guid, Card>();
+            this.Cards = new Dictionary<Player, Card>();
         }
 
-        public Dictionary<Guid, Card> Cards { get; set; }
+        public Dictionary<Player, Card> Cards { get; set; }
 
         public Player Winner { get; set; }
     }

@@ -9,7 +9,7 @@ namespace Hearts.Scoring
 {
     public class HandWinEvaluator
     {
-        public Guid EvaluateWinnerId(PlayedHand playedHand)
+        public Player EvaluateWinner(PlayedTrick playedHand)
         {
             var leadSuit = playedHand.Cards.First().Value.Suit;
             var cardsOfLeadSuit = playedHand.Cards.Where(i => i.Value.Suit == leadSuit);

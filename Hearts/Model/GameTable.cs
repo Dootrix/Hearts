@@ -14,47 +14,33 @@ namespace Hearts.Model
             this.playerCount = playerCount;
             this.ClearPiles();
         }
+        
+        public List<Card> CurrentTrick { get; private set; }
 
-        // I think this should be just the cards for the current hand
-        // instead of PlayedHand being created early before the hand is complete.
-        // => it needs the player Guid (or bring over the PlayedCard class).
-        // this would mean PlayedHand could be created from it.
-        public List<Card> CurrentHand { get; private set; }
-
-        public List<PlayedHand> PlayedHands { get; private set; }
+        public List<PlayedTrick> PlayedTricks { get; private set; }
         
         public Card Play(Player player, Card card)
         {
-            this.CurrentHand.Add(card);
+            this.CurrentTrick.Add(card);
+            
+            var lastPlayedTrick = this.PlayedTricks.LastOrDefault();
 
-        //    if (self.handInPlay.count == players.count)
-        //    {
-        //        let winner = HandWinEvaluator().evaluateWinner(self.handInPlay)
-        //    let playedHand = PlayedHand(playedCards: self.handInPlay, winner: winner)
-        //    self.playedHands.append(playedHand)
-        //    self.handInPlay.removeAll()
-        //    self.eventQueue.handFinished(playedHand)
-        //}
-
-
-            var lastPlayedHand = this.PlayedHands.LastOrDefault();
-
-            if (lastPlayedHand == null || lastPlayedHand.Cards.Count == this.playerCount)
+            if (lastPlayedTrick == null || lastPlayedTrick.Cards.Count == this.playerCount)
             {
-                var playedHand = new PlayedHand();
-                this.PlayedHands.Add(playedHand);
-                lastPlayedHand = playedHand;
+                var playedHand = new PlayedTrick();
+                this.PlayedTricks.Add(playedHand);
+                lastPlayedTrick = playedHand;
             }
 
-            lastPlayedHand.Cards.Add(player.Guid, card);
+            lastPlayedTrick.Cards.Add(player, card);
             
             return card;
         }
 
         private void ClearPiles()
         {
-            this.CurrentHand = new List<Card>();
-            this.PlayedHands = new List<PlayedHand>();
+            this.CurrentTrick = new List<Card>();
+            this.PlayedTricks = new List<PlayedTrick>();
         }
     }
 }

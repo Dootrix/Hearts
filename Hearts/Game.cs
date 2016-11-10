@@ -25,7 +25,7 @@ namespace Hearts
         {
             get
             {
-                return this.gameTable.PlayedHands.Any(i => i.Cards.Any(j => j.Value.Suit == Suit.Hearts));
+                return this.gameTable.PlayedTricks.Any(i => i.Cards.Any(j => j.Value.Suit == Suit.Hearts));
             }
         }
 
@@ -33,7 +33,7 @@ namespace Hearts
         {
             get
             {
-                return this.gameTable.CurrentHand.Count() == 0;
+                return this.gameTable.CurrentTrick.Count() == 0;
             }
         }
 
@@ -41,7 +41,7 @@ namespace Hearts
         {
             get
             {
-                return this.gameTable.CurrentHand.Count() > 0;
+                return this.gameTable.CurrentTrick.Count() > 0;
             }
         }
 
@@ -49,7 +49,7 @@ namespace Hearts
         {
             get
             {
-                return this.gameTable.PlayedHands.Count == 0;
+                return this.gameTable.PlayedTricks.Count == 0;
             }
         }
 
@@ -65,7 +65,7 @@ namespace Hearts
         {
             get
             {
-                return this.gameTable.CurrentHand;
+                return this.gameTable.CurrentTrick;
             }
         }
 
@@ -79,10 +79,7 @@ namespace Hearts
             var players = this.playerCircle.AllPlayers;
             this.gameTable = new GameTable(players.Count);
             this.dealer.DealStartingHands(players);
-            var startingHands = players.ToDictionary(i => i, i => i.RemainingCards.ToList());
-
-            // TODO - pass the cards.
-            
+            var startingHands = players.ToDictionary(i => i, i => i.RemainingCards.ToList());            
             var currentPassingPlayer = this.playerCircle.FirstPlayer;
             var passedCards = new List<List<Card>> ();
 
@@ -114,9 +111,9 @@ namespace Hearts
                     this.gameTable.Play(player, card);
                 }
 
-                var trick = this.gameTable.PlayedHands.Last();
-                var trickWinnerId = handEvaluator.EvaluateWinnerId(trick);
-                trick.Winner = players.Single(i => i.Guid == trickWinnerId);
+                var trick = this.gameTable.PlayedTricks.Last();
+                var trickWinnerId = handEvaluator.EvaluateWinner(trick);
+                trick.Winner = players.Single(i => i == trickWinnerId);
                 startingPlayer = trick.Winner;
             }
         }
