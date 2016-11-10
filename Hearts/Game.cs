@@ -121,17 +121,6 @@ namespace Hearts
 
         private Player GetStartingPlayer()
         {
-            return this.playerCircle.AllPlayers
-                .Where(i => i.RemainingCards
-                    .Any(j => j.Suit == Suit.Clubs))
-                .OrderBy(i => i.RemainingCards
-                    .Where(j => j.Suit == Suit.Clubs)
-                    .Min(k => k.Kind))
-                .First();
-        }
-
-        private Player GetStartingPlayer2()
-        {
             var lowestClub = this.playerCircle.AllPlayers
                 .SelectMany(i => i.RemainingCards)
                 .Where(j => j.Suit == Suit.Clubs)
