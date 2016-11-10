@@ -81,8 +81,24 @@ namespace Hearts
             this.dealer.DealStartingHands(players);
             var startingHands = players.ToDictionary(i => i, i => i.RemainingCards.ToList());
 
-
             // TODO - pass the cards.
+            
+            var currentPassingPlayer = this.playerCircle.FirstPlayer;
+            var passedCards = new List<List<Card>> ();
+
+            for (int i = 0; i < players.Count; i++)
+            {
+                passedCards.Add(currentPassingPlayer.Agent.ChooseCardsToPass(startingHands[currentPassingPlayer]));
+
+                // TODO: Assuming passing left
+                currentPassingPlayer = currentPassingPlayer.NextPlayer;
+            }
+
+            for (int i = 0; i < players.Count; i++)
+            {
+                var receivingCards = passedCards[i + 1 == players.Count ? 0 : i + 1];
+                players[i].Receive(receivingCards);
+            }
 
             var handEvaluator = new HandWinEvaluator();
             var rulesEngine = new GameRulesEngine();
