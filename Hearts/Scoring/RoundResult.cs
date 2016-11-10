@@ -10,5 +10,7 @@ namespace Hearts.Scoring
     public class RoundResult
     {
         public Dictionary<Player, int> Scores { get; set; }
+
+        public Dictionary<Player, List<PlayedTrick>> Tricks { get; set; }
     }
 }

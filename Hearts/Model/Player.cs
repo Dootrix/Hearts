@@ -11,15 +11,18 @@ namespace Hearts.Model
     public class Player
     {
         private Guid guid;
-        
-        public Player(IAgent agent)
+
+        public Player(string name, IAgent agent)
         {
             this.RemainingCards = new List<Card>();
             this.guid = Guid.NewGuid();
             this.Agent = agent;
+            this.Name = name;
         }
 
         public Guid Guid { get { return this.guid; } }
+
+        public string Name { get; private set; }
 
         public Player NextPlayer { get; set; }
 
@@ -39,7 +42,7 @@ namespace Hearts.Model
                 string diamonds = "♦: " + string.Join(" ", this.RemainingCards.Where(i => i.Suit == Suit.Diamonds).OrderBy(i => i.Kind).Select(i => i.Kind.ToAbbreviation())).PadRight(padToLength);
                 string clubs = "♣: " + string.Join(" ", this.RemainingCards.Where(i => i.Suit == Suit.Clubs).OrderBy(i => i.Kind).Select(i => i.Kind.ToAbbreviation())).PadRight(padToLength);
 
-                return string.Join("                  ", new List<string> { hearts, spades, diamonds, clubs });
+                return this.Name + "     " + string.Join("                  ", new List<string> { hearts, spades, diamonds, clubs });
             }
         }
 

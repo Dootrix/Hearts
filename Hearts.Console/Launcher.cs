@@ -11,27 +11,22 @@ using Hearts.AI;
 namespace Hearts.Console
 {
     public class Launcher
-    { 
+    {
         public static void Main()
         {
-            var game = new Game();
-
-            game.AddPlayer(CreateNoob());
-            game.AddPlayer(CreateNoob());
-            game.AddPlayer(CreateNoob());
-            game.AddPlayer(CreateNoob());
-
+            var game = new Game(CreateNoobs());
             var result = game.Play(0);
-
-            //var card = game.Players.First().RemainingCards.First();
-            //string test1 = card.ToString();
-            //string test2 = card.DebuggerDisplay;
-            //int remainingCardCount = game.Players.First().RemainingCards.Count();
         }
 
-        private static Player CreateNoob()
+        private static List<Player> CreateNoobs()
         {
-            return new Player(new NoobAiExampleAgent());
+            return new List<Player>
+                {
+                    new Player("A v1", new Noob1AiExampleAgent()),
+                    new Player("B v1", new Noob1AiExampleAgent()),
+                    new Player("C v1", new Noob1AiExampleAgent()),
+                    new Player("D v2", new Noob2AiExampleAgent())
+                };
         }
     }
 }

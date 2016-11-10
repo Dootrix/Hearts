@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace Hearts.AI
 {
-    public class NoobAiExampleAgent : IAgent
+    public class Noob2AiExampleAgent : IAgent
     {
-        public string AgentName { get { return "Noob AI"; } }
+        public string AgentName { get { return "Noob 2 AI"; } }
         
         public List<Card> ChooseCardsToPass(List<Card> startingCards)
         {
@@ -45,6 +45,14 @@ namespace Hearts.AI
                     if (availableCards.Any(i => i.Kind == Kind.Queen && i.Suit == Suit.Spades))
                     {
                         return availableCards.Single(i => i.Kind == Kind.Queen && i.Suit == Suit.Spades);
+                    }
+                    else
+                    {
+                        // Noob 2 is slightly improved in that it punishes people with Hearts at the first opportunity
+                        if (availableCards.Any(i => i.Suit == Suit.Hearts))
+                        {
+                            return availableCards.Where(i => i.Suit == Suit.Hearts).OrderByDescending(i => i.Kind).First();
+                        }
                     }
                 }
             }

@@ -40,7 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AI\NoobAiExampleAgent.cs" />
+    <Compile Include="AI\Noob2AiExampleAgent.cs" />
+    <Compile Include="AI\Noob1AiExampleAgent.cs" />
     <Compile Include="AI\IAgent.cs" />
     <Compile Include="Attributes\AbbreviationAttribute.cs" />
     <Compile Include="GameEventHandlers\ShowHandHandler.cs" />

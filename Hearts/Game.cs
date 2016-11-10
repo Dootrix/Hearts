@@ -16,10 +16,11 @@ namespace Hearts
         private GameTable gameTable;
         private Dealer dealer;
 
-        public Game()
+        public Game(IEnumerable<Player> players)
         {
             this.dealer = new Dealer(new StandardDeckFactory(), new EvenHandDealAlgorithm());
             this.playerCircle = new PlayerCircle();
+            this.AddPlayers(players);
         }
 
         public bool IsHeartsBroken
@@ -70,9 +71,12 @@ namespace Hearts
             }
         }
 
-        public void AddPlayer(Player player)
+        public void AddPlayers(IEnumerable<Player> players)
         {
-            this.playerCircle.AddPlayer(player);
+            foreach(var player in players)
+            { 
+                this.playerCircle.AddPlayer(player);
+            }
         }
 
         public RoundResult Play(int roundNumber)
@@ -81,7 +85,7 @@ namespace Hearts
             this.gameTable = new GameTable(players.Count);
             this.dealer.DealStartingHands(players);
             var startingHands = players.ToDictionary(i => i, i => i.RemainingCards.ToList());
-            
+
             new PassService().HandlePassing(roundNumber, players, startingHands, this.playerCircle.FirstPlayer);
 
             var handEvaluator = new HandWinEvaluator();
@@ -103,10 +107,15 @@ namespace Hearts
                 trick.Winner = players.Single(i => i == trickWinnerId);
                 startingPlayer = trick.Winner;
             }
-            
-            var scores = new RoundResult { Scores = players.ToDictionary(i => i, i => new ScoreEvaluator().CalculateScore(this.gameTable.PlayedTricks.Where(j => j.Winner == i))) };
 
-            return scores;
+            var scores = players.ToDictionary(i => i, i => new ScoreEvaluator().CalculateScore(this.gameTable.PlayedTricks.Where(j => j.Winner == i)));
+            var tricks = players.ToDictionary(i => i, i => this.gameTable.PlayedTricks.Where(j => j.Winner == i).ToList());
+
+            return new RoundResult
+            {
+                Scores = scores,
+                Tricks = tricks
+            };
         }
     }
 }
