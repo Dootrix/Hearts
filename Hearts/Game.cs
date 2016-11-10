@@ -75,7 +75,7 @@ namespace Hearts
             this.playerCircle.AddPlayer(player);
         }
 
-        public void Play(int roundNumber)
+        public RoundResult Play(int roundNumber)
         {
             var players = this.playerCircle.AllPlayers;
             this.gameTable = new GameTable(players.Count);
@@ -103,8 +103,10 @@ namespace Hearts
                 trick.Winner = players.Single(i => i == trickWinnerId);
                 startingPlayer = trick.Winner;
             }
+            
+            var scores = new RoundResult { Scores = players.ToDictionary(i => i, i => new ScoreEvaluator().CalculateScore(this.gameTable.PlayedTricks.Where(j => j.Winner == i))) };
 
-            // TODO: Scoring
+            return scores;
         }
 
         private Player GetStartingPlayer()

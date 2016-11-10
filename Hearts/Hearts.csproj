@@ -80,6 +80,8 @@
     <Compile Include="Rules\CannotPlayQueenSpadesOrHeartsOnFirstHandIfPossibleRule.cs" />
     <Compile Include="Rules\CannotLeadHeartsUntilBrokenRule.cs" />
     <Compile Include="Rules\IGameRule.cs" />
+    <Compile Include="Scoring\RoundResult.cs" />
+    <Compile Include="Scoring\ScoreEvaluator.cs" />
     <Compile Include="Scoring\HandWinEvaluator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
