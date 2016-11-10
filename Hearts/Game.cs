@@ -7,6 +7,7 @@ using Hearts.Scoring;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Hearts.Logging;
 
 namespace Hearts
 {
@@ -86,12 +87,16 @@ namespace Hearts
             this.dealer.DealStartingHands(players);
             var startingHands = players.ToDictionary(i => i, i => i.RemainingCards.ToList());
 
+            Log.StartingHands(startingHands);
+
             new PassService().HandlePassing(roundNumber, players, startingHands, this.playerCircle.FirstPlayer);
+
+            Log.HandsAfterPass(players.ToDictionary(i => i, i => i.RemainingCards.ToList()));
 
             var handEvaluator = new HandWinEvaluator();
             var rulesEngine = new GameRulesEngine();
             var startingPlayer = this.playerCircle.GetStartingPlayer();
-
+            
             while (players.Sum(i => i.RemainingCards.Count) > 0)
             {
                 foreach (var player in this.playerCircle.GetOrderedPlayersStartingWith(startingPlayer))
@@ -103,13 +108,17 @@ namespace Hearts
                 }
 
                 var trick = this.gameTable.PlayedTricks.Last();
-                var trickWinnerId = handEvaluator.EvaluateWinner(trick);
-                trick.Winner = players.Single(i => i == trickWinnerId);
+                var trickWinner = handEvaluator.EvaluateWinner(trick);
+                trick.Winner = trickWinner;
                 startingPlayer = trick.Winner;
+
+                Log.TrickSummary(trick);
             }
 
             var scores = players.ToDictionary(i => i, i => new ScoreEvaluator().CalculateScore(this.gameTable.PlayedTricks.Where(j => j.Winner == i)));
             var tricks = players.ToDictionary(i => i, i => this.gameTable.PlayedTricks.Where(j => j.Winner == i).ToList());
+
+            Log.PointsForRound(scores);
 
             return new RoundResult
             {

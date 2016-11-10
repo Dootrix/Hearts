@@ -16,6 +16,8 @@ namespace Hearts.Console
         {
             var game = new Game(CreateNoobs());
             var result = game.Play(0);
+
+            System.Console.ReadLine();
         }
 
         private static List<Player> CreateNoobs()

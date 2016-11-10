@@ -36,7 +36,9 @@ namespace Hearts.Passing
 
             for (int i = 0; i < players.Count; i++)
             {
-                passedCards.Add(playerFrom.Agent.ChooseCardsToPass(startingHands[playerFrom]));
+                var pass = playerFrom.Agent.ChooseCardsToPass(startingHands[playerFrom]);
+                passedCards.Add(pass);
+                playerFrom.Pass(pass);
                 playerFrom = this.GetPassRecipient(roundNumber, players.Count, playerFrom);
             }
 

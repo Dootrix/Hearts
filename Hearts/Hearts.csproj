@@ -52,6 +52,7 @@
     <Compile Include="GameEventHandlers\PlayerAddedToGameHandler.cs" />
     <Compile Include="GameEventHandlers\CardAddedToDeckHandler.cs" />
     <Compile Include="GameEventHandlers\IGameEventHandler.cs" />
+    <Compile Include="Logging\Log.cs" />
     <Compile Include="Model\GameEventType.cs" />
     <Compile Include="Model\Card.cs" />
     <Compile Include="Deal\Dealer.cs" />
