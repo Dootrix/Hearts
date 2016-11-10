@@ -1,6 +1,7 @@
 ﻿using Hearts.Deal;
 using Hearts.Factories;
 using Hearts.Model;
+using Hearts.Passing;
 using Hearts.Rules;
 using Hearts.Scoring;
 using System;
@@ -74,7 +75,7 @@ namespace Hearts
             this.playerCircle.AddPlayer(player);
         }
 
-        public void Play()
+        public void Play(int roundNumber)
         {
             var players = this.playerCircle.AllPlayers;
             this.gameTable = new GameTable(players.Count);
@@ -83,12 +84,12 @@ namespace Hearts
             var currentPassingPlayer = this.playerCircle.FirstPlayer;
             var passedCards = new List<List<Card>> ();
 
+            var passService = new PassService();
+
             for (int i = 0; i < players.Count; i++)
             {
                 passedCards.Add(currentPassingPlayer.Agent.ChooseCardsToPass(startingHands[currentPassingPlayer]));
-
-                // TODO: Assuming passing left
-                currentPassingPlayer = currentPassingPlayer.NextPlayer;
+                currentPassingPlayer = passService.GetPassRecipient(roundNumber, players.Count, currentPassingPlayer);
             }
 
             for (int i = 0; i < players.Count; i++)
