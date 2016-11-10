@@ -15,33 +15,37 @@ namespace Hearts.Model
             this.ClearPiles();
         }
         
-        public List<Card> CurrentTrick { get; private set; }
+        public List<PlayedCard> CurrentTrick { get; private set; }
 
         public List<PlayedTrick> PlayedTricks { get; private set; }
-        
-        public Card Play(Player player, Card card)
+
+        public void BeginTrick()
         {
-            this.CurrentTrick.Add(card);
-            
-            var lastPlayedTrick = this.PlayedTricks.LastOrDefault();
+            this.CurrentTrick = new List<PlayedCard>();
+        }
 
-            // TODO: This creation needs to be explicit, else rules get confused about CurrentHand status
+        public void EndTrick()
+        {
+            var playedTrick = new PlayedTrick();
 
-            if (lastPlayedTrick == null || lastPlayedTrick.Cards.Count == this.playerCount)
-            {
-                var playedHand = new PlayedTrick();
-                this.PlayedTricks.Add(playedHand);
-                lastPlayedTrick = playedHand;
+            foreach (var trick in this.CurrentTrick)
+            { 
+                playedTrick.Cards.Add(trick.Player, trick.Card);
             }
 
-            lastPlayedTrick.Cards.Add(player, card);
+            this.PlayedTricks.Add(playedTrick);
+        }
+
+        public Card Play(Player player, Card card)
+        {
+            this.CurrentTrick.Add(new PlayedCard { Player = player, Card = card });
             
             return card;
         }
 
         private void ClearPiles()
         {
-            this.CurrentTrick = new List<Card>();
+            this.CurrentTrick = new List<PlayedCard>();
             this.PlayedTricks = new List<PlayedTrick>();
         }
     }

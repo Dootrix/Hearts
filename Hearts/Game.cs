@@ -64,7 +64,7 @@ namespace Hearts
             }
         }
 
-        public List<Card> CurrentTrick
+        public List<PlayedCard> CurrentTrick
         {
             get
             {
@@ -99,11 +99,12 @@ namespace Hearts
             
             while (players.Sum(i => i.RemainingCards.Count) > 0)
             {
+                // TODO: Call open trick on this.gameTable
+                this.gameTable.BeginTrick();
+
                 foreach (var player in this.playerCircle.GetOrderedPlayersStartingWith(startingPlayer))
                 {
                     var legalCards = rulesEngine.LegalMoves(player.RemainingCards, this);
-
-
                     var card = player.Agent.ChooseCardToPlay(this, startingHands[player], player.RemainingCards, legalCards.ToList());
 
                     // TODO: Validate chosen card
@@ -111,6 +112,10 @@ namespace Hearts
                     player.Play(card);
                     this.gameTable.Play(player, card);
                 }
+
+                this.gameTable.EndTrick();
+
+                // TODO: Call close trick on this.gameTable
 
                 var trick = this.gameTable.PlayedTricks.Last();
                 var trickWinner = handEvaluator.EvaluateWinner(trick);

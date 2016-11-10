@@ -11,7 +11,7 @@ namespace Hearts.Rules
     {
         public IEnumerable<Card> FilterCards(IEnumerable<Card> cards, Game gameState)
         {
-            var leadSuit = gameState.CurrentTrick.First().Suit;
+            var leadSuit = gameState.CurrentTrick.First().Card.Suit;
             var sameSuitCards = cards.Where(i => i.Suit == leadSuit).ToList();
 
             return sameSuitCards.Any() ? sameSuitCards : cards;
