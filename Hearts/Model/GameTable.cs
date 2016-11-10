@@ -25,6 +25,8 @@ namespace Hearts.Model
             
             var lastPlayedTrick = this.PlayedTricks.LastOrDefault();
 
+            // TODO: This creation needs to be explicit, else rules get confused about CurrentHand status
+
             if (lastPlayedTrick == null || lastPlayedTrick.Cards.Count == this.playerCount)
             {
                 var playedHand = new PlayedTrick();

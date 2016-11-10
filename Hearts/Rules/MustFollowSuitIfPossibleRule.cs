@@ -11,10 +11,10 @@ namespace Hearts.Rules
     {
         public IEnumerable<Card> FilterCards(IEnumerable<Card> cards, Game gameState)
         {
-            var leadSuit = gameState.CurrentHand.First().Suit;
-            var sameSuitCards = cards.Where(i => i.Suit == leadSuit);
+            var leadSuit = gameState.CurrentTrick.First().Suit;
+            var sameSuitCards = cards.Where(i => i.Suit == leadSuit).ToList();
 
-            return sameSuitCards.Count() > 0 ? sameSuitCards : cards;
+            return sameSuitCards.Any() ? sameSuitCards : cards;
         }
 
         public bool Applies(Game gameState)

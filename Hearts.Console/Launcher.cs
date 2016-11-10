@@ -24,10 +24,10 @@ namespace Hearts.Console
         {
             return new List<Player>
                 {
-                    new Player("A v1", new Noob1AiExampleAgent()),
-                    new Player("B v1", new Noob1AiExampleAgent()),
-                    new Player("C v1", new Noob1AiExampleAgent()),
-                    new Player("D v2", new Noob2AiExampleAgent())
+                    new Player("A", new TerribleRandomAiAgent()),
+                    new Player("B", new TerribleRandomAiAgent()),
+                    new Player("C", new TerribleRandomAiAgent()),
+                    new Player("D", new TerribleRandomAiAgent())
                 };
         }
     }

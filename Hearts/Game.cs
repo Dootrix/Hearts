@@ -36,7 +36,7 @@ namespace Hearts
         {
             get
             {
-                return this.gameTable.CurrentTrick.Count() == 0;
+                return !this.gameTable.CurrentTrick.Any();
             }
         }
 
@@ -44,7 +44,7 @@ namespace Hearts
         {
             get
             {
-                return this.gameTable.CurrentTrick.Count() > 0;
+                return this.gameTable.CurrentTrick.Any();
             }
         }
 
@@ -52,7 +52,7 @@ namespace Hearts
         {
             get
             {
-                return this.gameTable.PlayedTricks.Count == 0;
+                return !this.gameTable.PlayedTricks.Any();
             }
         }
 
@@ -64,7 +64,7 @@ namespace Hearts
             }
         }
 
-        public List<Card> CurrentHand
+        public List<Card> CurrentTrick
         {
             get
             {
@@ -102,7 +102,12 @@ namespace Hearts
                 foreach (var player in this.playerCircle.GetOrderedPlayersStartingWith(startingPlayer))
                 {
                     var legalCards = rulesEngine.LegalMoves(player.RemainingCards, this);
+
+
                     var card = player.Agent.ChooseCardToPlay(this, startingHands[player], player.RemainingCards, legalCards.ToList());
+
+                    // TODO: Validate chosen card
+
                     player.Play(card);
                     this.gameTable.Play(player, card);
                 }

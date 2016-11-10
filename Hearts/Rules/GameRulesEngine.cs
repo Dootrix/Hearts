@@ -34,7 +34,7 @@ namespace Hearts.Rules
 
                     if (!filteredCards.Any())
                     {
-                        break;
+                        throw new Exception("Out of cards");
                     }
                 }
             }
