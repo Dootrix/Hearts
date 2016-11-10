@@ -52,5 +52,16 @@ namespace Hearts.Model
 
             return tempPlayers;
         }
+
+        public Player GetStartingPlayer()
+        {
+            var lowestClub = this.AllPlayers
+                .SelectMany(i => i.RemainingCards)
+                .Where(j => j.Suit == Suit.Clubs)
+                .Min(k => k.Kind);
+
+            return this.AllPlayers
+                .Single(i => i.RemainingCards.Any(j => j.Suit == Suit.Clubs && j.Kind == lowestClub));
+        }
     }
 }

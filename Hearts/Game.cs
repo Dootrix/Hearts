@@ -86,7 +86,7 @@ namespace Hearts
 
             var handEvaluator = new HandWinEvaluator();
             var rulesEngine = new GameRulesEngine();
-            var startingPlayer = this.GetStartingPlayer();
+            var startingPlayer = this.playerCircle.GetStartingPlayer();
 
             while (players.Sum(i => i.RemainingCards.Count) > 0)
             {
@@ -107,17 +107,6 @@ namespace Hearts
             var scores = new RoundResult { Scores = players.ToDictionary(i => i, i => new ScoreEvaluator().CalculateScore(this.gameTable.PlayedTricks.Where(j => j.Winner == i))) };
 
             return scores;
-        }
-
-        private Player GetStartingPlayer()
-        {
-            var lowestClub = this.playerCircle.AllPlayers
-                .SelectMany(i => i.RemainingCards)
-                .Where(j => j.Suit == Suit.Clubs)
-                .Min(k => k.Kind);
-
-            return this.playerCircle.AllPlayers
-                .Single(i => i.RemainingCards.Any(j => j.Suit == Suit.Clubs && j.Kind == lowestClub));
         }
     }
 }
