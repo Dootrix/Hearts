@@ -1,4 +1,5 @@
-﻿using Hearts.Model;
+﻿using Hearts.Logging;
+using Hearts.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +35,7 @@ namespace Hearts.Rules
 
                     if (!filteredCards.Any())
                     {
-                        throw new Exception("Out of cards");
+                        Log.OutOfCardsException();
                     }
                 }
             }

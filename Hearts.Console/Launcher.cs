@@ -7,6 +7,7 @@ using Hearts;
 using Hearts.Extensions;
 using Hearts.Model;
 using Hearts.AI;
+using Hearts.Logging;
 
 namespace Hearts.Console
 {
@@ -14,13 +15,30 @@ namespace Hearts.Console
     {
         public static void Main()
         {
-            var game = new Game(CreateNoobs());
-            var result = game.Play(0);
+            var players = CreatePlayers();
+            var game = new Game(players);
+            var cumulativeScores = players.ToDictionary(i => i, i => 0);
+            int roundNumber = 0;
+
+            do
+            {
+                var result = game.Play(roundNumber);
+
+                foreach (var score in result.Scores)
+                {
+                    cumulativeScores[score.Key] += score.Value;
+                }
+
+                ++roundNumber;
+
+            } while (cumulativeScores.All(i => i.Value < 100));
+
+            Log.LogFinalWinner(cumulativeScores);
 
             System.Console.ReadLine();
         }
 
-        private static List<Player> CreateNoobs()
+        private static List<Player> CreatePlayers()
         {
             return new List<Player>
                 {

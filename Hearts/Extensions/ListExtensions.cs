@@ -6,6 +6,7 @@ namespace Hearts.Extensions
 {
     public static class ListExtensions
     {
+        // TODO: Allow seeding of this randomization
         private static readonly Random PrivateRandom = new Random();
 
         public static T Random<T>(this IEnumerable<T> self)

@@ -12,12 +12,19 @@ namespace Hearts.Model
         public GameTable(int playerCount)
         {
             this.playerCount = playerCount;
-            this.ClearPiles();
+            this.Reset();
         }
         
         public List<PlayedCard> CurrentTrick { get; private set; }
 
         public List<PlayedTrick> PlayedTricks { get; private set; }
+
+        public void Reset()
+        {
+
+            this.CurrentTrick = new List<PlayedCard>();
+            this.PlayedTricks = new List<PlayedTrick>();
+        }
 
         public void BeginTrick()
         {
@@ -41,12 +48,6 @@ namespace Hearts.Model
             this.CurrentTrick.Add(new PlayedCard { Player = player, Card = card });
             
             return card;
-        }
-
-        private void ClearPiles()
-        {
-            this.CurrentTrick = new List<PlayedCard>();
-            this.PlayedTricks = new List<PlayedTrick>();
         }
     }
 }

@@ -14,6 +14,14 @@ namespace Hearts.Model
             this.players = new List<Player>();
         }
 
+        public void Reset()
+        {
+            foreach(var player in this.players)
+            {
+                player.RemainingCards.Clear();
+            }
+        }
+
         public void AddPlayer(Player player)
         {
             var previousPlayer = this.players.LastOrDefault();

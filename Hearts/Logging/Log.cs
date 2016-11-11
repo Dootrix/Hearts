@@ -54,9 +54,28 @@ namespace Hearts.Logging
             Console.WriteLine(player.Name + " played an ILLEGAL CARD! (" + card.DebuggerDisplay + ") - " + player.DebuggerDisplay);
         }
 
+        public static void OutOfCardsException()
+        {
+            Console.WriteLine("*** OUT OF CARDS! ***");
+        }
+
         public static void PointsForRound(Dictionary<Player, int> scores)
         {
             foreach (var score in scores)
+            {
+                Console.WriteLine(score.Key.Name + ": " + score.Value + "pts");
+            }
+
+            Console.WriteLine(string.Empty);
+        }
+
+        public static void LogFinalWinner(Dictionary<Player, int> results)
+        {
+            Console.WriteLine(string.Empty);
+            Console.WriteLine(string.Empty);
+            Console.WriteLine("__________________________________________________________________");
+
+            foreach (var score in results)
             {
                 Console.WriteLine(score.Key.Name + ": " + score.Value + "pts");
             }

@@ -19,9 +19,20 @@ namespace Hearts
 
         public Game(IEnumerable<Player> players)
         {
-            this.dealer = new Dealer(new StandardDeckFactory(), new EvenHandDealAlgorithm());
             this.playerCircle = new PlayerCircle();
             this.AddPlayers(players);
+            this.Reset();
+        }
+
+        public void Reset()
+        {
+            this.dealer = new Dealer(new StandardDeckFactory(), new EvenHandDealAlgorithm());
+            this.playerCircle.Reset();
+
+            if (this.gameTable != null)
+            {
+                this.gameTable.Reset();
+            }
         }
 
         public bool IsHeartsBroken
@@ -72,16 +83,9 @@ namespace Hearts
             }
         }
 
-        public void AddPlayers(IEnumerable<Player> players)
-        {
-            foreach(var player in players)
-            { 
-                this.playerCircle.AddPlayer(player);
-            }
-        }
-
         public RoundResult Play(int roundNumber)
         {
+            this.Reset();
             var players = this.playerCircle.AllPlayers;
             this.gameTable = new GameTable(players.Count);
             this.dealer.DealStartingHands(players);
@@ -135,6 +139,14 @@ namespace Hearts
                 Scores = scores,
                 Tricks = tricks
             };
+        }
+
+        private void AddPlayers(IEnumerable<Player> players)
+        {
+            foreach (var player in players)
+            {
+                this.playerCircle.AddPlayer(player);
+            }
         }
     }
 }
