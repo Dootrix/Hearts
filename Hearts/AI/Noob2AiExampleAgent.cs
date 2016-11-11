@@ -58,7 +58,7 @@ namespace Hearts.AI
             }
 
             // Don't lead with a Heart if not broken
-            if (!gameState.IsHeartsBroken && availableCards.Any(i => i.Suit != Suit.Hearts))
+            if (!gameState.IsHeartsBroken && !gameState.IsFirstHand && availableCards.Any(i => i.Suit != Suit.Hearts))
             {
                 availableCards = availableCards.Where(i => i.Suit != Suit.Hearts).ToList();
             }
