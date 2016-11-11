@@ -57,12 +57,6 @@ namespace Hearts.AI
                 }
             }
 
-            // Don't lead with a Heart if not broken
-            if (!gameState.IsHeartsBroken && !gameState.IsFirstHand && availableCards.Any(i => i.Suit != Suit.Hearts))
-            {
-                availableCards = availableCards.Where(i => i.Suit != Suit.Hearts).ToList();
-            }
-
             // Return any low card
             // Terrible plan in long term for a game, but gives a half chance of dodging the queen against other noob AIs
             return legalCards.OrderBy(i => i.Kind).ThenByDescending(i => i.Suit).First();
