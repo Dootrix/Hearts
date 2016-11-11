@@ -17,7 +17,9 @@ namespace Hearts.Console
         {
             // Note: Swap this options class to configure the output display, e.g. Default or Summary etc.
             Log.Options = new SummaryOnlyLogOptions();
-            SimulateGames(100);
+
+            // Note: This simulates at about 300 games per second, without console outputs
+            SimulateGames(1000);
             System.Console.ReadLine();
         }
 
@@ -69,7 +71,7 @@ namespace Hearts.Console
             return new List<Player>
                 {
                     new Player("A", new TerribleRandomAiAgent()),
-                    new Player("B", new Noob1AiExampleAgent()),
+                    new Player("B", new TerribleRandomAiAgent()),
                     new Player("C", new TerribleRandomAiAgent()),
                     new Player("D", new Noob2AiExampleAgent())
                 };
