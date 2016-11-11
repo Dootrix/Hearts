@@ -1,15 +1,18 @@
-﻿using Hearts.Model;
-using Hearts.Scoring;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Hearts.Extensions;
+using Hearts.Model;
+using Hearts.Scoring;
 
 namespace Hearts.Logging
 {
     public static class Log
     {
+        public static int NamePad = 12;
+
         public static void Gap()
         {
             Console.WriteLine(string.Empty);
@@ -17,55 +20,83 @@ namespace Hearts.Logging
 
         public static void StartingHands(Dictionary<Player, List<Card>> hands)
         {
+            ToGrey();
             Console.WriteLine("Starting Hands:");
 
             foreach (var hand in hands)
             {
-                Console.WriteLine(hand.Key.DebuggerDisplay);
+                Player(hand.Key);
             }
 
-            Console.WriteLine(string.Empty);
+            NewLine();
         }
 
         public static void HandsAfterPass(Dictionary<Player, List<Card>> hands)
         {
+            ToGrey();
             Console.WriteLine("Post-Pass Hands:");
 
             foreach (var hand in hands)
             {
-                Console.WriteLine(hand.Key.DebuggerDisplay);
+                Player(hand.Key);
             }
 
-            Console.WriteLine(string.Empty);
+            NewLine();
         }
 
         public static void Pass(Player player, IEnumerable<Card> cards)
         {
-            Console.WriteLine(player.Name + " passed " + string.Join(", ", cards.Select(i => i.DebuggerDisplay)));
+            ToBlue();
+            Console.Write(" " + player.Name.PadLeft(NamePad) + " ");
+            ToGrey();
+            Console.Write(" pass ");
+
+            foreach(var card in cards)
+            {
+                Card(card);
+                Console.Write(" ");
+            }
+
+            NewLine();
         }
 
         public static void TrickSummary(PlayedTrick trick)
         {
             foreach (var playedCard in trick.Cards)
             {
-                Console.WriteLine(playedCard.Key.Name + " plays " + playedCard.Value.DebuggerDisplay + (trick.Winner == playedCard.Key ? " Winner" : string.Empty));
+                ToBlue();
+                Console.Write(" " + playedCard.Key.Name.PadLeft(NamePad) + " ");
+                ToGrey();
+                Console.Write(" play ");
+                Card(playedCard.Value);
+
+                if (trick.Winner == playedCard.Key)
+                {
+                    ToBlue();
+                    Console.Write(" Win");
+                }
+
+                NewLine();
             }
 
-            Console.WriteLine(string.Empty);
+            NewLine();
         }
 
         public static void IllegalPass(Player player, IEnumerable<Card> cards)
         {
+            ToBlue();
             Console.WriteLine(player.Name + " made an ILLEGAL PASS! (" + string.Join(", ", cards.Select(i => i.DebuggerDisplay)) + ") - " + player.DebuggerDisplay);
         }
 
         public static void IllegalPlay(Player player, Card card)
         {
+            ToBlue();
             Console.WriteLine(player.Name + " played an ILLEGAL CARD! (" + card.DebuggerDisplay + ") - " + player.DebuggerDisplay);
         }
 
         public static void OutOfCardsException()
         {
+            ToBlue();
             Console.WriteLine("*** OUT OF CARDS! ***");
         }
 
@@ -73,14 +104,23 @@ namespace Hearts.Logging
         {
             foreach (var score in scores)
             {
-                Console.WriteLine(score.Key.Name + ": " + score.Value + "pts");
+                ToBlue();
+                Console.Write(" " + score.Key.Name.PadLeft(NamePad) + " ");
+                ToGrey();
+                Console.Write(" : ");
+                ToBlue();
+                Console.Write(score.Value.ToString().PadLeft(3));
+                ToGrey();
+                Console.Write(" pts");
+                NewLine();
             }
 
-            Console.WriteLine(string.Empty);
+            NewLine();
         }
 
         public static void LogFinalWinner(Dictionary<Player, int> results)
         {
+            ToGrey();
             Console.WriteLine(string.Empty);
             Console.WriteLine(string.Empty);
             Console.WriteLine("__________________________________________________________________");
@@ -88,13 +128,102 @@ namespace Hearts.Logging
 
             foreach (var score in results)
             {
-                Console.WriteLine(score.Key.Name + ": " + score.Value + "pts");
+                ToBlue();
+                Console.Write(" " + score.Key.Name.PadLeft(NamePad) + " ");
+                ToGrey();
+                Console.Write(" : ");
+                ToBlue();
+                Console.Write(score.Value.ToString().PadLeft(3));
+                ToGrey();
+                Console.Write(" pts ");
+
+                if (score.Value == results.Min(i => i.Value))
+                {
+                    ToBlue();
+                    Console.Write("Wins");
+                }
+
+                NewLine();
             }
 
+            ToGrey();
             Console.WriteLine(string.Empty);
             Console.WriteLine("__________________________________________________________________");
             Console.WriteLine(string.Empty);
             Console.WriteLine(string.Empty);
         }
+
+        public static void Player(Player player)
+        {
+            var cards = player.RemainingCards;
+            int padToLength = 25;
+            ToBlue();
+            Console.Write(" " + player.Name.PadLeft(NamePad) + " ");
+            
+            foreach(var suit in new List<Suit> { Suit.Hearts, Suit.Spades, Suit.Diamonds, Suit.Clubs })
+            {
+                var cardsOfSuit = cards.Where(i => i.Suit == suit);
+
+                foreach (var card in cardsOfSuit.OrderBy(i => i.Kind))
+                {
+                    Card(card);
+                    Console.Write(" ");
+                }
+
+                Console.Write(new string(' ', padToLength - cardsOfSuit.Count() * 3));
+            }
+
+            NewLine();
+        }
+
+        public static void Card(Card card)
+        {
+            if (card.Suit == Suit.Clubs || card.Suit == Suit.Spades)
+            {
+                ToBlack();
+            }
+            else
+            {
+                ToRed();
+            }
+
+            Console.Write(card.DebuggerDisplay);
+        }
+
+        #region Helpers
+        public static void ToBlue()
+        {
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Blue;
+        }
+
+        public static void ToGrey()
+        {
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Gray;
+        }
+
+        public static void ToRed()
+        {
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Red;
+        }
+
+        public static void ToBlack()
+        {
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Black;
+        }
+
+        public static void Reset()
+        {
+            Console.ResetColor();
+        }
+
+        public static void NewLine()
+        {
+            Console.Write(Environment.NewLine);
+        }
+        #endregion /Helpers
     }
 }
