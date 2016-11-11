@@ -59,7 +59,7 @@ namespace Hearts.Console
                     const int MoonshotPoints = 26;
                     var shooter = moonShots.First().Key;
                     int shooterCumulativeScore = cumulativeScores[shooter];
-                    var otherScores = cumulativeScores.Where(i => i.Key != shooter);
+                    var otherScores = cumulativeScores.Where(i => i.Key != shooter).ToList();
                     var otherScoresPlus26 = otherScores.Select(i => i.Value + 26).ToList();
                     bool hasShooterLostIfAddsScoreToOthers = 
                         otherScoresPlus26.Any(i => i >= 100) 
