@@ -15,7 +15,7 @@ namespace Hearts.Passing
         private static Func<Player, Player> twoToLeft = (i) => { return i.NextPlayer.NextPlayer; };
         private static Func<Player, Player> twoToRight = (i) => { return i.PreviousPlayer.PreviousPlayer; };
         private static Func<Player, Player> noPass = (i) => { return i; };
-        
+
         private List<Func<Player, Player>> threePlayer = new List<Func<Player, Player>>
         {
             oneToLeft, oneToRight, noPass
@@ -38,22 +38,31 @@ namespace Hearts.Passing
             for (int i = 0; i < players.Count; i++)
             {
                 var pass = playerFrom.Agent.ChooseCardsToPass(startingHands[playerFrom]);
-                
+
                 if (!pass.All(j => startingHands[playerFrom].Contains(j)) || pass.Distinct().Count() != 3)
                 {
                     // TODO: Handle illegal move
                     Log.IllegalPass(playerFrom, pass);
                 }
 
+                Log.Pass(playerFrom, pass);
+
                 passedCards.Add(pass);
                 playerFrom.Pass(pass);
-                playerFrom = this.GetPassRecipient(roundNumber, players.Count, playerFrom);
+
+                if (i < players.Count - 1)
+                {
+                    playerFrom = players[i + 1];
+                }
             }
+
+            Log.Gap();
 
             for (int i = 0; i < players.Count; i++)
             {
-                var receivingCards = passedCards[i + 1 == players.Count ? 0 : i + 1];
-                players[i].Receive(receivingCards);
+                var receivingCards = passedCards[i];
+                var playerTo = this.GetPassRecipient(roundNumber, players.Count, players[i]);
+                playerTo.Receive(receivingCards);
             }
         }
 

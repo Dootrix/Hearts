@@ -10,6 +10,11 @@ namespace Hearts.Logging
 {
     public static class Log
     {
+        public static void Gap()
+        {
+            Console.WriteLine(string.Empty);
+        }
+
         public static void StartingHands(Dictionary<Player, List<Card>> hands)
         {
             Console.WriteLine("Starting Hands:");
@@ -32,6 +37,11 @@ namespace Hearts.Logging
             }
 
             Console.WriteLine(string.Empty);
+        }
+
+        public static void Pass(Player player, IEnumerable<Card> cards)
+        {
+            Console.WriteLine(player.Name + " passed " + string.Join(", ", cards.Select(i => i.DebuggerDisplay)));
         }
 
         public static void TrickSummary(PlayedTrick trick)
@@ -74,12 +84,16 @@ namespace Hearts.Logging
             Console.WriteLine(string.Empty);
             Console.WriteLine(string.Empty);
             Console.WriteLine("__________________________________________________________________");
+            Console.WriteLine(string.Empty);
 
             foreach (var score in results)
             {
                 Console.WriteLine(score.Key.Name + ": " + score.Value + "pts");
             }
 
+            Console.WriteLine(string.Empty);
+            Console.WriteLine("__________________________________________________________________");
+            Console.WriteLine(string.Empty);
             Console.WriteLine(string.Empty);
         }
     }
