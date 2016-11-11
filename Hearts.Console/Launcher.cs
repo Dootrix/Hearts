@@ -52,9 +52,37 @@ namespace Hearts.Console
             {
                 var result = game.Play(roundNumber);
 
-                foreach (var score in result.Scores)
+                var moonShots = result.Scores.Where(i => i.Value == 26);
+
+                if (moonShots.Any())
                 {
-                    cumulativeScores[score.Key] += score.Value;
+                    const int MoonshotPoints = 26;
+                    var shooter = moonShots.First().Key;
+                    int shooterCumulativeScore = cumulativeScores[shooter];
+                    var otherScores = cumulativeScores.Where(i => i.Key != shooter);
+                    var otherScoresPlus26 = otherScores.Select(i => i.Value + 26).ToList();
+                    bool hasShooterLostIfAddsScoreToOthers = 
+                        otherScoresPlus26.Any(i => i >= 100) 
+                        && shooterCumulativeScore > otherScoresPlus26.Min();
+
+                    if (hasShooterLostIfAddsScoreToOthers)
+                    {
+                        cumulativeScores[shooter] -= MoonshotPoints;
+                    }
+                    else
+                    {
+                        foreach (var score in otherScores)
+                        {
+                            cumulativeScores[score.Key] += MoonshotPoints;
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var score in result.Scores)
+                    {
+                        cumulativeScores[score.Key] += score.Value;
+                    }
                 }
 
                 ++roundNumber;
