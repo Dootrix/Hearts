@@ -15,6 +15,9 @@ namespace Hearts.Console
     {
         public static void Main()
         {
+            // Note: Swap this options class to configure the output display, e.g. Default or Summary etc.
+            Log.Options = new SummaryOnlyLogOptions();
+
             var players = CreatePlayers();
             var game = new Game(players);
             var cumulativeScores = players.ToDictionary(i => i, i => 0);
