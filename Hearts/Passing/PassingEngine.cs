@@ -56,8 +56,6 @@ namespace Hearts.Passing
                 }
             }
 
-            Log.Gap();
-
             for (int i = 0; i < players.Count; i++)
             {
                 var receivingCards = passedCards[i];

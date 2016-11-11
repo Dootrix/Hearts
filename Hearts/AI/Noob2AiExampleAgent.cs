@@ -42,16 +42,16 @@ namespace Hearts.AI
                 {
                     // Let's make our noob AI at least slightly viscious
                     // Queen someone at the first opportunity
-                    if (availableCards.Any(i => i.Kind == Kind.Queen && i.Suit == Suit.Spades))
+                    if (legalCards.Any(i => i.Kind == Kind.Queen && i.Suit == Suit.Spades))
                     {
-                        return availableCards.Single(i => i.Kind == Kind.Queen && i.Suit == Suit.Spades);
+                        return legalCards.Single(i => i.Kind == Kind.Queen && i.Suit == Suit.Spades);
                     }
                     else
                     {
                         // Noob 2 is slightly improved in that it punishes people with Hearts at the first opportunity
-                        if (availableCards.Any(i => i.Suit == Suit.Hearts))
+                        if (legalCards.Any(i => i.Suit == Suit.Hearts))
                         {
-                            return availableCards.Where(i => i.Suit == Suit.Hearts).OrderByDescending(i => i.Kind).First();
+                            return legalCards.Where(i => i.Suit == Suit.Hearts).OrderByDescending(i => i.Kind).First();
                         }
                     }
                 }
@@ -65,7 +65,7 @@ namespace Hearts.AI
 
             // Return any low card
             // Terrible plan in long term for a game, but gives a half chance of dodging the queen against other noob AIs
-            return availableCards.OrderBy(i => i.Kind).ThenByDescending(i => i.Suit).First();
+            return legalCards.OrderBy(i => i.Kind).ThenByDescending(i => i.Suit).First();
         }
     }
 }
