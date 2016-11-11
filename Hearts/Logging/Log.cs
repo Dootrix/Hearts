@@ -170,6 +170,46 @@ namespace Hearts.Logging
             Console.WriteLine(string.Empty);
             Console.WriteLine(string.Empty);
         }
+        
+        public static void LogSimulationSummary(int gameCount, Dictionary<Player, int> victories)
+        {
+            if (!Options.DisplaySimulationSummary) return;
+
+            ToGrey();
+            Console.WriteLine(string.Empty);
+            Console.WriteLine(string.Empty);
+            Console.WriteLine("__________________________________________________________________");
+            Console.WriteLine(string.Empty);
+            Console.WriteLine("Simulation Stats");
+            Console.WriteLine("Based on {0} game{1}", gameCount, gameCount > 1 ? "s" : string.Empty);
+            Console.WriteLine(string.Empty);
+
+            foreach (var victory in victories)
+            {
+                ToBlue();
+                Console.Write(" " + victory.Key.Name.PadLeft(Options.NamePad) + " ");
+                ToGrey();
+                Console.Write(" : ");
+                ToBlue();
+                float percent = (float)victory.Value / gameCount;
+                Console.Write(percent.ToString("0.00% ").PadLeft(8));
+                ToGrey();
+
+                if (victory.Value == victories.Max(i => i.Value))
+                {
+                    ToBlue();
+                    Console.Write(" Best");
+                }
+
+                NewLine();
+            }
+
+            ToGrey();
+            Console.WriteLine(string.Empty);
+            Console.WriteLine("__________________________________________________________________");
+            Console.WriteLine(string.Empty);
+            Console.WriteLine(string.Empty);
+        }
 
         public static void Player(Player player)
         {

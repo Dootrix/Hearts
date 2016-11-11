@@ -16,5 +16,6 @@ namespace Hearts.Logging
         bool DisplayExceptions { get; }
         bool DisplayPointsForRound { get; }
         bool DisplayLogFinalWinner { get; }
+        bool DisplaySimulationSummary { get; }
     }
 }

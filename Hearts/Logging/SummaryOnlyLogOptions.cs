@@ -18,6 +18,7 @@ namespace Hearts.Logging
         public bool DisplayTrickSummary { get { return false; } }
         public bool DisplayExceptions { get { return true; } }
         public bool DisplayPointsForRound { get { return false; } }
-        public bool DisplayLogFinalWinner { get { return true; } }
+        public bool DisplayLogFinalWinner { get { return false; } }
+        public bool DisplaySimulationSummary { get { return true; } }
     }
 }

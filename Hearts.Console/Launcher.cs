@@ -17,8 +17,31 @@ namespace Hearts.Console
         {
             // Note: Swap this options class to configure the output display, e.g. Default or Summary etc.
             Log.Options = new SummaryOnlyLogOptions();
+            SimulateGames(100);
+            System.Console.ReadLine();
+        }
 
+        private static void SimulateGames(int simulationCount)
+        {
             var players = CreatePlayers();
+            var victories = players.ToDictionary(i => i, i => 0);
+
+            for (int i = 0; i < simulationCount; i++)
+            {
+                var result = SimulateGame(players);
+                int winningScore = result.Min(j => j.Value);
+
+                foreach(var winner in result.Where(j => j.Value == result.Min(k => k.Value)))
+                {
+                    ++victories[winner.Key];
+                }
+            }
+
+            Log.LogSimulationSummary(simulationCount, victories);
+        }
+
+        private static Dictionary<Player, int> SimulateGame(IEnumerable<Player> players)
+        {
             var game = new Game(players);
             var cumulativeScores = players.ToDictionary(i => i, i => 0);
             int roundNumber = 0;
@@ -38,7 +61,7 @@ namespace Hearts.Console
 
             Log.LogFinalWinner(cumulativeScores);
 
-            System.Console.ReadLine();
+            return cumulativeScores;
         }
 
         private static List<Player> CreatePlayers()

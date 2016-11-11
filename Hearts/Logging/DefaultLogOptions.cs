@@ -19,5 +19,6 @@ namespace Hearts.Logging
         public bool DisplayExceptions { get { return true; } }
         public bool DisplayPointsForRound { get { return true; } }
         public bool DisplayLogFinalWinner { get { return true; } }
+        public bool DisplaySimulationSummary { get { return true; } }
     }
 }
