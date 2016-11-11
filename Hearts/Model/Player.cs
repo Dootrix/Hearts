@@ -36,13 +36,13 @@ namespace Hearts.Model
         {
             get
             {
-                int padToLength = this.RemainingCards.Count * 2;
+                int padToLength = 25;
                 string hearts = "♥: " + string.Join(" ", this.RemainingCards.Where(i => i.Suit == Suit.Hearts).OrderBy(i => i.Kind).Select(i => i.Kind.ToAbbreviation())).PadRight(padToLength);
                 string spades = "♠: " + string.Join(" ", this.RemainingCards.Where(i => i.Suit == Suit.Spades).OrderBy(i => i.Kind).Select(i => i.Kind.ToAbbreviation())).PadRight(padToLength);
                 string diamonds = "♦: " + string.Join(" ", this.RemainingCards.Where(i => i.Suit == Suit.Diamonds).OrderBy(i => i.Kind).Select(i => i.Kind.ToAbbreviation())).PadRight(padToLength);
                 string clubs = "♣: " + string.Join(" ", this.RemainingCards.Where(i => i.Suit == Suit.Clubs).OrderBy(i => i.Kind).Select(i => i.Kind.ToAbbreviation())).PadRight(padToLength);
 
-                return this.Name + "     " + string.Join("                  ", new List<string> { hearts, spades, diamonds, clubs });
+                return this.Name + "     " + string.Join(" ", new List<string> { hearts, spades, diamonds, clubs });
             }
         }
 
