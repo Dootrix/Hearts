@@ -83,9 +83,12 @@ namespace Hearts
             }
         }
 
-        public RoundResult Play(int roundNumber)
+        public int RoundIndex { get; private set; }
+
+        public RoundResult Play(int roundIndex)
         {
             this.Reset();
+            this.RoundIndex = roundIndex;
             var players = this.playerCircle.AllPlayers;
             this.gameTable = new GameTable(players.Count);
             this.dealer.DealStartingHands(players);
@@ -93,7 +96,7 @@ namespace Hearts
 
             Log.StartingHands(startingHands);
 
-            new PassService().HandlePassing(roundNumber, players, startingHands, this.playerCircle.FirstPlayer);
+            new PassService().OrchestratePassing(roundIndex, players, startingHands, this.playerCircle.FirstPlayer);
 
             Log.HandsAfterPass(players.ToDictionary(i => i, i => i.RemainingCards.ToList()));
 
@@ -114,6 +117,7 @@ namespace Hearts
                     {
                         // TODO: Handle illegal move
                         Log.IllegalPlay(player, card);
+                        player.AgentHasMadeIllegalMove = true;
                     }
 
                     player.Play(card);

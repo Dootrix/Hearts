@@ -10,39 +10,50 @@ namespace Hearts.Passing
 {
     public class PassService
     {
-        private static Func<Player, Player> oneToLeft = (i) => { return i.NextPlayer; };
-        private static Func<Player, Player> oneToRight = (i) => { return i.PreviousPlayer; };
-        private static Func<Player, Player> twoToLeft = (i) => { return i.NextPlayer.NextPlayer; };
-        private static Func<Player, Player> twoToRight = (i) => { return i.PreviousPlayer.PreviousPlayer; };
-        private static Func<Player, Player> noPass = (i) => { return i; };
-
-        private List<Func<Player, Player>> threePlayer = new List<Func<Player, Player>>
+        public List<List<Pass>> PassSchedule = new List<List<Pass>>
         {
-            oneToLeft, oneToRight, noPass
+            new List<Pass> { Pass.NoPass },
+            new List<Pass> { Pass.OneToLeft, Pass.OneToRight },
+            new List<Pass> { Pass.OneToLeft, Pass.OneToRight, Pass.NoPass },
+            new List<Pass> { Pass.OneToLeft, Pass.OneToRight, Pass.TwoToLeft, Pass.NoPass },
+            new List<Pass> { Pass.OneToLeft, Pass.OneToRight, Pass.TwoToLeft, Pass.TwoToRight, Pass.NoPass },
+            new List<Pass> { Pass.NoPass },
         };
 
-        private List<Func<Player, Player>> fourPlayer = new List<Func<Player, Player>>
+        public Dictionary<Pass, Func<Player, Player>> PassFunctions = new Dictionary<Pass, Func<Player, Player>>
         {
-            oneToLeft, oneToRight, twoToLeft, noPass
+            { Pass.OneToLeft, (i) => { return i.NextPlayer; } },
+            { Pass.OneToRight, (i) => { return i.PreviousPlayer; } },
+            { Pass.NoPass, (i) => { return i; } },
+            { Pass.TwoToLeft, (i) => { return i.NextPlayer.NextPlayer; } },
+            { Pass.TwoToRight, (i) => { return i.PreviousPlayer.PreviousPlayer; }}
         };
 
-        private List<Func<Player, Player>> fivePlayer = new List<Func<Player, Player>>
+        public Player GetPassRecipient(int roundNumber, int playerCount, Player fromPlayer)
         {
-            oneToLeft, oneToRight, twoToLeft, twoToRight, noPass
-        };
+            var passFunction = this.PassFunctions[this.GetPass(roundNumber, playerCount)];
 
-        public void HandlePassing(int roundNumber, List<Player> players, Dictionary<Player, List<Card>> startingHands, Player playerFrom)
+            return passFunction(fromPlayer);
+        }
+
+        private Pass GetPass(int roundNumber, int playerCount)
+        {
+            return this.PassSchedule[playerCount - 1][roundNumber % playerCount];
+        }
+
+        public void OrchestratePassing(int roundNumber, List<Player> players, Dictionary<Player, List<Card>> startingHands, Player playerFrom)
         {
             var passedCards = new List<List<Card>>();
-
+            
             for (int i = 0; i < players.Count; i++)
             {
-                var pass = playerFrom.Agent.ChooseCardsToPass(startingHands[playerFrom]);
+                var pass = playerFrom.Agent.ChooseCardsToPass(startingHands[playerFrom], this.GetPass(roundNumber, players.Count));
 
                 if (!pass.All(j => startingHands[playerFrom].Contains(j)) || pass.Distinct().Count() != 3)
                 {
                     // TODO: Handle illegal move
                     Log.IllegalPass(playerFrom, pass);
+                    playerFrom.AgentHasMadeIllegalMove = true;
                 }
 
                 Log.Pass(playerFrom, pass);
@@ -62,23 +73,6 @@ namespace Hearts.Passing
                 var playerTo = this.GetPassRecipient(roundNumber, players.Count, players[i]);
                 playerTo.Receive(receivingCards);
             }
-        }
-
-        private Player GetPassRecipient(int roundNumber, int playerCount, Player fromPlayer)
-        {
-            int passIndex = roundNumber % playerCount;
-
-            switch (playerCount)
-            {
-                case 3:
-                    return this.threePlayer[passIndex](fromPlayer);
-                case 4:
-                    return this.fourPlayer[passIndex](fromPlayer);
-                case 5:
-                    return this.fivePlayer[passIndex](fromPlayer);
-            }
-
-            return fromPlayer;
         }
     }
 }

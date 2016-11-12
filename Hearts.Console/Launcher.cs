@@ -101,7 +101,7 @@ namespace Hearts.Console
                     new Player("A", new TerribleRandomAiAgent()),
                     new Player("B", new TerribleRandomAiAgent()),
                     new Player("C", new TerribleRandomAiAgent()),
-                    new Player("D", new HeartsAiAdam.AdamAgent1())
+                    new Player("D", new TerribleRandomAiAgent())//HeartsAiAdam.AdamAgent1())
                 };
         }
     }

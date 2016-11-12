@@ -10,7 +10,7 @@ namespace Hearts.AI
     {
         public string AgentName { get { return "Illegal AI"; } }
         
-        public List<Card> ChooseCardsToPass(List<Card> startingCards)
+        public List<Card> ChooseCardsToPass(List<Card> startingCards, Pass pass)
         {
             return startingCards.RandomSelection(2);
         }

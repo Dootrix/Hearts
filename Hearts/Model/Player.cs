@@ -32,6 +32,8 @@ namespace Hearts.Model
 
         public IAgent Agent { get; private set; }
 
+        public bool AgentHasMadeIllegalMove { get; set; }
+
         public string DebuggerDisplay
         {
             get
