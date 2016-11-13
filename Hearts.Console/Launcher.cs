@@ -19,7 +19,7 @@ namespace Hearts.Console
             Log.Options = new SummaryOnlyLogOptions();
 
             // Note: This simulates at about 300 games per second, without console outputs
-            SimulateGames(1000);
+            SimulateGames(10000);
             System.Console.ReadLine();
         }
 
@@ -98,10 +98,11 @@ namespace Hearts.Console
         {
             return new List<Player>
                 {
-                    new Player("A", new TerribleRandomAiAgent()),
-                    new Player("B", new TerribleRandomAiAgent()),
-                    new Player("C", new TerribleRandomAiAgent()),
-                    new Player("D", new TerribleRandomAiAgent())//HeartsAiAdam.AdamAgent1())
+                    //TerribleRandomAiAgent//Noob1AiExampleAgent//Noob2AiExampleAgent
+                    new Player("A", new Noob2AiExampleAgent()),
+                    new Player("B", new Noob2AiExampleAgent()),
+                    new Player("C", new Noob2AiExampleAgent()),
+                    new Player("D", new BeastAi.SavageBeast())
                 };
         }
     }

@@ -33,9 +33,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HeartsAiAdam, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Beast, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>AIs\HeartsAiAdam.dll</HintPath>
+      <HintPath>AIs\Beast.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -56,8 +56,11 @@
       <Name>Hearts</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Content Include="AIs\HeartsAiAdam.dll" />
+    <Content Include="AIs\Beast.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
