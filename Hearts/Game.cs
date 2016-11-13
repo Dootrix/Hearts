@@ -83,6 +83,14 @@ namespace Hearts
             }
         }
 
+        public List<PlayedTrick> PlayedTricks
+        {
+            get
+            {
+                return this.gameTable.PlayedTricks;
+            }
+        }
+
         public int RoundIndex { get; private set; }
 
         public RoundResult Play(int roundIndex)
