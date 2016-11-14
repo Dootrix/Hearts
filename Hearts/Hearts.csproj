@@ -46,6 +46,8 @@
     <Compile Include="AI\Noob1AiExampleAgent.cs" />
     <Compile Include="AI\IAgent.cs" />
     <Compile Include="Attributes\AbbreviationAttribute.cs" />
+    <Compile Include="Extensions\PlayedTrickExtensions.cs" />
+    <Compile Include="Extensions\CardListExtensions.cs" />
     <Compile Include="GameEventHandlers\ShowHandHandler.cs" />
     <Compile Include="GameEventHandlers\HandsChangedHandler.cs" />
     <Compile Include="GameEventHandlers\HandFinishedHandler.cs" />
@@ -58,6 +60,7 @@
     <Compile Include="Logging\ILogDisplayOptions.cs" />
     <Compile Include="Logging\DefaultLogOptions.cs" />
     <Compile Include="Logging\Log.cs" />
+    <Compile Include="Model\Cards.cs" />
     <Compile Include="Model\GameEventType.cs" />
     <Compile Include="Model\Card.cs" />
     <Compile Include="Deal\Dealer.cs" />
