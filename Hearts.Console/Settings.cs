@@ -10,8 +10,8 @@ namespace Hearts.Console
         // 1 game - v. fast
         // 1,000 games - 3 seconds
         // 10,000 games - 30 seconds
-        public static int GameSimulationCount = 1;
-        public static bool ShowFullOutput = true;
+        public static int GameSimulationCount = 10000;
+        public static bool ShowFullOutput = false;
         public static List<Player> Bots = new List<Player>
             {
                 // Available bots in comments...
@@ -19,10 +19,11 @@ namespace Hearts.Console
                 // Noob1AiExampleAgent
                 // Noob2AiExampleAgent
                 // BeastAi.SavageBeast
-                new Player("A", new Noob2AiExampleAgent()),
+                new Player("A", new NoobCrusher()),
                 new Player("B", new Noob2AiExampleAgent()),
                 new Player("C", new Noob2AiExampleAgent()),
-                new Player("D", new BeastAi.SavageBeast())
+                new Player("D", new TerribleRandomAiAgent())
+                //new Player("D", new BeastAi.SavageBeast())
             };
     }
 }

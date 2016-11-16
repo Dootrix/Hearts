@@ -1,13 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Hearts.Extensions;
-using System;
-
-namespace Hearts.Model
+﻿namespace Hearts.Model
 {
     public class PlayedCard
     {
-        public Player Player { get; set; }
-        public Card Card { get; set; }
+        public PlayedCard(Player player, Card card)
+        {
+            this.Player = player;
+            this.Card = card;
+        }
+
+        public Player Player { get; private set; }
+
+        public Card Card { get; private set; }
     }
 }
