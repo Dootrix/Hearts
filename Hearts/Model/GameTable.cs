@@ -35,9 +35,9 @@ namespace Hearts.Model
         {
             var playedTrick = new PlayedTrick();
 
-            foreach (var trick in this.CurrentTrick)
+            foreach (var playedCard in this.CurrentTrick)
             { 
-                playedTrick.Cards.Add(trick.Player, trick.Card);
+                playedTrick.Cards.Add(playedCard.Player, playedCard.Card);
             }
 
             this.PlayedTricks.Add(playedTrick);
@@ -45,7 +45,7 @@ namespace Hearts.Model
 
         public Card Play(Player player, Card card)
         {
-            this.CurrentTrick.Add(new PlayedCard { Player = player, Card = card });
+            this.CurrentTrick.Add(new PlayedCard(player, card));
             
             return card;
         }

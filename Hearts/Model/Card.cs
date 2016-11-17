@@ -1,24 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Hearts.Extensions;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Hearts.Extensions;
 
 namespace Hearts.Model
 {
     [DebuggerDisplay("{DebuggerDisplay}")]
     public class Card
-    {
-        public Suit Suit;
-        public Kind Kind;
-        
+    {   
         public Card(Kind kind, Suit suit)
         {
             this.Suit = suit;
             this.Kind = kind;
         }
+
+        public Suit Suit { get; private set; }
+
+        public Kind Kind { get; private set; }
 
         public string DebuggerDisplay { get { return this.ToString(); } }
 
@@ -34,6 +30,12 @@ namespace Hearts.Model
 
         public static bool operator ==(Card a, Card b)
         {
+            bool isANull = ReferenceEquals(null, a);
+            bool isBNull = ReferenceEquals(null, b);
+
+            if (isANull || isBNull)
+                return isANull && isBNull;
+
             return a.Kind == b.Kind && a.Suit == b.Suit;
         }
 
