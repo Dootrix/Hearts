@@ -19,11 +19,11 @@ namespace Hearts.Console
                 // Noob1AiExampleAgent
                 // Noob2AiExampleAgent
                 // BeastAi.SavageBeast
-                new Player("A", new NoobCrusher()),
+                new Player("A", new SavageBeast()),
                 new Player("B", new Noob2AiExampleAgent()),
                 new Player("C", new Noob2AiExampleAgent()),
-                new Player("D", new TerribleRandomAiAgent())
-                //new Player("D", new BeastAi.SavageBeast())
+                //new Player("D", new TerribleRandomAiAgent())
+                new Player("D", new NoobCrusher())
             };
     }
 }

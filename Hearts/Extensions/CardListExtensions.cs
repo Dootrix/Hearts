@@ -4,11 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Hearts.Scoring;
 
 namespace Hearts.Extensions
 {
     public static class CardListExtensions
     {
+        public static int Score(this IEnumerable<Card> self)
+        {
+            return new ScoreEvaluator().CalculateScore(self);
+        }
+
         public static Card Highest(this IEnumerable<Card> self)
         {
             return self.OrderByDescending(i => i.Kind).First();
