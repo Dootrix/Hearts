@@ -11,13 +11,13 @@ namespace Hearts.Scoring
     {
         public int CalculateScore(IEnumerable<PlayedTrick> playedHands)
         {
-            return playedHands
-                .SelectMany(i => i.Cards)
-                .Where(i => i.Value.Suit == Suit.Hearts)
-                .Count() 
-                + (playedHands
-                    .SelectMany(i => i.Cards)
-                    .Any(i => i.Value == new Card(Kind.Queen, Suit.Spades)) ? 13 : 0);
+            return this.CalculateScore(playedHands.SelectMany(i => i.Cards).Select(i => i.Value));
+        }
+
+        public int CalculateScore(IEnumerable<Card> cards)
+        {
+            return cards.Where(i => i.Suit == Suit.Hearts).Count()
+                + (cards.Any(i => i == new Card(Kind.Queen, Suit.Spades)) ? 13 : 0);
         }
     }
 }
