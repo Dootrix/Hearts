@@ -9,7 +9,7 @@ namespace Hearts.Rules
 {
     public class MustFollowSuitIfPossibleRule : IGameRule
     {
-        public IEnumerable<Card> FilterCards(IEnumerable<Card> cards, Game gameState)
+        public IEnumerable<Card> FilterCards(IEnumerable<Card> cards, GameState gameState)
         {
             var leadSuit = gameState.CurrentTrick.First().Card.Suit;
             var sameSuitCards = cards.Where(i => i.Suit == leadSuit).ToList();
@@ -17,9 +17,9 @@ namespace Hearts.Rules
             return sameSuitCards.Any() ? sameSuitCards : cards;
         }
 
-        public bool Applies(Game gameState)
+        public bool Applies(GameState gameState)
         {
-            return gameState.IsFollowTurn;
+            return !gameState.IsLeadTurn;
         }
     }
 }

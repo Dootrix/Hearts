@@ -9,7 +9,7 @@ namespace Hearts.Rules
 {
     public class CannotPlayQueenSpadesOrHeartsOnFirstHandIfPossibleRule : IGameRule
     {
-        public IEnumerable<Card> FilterCards(IEnumerable<Card> cards, Game gameState)
+        public IEnumerable<Card> FilterCards(IEnumerable<Card> cards, GameState gameState)
         {
             var queenOfSpades = new Card(Kind.Queen, Suit.Spades);
             bool hasQueen = cards.Contains(queenOfSpades);
@@ -21,7 +21,7 @@ namespace Hearts.Rules
                 : nonQueenSpadesCards;
         }
 
-        public bool Applies(Game gameState)
+        public bool Applies(GameState gameState)
         {
             return gameState.IsFirstHand;
         }

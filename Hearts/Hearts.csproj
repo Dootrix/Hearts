@@ -86,7 +86,7 @@
     <Compile Include="Extensions\SuitExtensions.cs" />
     <Compile Include="Factories\IFactory.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="Model\GameTable.cs" />
+    <Compile Include="Model\GameState.cs" />
     <Compile Include="Model\Kind.cs" />
     <Compile Include="Model\Player.cs" />
     <Compile Include="Model\Pass.cs" />

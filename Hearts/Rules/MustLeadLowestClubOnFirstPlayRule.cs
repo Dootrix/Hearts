@@ -9,12 +9,12 @@ namespace Hearts.Rules
 {
     public class MustLeadLowestClubOnFirstPlayRule : IGameRule
     {
-        public IEnumerable<Card> FilterCards(IEnumerable<Card> cards, Game gameState)
+        public IEnumerable<Card> FilterCards(IEnumerable<Card> cards, GameState gameState)
         {
             return cards.Any(i => i.Suit == Suit.Clubs) ? new List<Card> { cards.Where(i => i.Suit == Suit.Clubs).OrderBy(i => i.Kind).First() } : cards;
         }
 
-        public bool Applies(Game gameState)
+        public bool Applies(GameState gameState)
         {
             return gameState.IsFirstLeadHand;
         }

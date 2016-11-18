@@ -15,7 +15,7 @@ namespace Hearts.AI
             return startingCards.RandomSelection(2);
         }
 
-        public Card ChooseCardToPlay(Game gameState, List<Card> startingCards, List<Card> availableCards, List<Card> legalCards)
+        public Card ChooseCardToPlay(GameState gameState, List<Card> startingCards, List<Card> availableCards, List<Card> legalCards)
         {
             var illegalCards = availableCards.Except(legalCards).ToList();
 

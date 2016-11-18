@@ -9,6 +9,6 @@ namespace Hearts.AI.Strategies
 {
     public interface IPlayStrategy
     {
-        Card ChooseCardToPlay(Game gameState, List<Card> availableCards, List<Card> legalCards);
+        Card ChooseCardToPlay(GameState gameState, List<Card> availableCards, List<Card> legalCards);
     }
 }

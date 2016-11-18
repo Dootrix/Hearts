@@ -14,7 +14,7 @@ namespace Hearts
     public class Game
     {
         private PlayerCircle playerCircle;
-        private GameTable gameTable;
+        private GameState gameState;
         private Dealer dealer;
 
         public Game(IEnumerable<Player> players)
@@ -29,65 +29,9 @@ namespace Hearts
             this.dealer = new Dealer(new StandardDeckFactory(), new EvenHandDealAlgorithm());
             this.playerCircle.Reset();
 
-            if (this.gameTable != null)
+            if (this.gameState != null)
             {
-                this.gameTable.Reset();
-            }
-        }
-
-        public bool IsHeartsBroken
-        {
-            get
-            {
-                return this.gameTable.PlayedTricks.Any(i => i.Cards.Any(j => j.Value.Suit == Suit.Hearts));
-            }
-        }
-
-        public bool IsLeadTurn
-        {
-            get
-            {
-                return !this.gameTable.CurrentTrick.Any();
-            }
-        }
-
-        public bool IsFollowTurn
-        {
-            get
-            {
-                return this.gameTable.CurrentTrick.Any();
-            }
-        }
-
-        public bool IsFirstHand
-        {
-            get
-            {
-                return !this.gameTable.PlayedTricks.Any();
-            }
-        }
-
-        public bool IsFirstLeadHand
-        {
-            get
-            {
-                return this.IsLeadTurn && this.IsFirstHand;
-            }
-        }
-
-        public List<PlayedCard> CurrentTrick
-        {
-            get
-            {
-                return this.gameTable.CurrentTrick;
-            }
-        }
-
-        public List<PlayedTrick> PlayedTricks
-        {
-            get
-            {
-                return this.gameTable.PlayedTricks;
+                this.gameState.Reset();
             }
         }
 
@@ -98,7 +42,7 @@ namespace Hearts
             this.Reset();
             this.RoundIndex = roundIndex;
             var players = this.playerCircle.AllPlayers;
-            this.gameTable = new GameTable(players.Count);
+            this.gameState = new GameState();
             this.dealer.DealStartingHands(players);
             var startingHands = players.ToDictionary(i => i, i => i.RemainingCards.ToList());
 
@@ -114,12 +58,12 @@ namespace Hearts
             
             while (players.Sum(i => i.RemainingCards.Count) > 0)
             {
-                this.gameTable.BeginTrick();
+                this.gameState.BeginTrick();
 
                 foreach (var player in this.playerCircle.GetOrderedPlayersStartingWith(startingPlayer))
                 {
-                    var legalCards = rulesEngine.LegalMoves(player.RemainingCards, this);
-                    var card = player.Agent.ChooseCardToPlay(this, startingHands[player], player.RemainingCards, legalCards.ToList());
+                    var legalCards = rulesEngine.GetPlayableCards(player.RemainingCards, this.gameState);
+                    var card = player.Agent.ChooseCardToPlay(this.gameState, startingHands[player], player.RemainingCards, legalCards.ToList());
                     
                     if (!legalCards.Contains(card))
                     {
@@ -129,11 +73,11 @@ namespace Hearts
                     }
 
                     player.Play(card);
-                    this.gameTable.Play(player, card);
+                    this.gameState.Play(player, card);
                 }
 
-                this.gameTable.EndTrick();
-                var trick = this.gameTable.PlayedTricks.Last();
+                this.gameState.EndTrick();
+                var trick = this.gameState.PlayedTricks.Last();
                 var trickWinner = handEvaluator.EvaluateWinner(trick);
                 trick.Winner = trickWinner;
                 startingPlayer = trick.Winner;
@@ -141,8 +85,8 @@ namespace Hearts
                 Log.TrickSummary(trick);
             }
 
-            var scores = players.ToDictionary(i => i, i => new ScoreEvaluator().CalculateScore(this.gameTable.PlayedTricks.Where(j => j.Winner == i)));
-            var tricks = players.ToDictionary(i => i, i => this.gameTable.PlayedTricks.Where(j => j.Winner == i).ToList());
+            var scores = players.ToDictionary(i => i, i => new ScoreEvaluator().CalculateScore(this.gameState.PlayedTricks.Where(j => j.Winner == i)));
+            var tricks = players.ToDictionary(i => i, i => this.gameState.PlayedTricks.Where(j => j.Winner == i).ToList());
 
             Log.PointsForRound(scores);
 

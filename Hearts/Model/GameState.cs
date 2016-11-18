@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Hearts.Model
 {
-    public class GameTable
+    public class GameState
     {
-        private int playerCount = 0;
-
-        public GameTable(int playerCount)
+        public GameState()
         {
-            this.playerCount = playerCount;
             this.Reset();
         }
         
@@ -19,9 +14,49 @@ namespace Hearts.Model
 
         public List<PlayedTrick> PlayedTricks { get; private set; }
 
+        public bool IsHeartsBroken
+        {
+            get
+            {
+                return this.PlayedTricks.Any(i => i.Cards.Any(j => j.Value.Suit == Suit.Hearts));
+            }
+        }
+
+        public bool IsLeadTurn
+        {
+            get
+            {
+                return !this.CurrentTrick.Any();
+            }
+        }
+
+        public bool IsFollowTurn
+        {
+            get
+            {
+                return this.CurrentTrick.Any();
+            }
+        }
+
+        public bool IsFirstHand
+        {
+            get
+            {
+                return !this.PlayedTricks.Any();
+            }
+        }
+
+        public bool IsFirstLeadHand
+        {
+            get
+            {
+                return this.IsLeadTurn && this.IsFirstHand;
+            }
+        }
+
+
         public void Reset()
         {
-
             this.CurrentTrick = new List<PlayedCard>();
             this.PlayedTricks = new List<PlayedTrick>();
         }

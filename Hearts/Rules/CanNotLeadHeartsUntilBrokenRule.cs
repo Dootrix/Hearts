@@ -9,14 +9,14 @@ namespace Hearts.Rules
 {
     public class CannotLeadHeartsUntilBrokenRule : IGameRule
     {
-        public IEnumerable<Card> FilterCards(IEnumerable<Card> cards, Game gameState)
+        public IEnumerable<Card> FilterCards(IEnumerable<Card> cards, GameState gameState)
         {
             var nonHearts = cards.Where(i => i.Suit != Suit.Hearts).ToList();
 
             return nonHearts.Count > 0 ? nonHearts : cards;
         }
 
-        public bool Applies(Game gameState)
+        public bool Applies(GameState gameState)
         {
             return gameState.IsLeadTurn && !gameState.IsHeartsBroken;
         }

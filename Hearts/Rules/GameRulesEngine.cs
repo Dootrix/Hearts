@@ -1,10 +1,7 @@
 ﻿using Hearts.Logging;
 using Hearts.Model;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hearts.Rules
 {
@@ -23,9 +20,9 @@ namespace Hearts.Rules
             };
         }
 
-        public IEnumerable<Card> LegalMoves(IEnumerable<Card> cards, Game gameState)
+        public IEnumerable<Card> GetPlayableCards(IEnumerable<Card> cardsInHand, GameState gameState)
         {
-            var filteredCards = cards;
+            var filteredCards = cardsInHand;
 
             foreach (var rule in this.rules)
             {
