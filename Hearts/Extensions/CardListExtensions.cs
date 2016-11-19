@@ -91,6 +91,23 @@ namespace Hearts.Extensions
             return self.Except(new List<Card> { cardA, cardB, cardC });
         }
 
+        public static IEnumerable<Card> ExceptHearts(this IEnumerable<Card> self)
+        {
+            return self.Except(Cards.Hearts);
+        }
+        public static IEnumerable<Card> ExceptSpades(this IEnumerable<Card> self)
+        {
+            return self.Except(Cards.Spades);
+        }
+        public static IEnumerable<Card> ExceptDiamonds(this IEnumerable<Card> self)
+        {
+            return self.Except(Cards.Diamonds);
+        }
+        public static IEnumerable<Card> ExceptClubs(this IEnumerable<Card> self)
+        {
+            return self.Except(Cards.Clubs);
+        }
+
         public static IEnumerable<Card> Hearts(this IEnumerable<Card> self)
         {
             return self.Where(i => i.Suit == Suit.Hearts);

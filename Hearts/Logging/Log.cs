@@ -171,7 +171,7 @@ namespace Hearts.Logging
             Console.WriteLine(string.Empty);
         }
         
-        public static void LogSimulationSummary(int gameCount, Dictionary<Player, int> victories)
+        public static void LogSimulationSummary(int gameCount, Dictionary<Player, int> victories, Dictionary<Player, Tuple<int, int>> moonshots)
         {
             if (!Options.DisplaySimulationSummary) return;
 
@@ -182,6 +182,13 @@ namespace Hearts.Logging
             Console.WriteLine(string.Empty);
             Console.WriteLine("Simulation Stats");
             Console.WriteLine("Based on {0} game{1}", gameCount, gameCount > 1 ? "s" : string.Empty);
+            Console.WriteLine("Moonshots:");
+
+            foreach (var player in moonshots)
+            {
+                Console.WriteLine("{0} {1}/{2}", player.Key.Name, player.Value.Item1, player.Value.Item2);
+            }
+
             Console.WriteLine(string.Empty);
 
             foreach (var victory in victories)
@@ -209,6 +216,23 @@ namespace Hearts.Logging
             Console.WriteLine("__________________________________________________________________");
             Console.WriteLine(string.Empty);
             Console.WriteLine(string.Empty);
+        }
+
+        public static void LogAgentMoveNote(string note)
+        {
+            if (Options.DisplayAgentMoveNotes)
+            {
+                ToBlue();
+                Console.WriteLine(note);
+            }
+        }
+        public static void LogAgentSummaryNote(string note)
+        {
+            if (Options.DisplayAgentSummaryNotes)
+            {
+                ToBlue();
+                Console.WriteLine(note);
+            }
         }
 
         public static void Player(Player player)

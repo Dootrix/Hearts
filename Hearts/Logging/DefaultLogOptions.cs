@@ -20,5 +20,7 @@ namespace Hearts.Logging
         public bool DisplayPointsForRound { get { return true; } }
         public bool DisplayLogFinalWinner { get { return true; } }
         public bool DisplaySimulationSummary { get { return true; } }
+        public bool DisplayAgentMoveNotes { get { return true; } }
+        public bool DisplayAgentSummaryNotes { get { return true; } }
     }
 }

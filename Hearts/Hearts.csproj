@@ -54,6 +54,7 @@
     <Compile Include="AI\Noob1AiExampleAgent.cs" />
     <Compile Include="AI\IAgent.cs" />
     <Compile Include="Attributes\AbbreviationAttribute.cs" />
+    <Compile Include="Extensions\PlayedCardExtensions.cs" />
     <Compile Include="Extensions\PlayedTrickExtensions.cs" />
     <Compile Include="Extensions\CardListExtensions.cs" />
     <Compile Include="GameEventHandlers\ShowHandHandler.cs" />
