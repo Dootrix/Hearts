@@ -9,7 +9,7 @@ namespace Hearts.AI.Strategies
 {
     public class FollowSuitStrategy : IPlayStrategy
     {
-        public Card ChooseCardToPlay(GameState gameState, List<Card> availableCards, List<Card> legalCards)
+        public Card ChooseCardToPlay(GameState gameState, IEnumerable<Card> availableCards, IEnumerable<Card> legalCards)
         {
             Card cardToPlay = null;
 

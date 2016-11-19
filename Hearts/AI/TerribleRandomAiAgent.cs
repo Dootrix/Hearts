@@ -10,12 +10,12 @@ namespace Hearts.AI
     {
         public string AgentName { get { return "Random AI"; } }
         
-        public List<Card> ChooseCardsToPass(List<Card> startingCards, Pass pass)
+        public IEnumerable<Card> ChooseCardsToPass(IEnumerable<Card> startingCards, Pass pass)
         {
             return startingCards.RandomSelection(3);
         }
 
-        public Card ChooseCardToPlay(GameState gameState, List<Card> startingCards, List<Card> availableCards, List<Card> legalCards)
+        public Card ChooseCardToPlay(GameState gameState, IEnumerable<Card> startingCards, IEnumerable<Card> availableCards, IEnumerable<Card> legalCards)
         {
             return legalCards.Random();
         }

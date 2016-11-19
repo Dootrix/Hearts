@@ -53,7 +53,7 @@ namespace Hearts.Model
             this.RemainingCards.Add(card);
         }
 
-        public void Receive(List<Card> cards)
+        public void Receive(IEnumerable<Card> cards)
         {
             this.RemainingCards.AddRange(cards);
         }

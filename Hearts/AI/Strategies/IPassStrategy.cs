@@ -9,6 +9,6 @@ namespace Hearts.AI.Strategies
 {
     public interface IPassStrategy
     {
-        List<Card> ChooseCardsToPass(List<Card> startingCards, Pass pass);
+        IEnumerable<Card> ChooseCardsToPass(IEnumerable<Card> startingCards, Pass pass);
     }
 }

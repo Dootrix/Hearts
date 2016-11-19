@@ -9,7 +9,7 @@ namespace Hearts.AI.Strategies
 {
     public class PassStrategy : IPassStrategy
     {
-        public List<Card> ChooseCardsToPass(List<Card> startingCards, Pass pass)
+        public IEnumerable<Card> ChooseCardsToPass(IEnumerable<Card> startingCards, Pass pass)
         {
             var cardsToPass = new List<Card>();
 
@@ -41,7 +41,7 @@ namespace Hearts.AI.Strategies
                 Console.WriteLine();
             }
 
-            return cardsToPass.Take(3).ToList();
+            return cardsToPass.Take(3);
         }
 
         private IEnumerable<Card> GetSuitVoiders(IEnumerable<Card> cards, int number)

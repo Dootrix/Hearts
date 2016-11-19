@@ -45,7 +45,7 @@ namespace Hearts
             this.gameState = new GameState();
             this.dealer.DealStartingHands(players);
             var startingHands = players.ToDictionary(i => i, i => i.RemainingCards.ToList());
-
+            
             Log.StartingHands(startingHands);
 
             new PassService().OrchestratePassing(roundIndex, players, startingHands, this.playerCircle.FirstPlayer);

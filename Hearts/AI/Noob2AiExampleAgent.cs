@@ -9,7 +9,7 @@ namespace Hearts.AI
     {
         public string AgentName { get { return "Noob 2 AI"; } }
         
-        public List<Card> ChooseCardsToPass(List<Card> startingCards, Pass pass)
+        public IEnumerable<Card> ChooseCardsToPass(IEnumerable<Card> startingCards, Pass pass)
         {
             // Basic "pass your highest cards" strategy
             var cards = startingCards.OrderByDescending(i => i.Kind).ThenBy(i => i.Suit).ToList();
@@ -22,9 +22,9 @@ namespace Hearts.AI
             };
         }
 
-        public Card ChooseCardToPlay(GameState gameState, List<Card> startingCards, List<Card> availableCards, List<Card> legalCards)
+        public Card ChooseCardToPlay(GameState gameState, IEnumerable<Card> startingCards, IEnumerable<Card> availableCards, IEnumerable<Card> legalCards)
         {
-            if (legalCards.Count == 1)
+            if (legalCards.Count() == 1)
             {
                 return legalCards.First();
             }

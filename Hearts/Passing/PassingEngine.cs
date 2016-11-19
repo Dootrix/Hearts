@@ -43,7 +43,7 @@ namespace Hearts.Passing
 
         public void OrchestratePassing(int roundNumber, List<Player> players, Dictionary<Player, List<Card>> startingHands, Player playerFrom)
         {
-            var passedCards = new List<List<Card>>();
+            var passedCards = new List<IEnumerable<Card>>();
             
             for (int i = 0; i < players.Count; i++)
             {
@@ -66,7 +66,7 @@ namespace Hearts.Passing
                     playerFrom = players[i + 1];
                 }
             }
-
+            
             for (int i = 0; i < players.Count; i++)
             {
                 var receivingCards = passedCards[i];

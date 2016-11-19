@@ -31,18 +31,18 @@ namespace Hearts.AI
             }
         }
 
-        public List<Card> ChooseCardsToPass(List<Card> startingCards, Pass pass)
+        public IEnumerable<Card> ChooseCardsToPass(IEnumerable<Card> startingCards, Pass pass)
         {
             return this.passStrategy.ChooseCardsToPass(startingCards, pass);
         }
 
         public Card ChooseCardToPlay(
-            GameState gameState, 
-            List<Card> startingCards, 
-            List<Card> availableCards, 
-            List<Card> legalCards)
+            GameState gameState,
+            IEnumerable<Card> startingCards,
+            IEnumerable<Card> availableCards,
+            IEnumerable<Card> legalCards)
         {
-            if (legalCards.Count == 1)
+            if (legalCards.Count() == 1)
                 return legalCards.Single();
 
             Card cardToPlay;
@@ -59,7 +59,7 @@ namespace Hearts.AI
             return cardToPlay;
         }
 
-        private Card GetNonLeadCard(GameState gameState, List<Card> availableCards, List<Card> legalCards)
+        private Card GetNonLeadCard(GameState gameState, IEnumerable<Card> availableCards, IEnumerable<Card> legalCards)
         {
             var leadSuit = gameState.CurrentTrick.First().Card.Suit;
 
