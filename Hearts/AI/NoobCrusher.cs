@@ -8,26 +8,51 @@ using Hearts.AI.Strategies;
 
 namespace Hearts.AI
 {
+    public enum NoobCrusherVersion
+    {
+        v1,
+        v2
+    }
+
     public class NoobCrusher : IAgent
     {
         private readonly IPassStrategy passStrategy;
         private readonly IPlayStrategy followSuitStrategy;
         private readonly IPlayStrategy leadCardStrategy;
         private readonly IPlayStrategy followWithoutSuitStrategy;
+        private readonly string agentName;
 
-        public NoobCrusher()
+        public static NoobCrusher Create(NoobCrusherVersion version)
         {
-            this.passStrategy = new PassHighestCards();
-            this.followSuitStrategy = new FollowSuitStrategy();
-            this.leadCardStrategy = new LeadCardStrategy();
-            this.followWithoutSuitStrategy = new FollowWithoutSuitStrategy();
+            switch (version)
+            {
+                case NoobCrusherVersion.v1:
+                    return new NoobCrusher("NoobCrusher AI v1", new PassHighestCards(), new FollowSuitStrategy(), new LeadCardStrategy(), new FollowWithoutSuitStrategy());
+                case NoobCrusherVersion.v2:
+                    return new NoobCrusher("NoobCrusher AI v2", new RiskReductionPassStrategy(), new FollowSuitStrategy(), new LeadCardStrategy(), new FollowWithoutSuitStrategy());
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        public NoobCrusher(string agentName,
+            IPassStrategy passStrategy,
+            IPlayStrategy followSuitStrategy,
+            IPlayStrategy leadCardStrategy,
+            IPlayStrategy followWithoutSuitStrategy)
+        {
+            this.agentName = agentName;
+            this.passStrategy = passStrategy; 
+            this.followSuitStrategy = followSuitStrategy; 
+            this.leadCardStrategy = leadCardStrategy; 
+            this.followWithoutSuitStrategy = followWithoutSuitStrategy;
         }
 
         public string AgentName
         {
             get
             {
-                return "NoobCrusher AI v1";
+                return this.agentName;
             }
         }
 

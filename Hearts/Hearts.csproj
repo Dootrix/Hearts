@@ -47,7 +47,7 @@
     <Compile Include="AI\Strategies\IPlayStrategy.cs" />
     <Compile Include="AI\Strategies\LeadCardStrategy.cs" />
     <Compile Include="AI\Strategies\PassHighestCards.cs" />
-    <Compile Include="AI\Strategies\PassStrategy.cs" />
+    <Compile Include="AI\Strategies\RiskReductionPassStrategy.cs" />
     <Compile Include="AI\NoobCrusher.cs" />
     <Compile Include="AI\TerribleRandomAiAgent.cs" />
     <Compile Include="AI\Noob2AiExampleAgent.cs" />
