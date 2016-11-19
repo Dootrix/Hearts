@@ -30,6 +30,16 @@ namespace Hearts.Extensions
             return self.OrderBy(i => i.Kind).First();
         }
 
+        public static IEnumerable<Card> Ascending(this IEnumerable<Card> self)
+        {
+            return self.OrderBy(i => i.Kind);
+        }
+
+        public static IEnumerable<Card> Descending(this IEnumerable<Card> self)
+        {
+            return self.OrderByDescending(i => i.Kind);
+        }
+
         public static List<Card> TwoThenDescendingClubs(this IEnumerable<Card> self)
         {
             bool hasTwo = self.Contains(Cards.TwoOfClubs);
