@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AI\Noob3AiExampleAgent.cs" />
     <Compile Include="AI\Strategies\IPassStrategy.cs" />
     <Compile Include="AI\Strategies\FollowSuitStrategy.cs" />
     <Compile Include="AI\IllegalMoveAgent.cs" />
