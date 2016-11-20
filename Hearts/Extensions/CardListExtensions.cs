@@ -40,14 +40,11 @@ namespace Hearts.Extensions
             return self.OrderByDescending(i => i.Kind);
         }
 
-        public static List<Card> TwoThenDescendingClubs(this IEnumerable<Card> self)
+        public static IEnumerable<Card> TwoThenDescendingClubs(this IEnumerable<Card> self)
         {
-            bool hasTwo = self.Contains(Cards.TwoOfClubs);
-            var selfMinusTwo = self.Where(i => i.Suit == Suit.Clubs && i.Kind == Kind.Two).OrderByDescending(i => i.Kind);
-            var twoThenRest = new List<Card> { Cards.TwoOfClubs };
-            twoThenRest.AddRange(selfMinusTwo);
-
-            return hasTwo ? twoThenRest : self.OrderByDescending(i => i.Kind).ToList();
+            return self.Contains(Cards.TwoOfClubs) 
+                ? new List<Card> { Cards.TwoOfClubs }.Union(self.Where(i => i.Suit == Suit.Clubs && i.Kind != Kind.Two).Descending()) 
+                : self.Clubs().Descending().ToList();
         }
 
         public static IEnumerable<Card> Missing(this IEnumerable<Card> self, Suit suit)
