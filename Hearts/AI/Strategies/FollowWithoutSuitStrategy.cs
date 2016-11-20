@@ -15,7 +15,7 @@ namespace Hearts.AI.Strategies
 
             var idealCards = GetHighSpades().ToList();
 
-            var hearts = Enum.GetValues(typeof(Kind)).Cast<Kind>().Select(k => new Card(k, Suit.Hearts));
+            var hearts = Cards.Hearts.OrderByDescending(x => x.Kind);
             idealCards.AddRange(hearts);
 
             foreach (var idealCard in idealCards)

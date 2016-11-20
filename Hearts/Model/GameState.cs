@@ -5,11 +5,14 @@ namespace Hearts.Model
 {
     public class GameState
     {
-        public GameState()
+        public GameState(int numberOfPlayers)
         {
+            this.NumberOfPlayers = numberOfPlayers;
             this.Reset();
         }
-        
+
+        public int NumberOfPlayers { get; private set; }
+
         public List<PlayedCard> CurrentTrick { get; private set; }
 
         public List<PlayedTrick> PlayedTricks { get; private set; }

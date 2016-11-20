@@ -10,7 +10,7 @@ namespace Hearts.Console
         //      1 game  - 0s
         //  1,000 games - 3s
         // 10,000 games - 30s
-        public static int GameSimulationCount = 10000;
+        public static int GameSimulationCount = 1000;
         public static bool ShowFullOutput = false;
         public static List<Player> Bots = new List<Player>
             {

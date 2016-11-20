@@ -42,7 +42,7 @@ namespace Hearts
             this.Reset();
             this.RoundIndex = roundIndex;
             var players = this.playerCircle.AllPlayers;
-            this.gameState = new GameState();
+            this.gameState = new GameState(players.Count);
             this.dealer.DealStartingHands(players);
             var startingHands = players.ToDictionary(i => i, i => i.RemainingCards.ToList());
             
