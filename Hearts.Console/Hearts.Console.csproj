@@ -33,10 +33,6 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Beast, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>AIs\Beast.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -54,6 +50,10 @@
     <Compile Include="TODOs.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\HeartsAiAdam\HeartsAiAdam\HeartsAiAdam\BeastAi.csproj">
+      <Project>{1d331f62-a915-4afd-b1c3-badaea73e3e1}</Project>
+      <Name>BeastAi</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Hearts\Hearts.csproj">
       <Project>{38962076-4df1-404b-a06e-c3c8771dc366}</Project>
       <Name>Hearts</Name>
