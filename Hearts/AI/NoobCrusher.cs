@@ -56,8 +56,16 @@ namespace Hearts.AI
             }
         }
 
+        public Player Player { get; set; }
+
         public IEnumerable<Card> ChooseCardsToPass(IEnumerable<Card> startingCards, Pass pass)
         {
+            if (pass == Hearts.Model.Pass.NoPass)
+            {
+                // Can skip any expensive logic as cards are irrelevant
+                return startingCards.Take(3);
+            }
+
             return this.passStrategy.ChooseCardsToPass(startingCards, pass);
         }
 

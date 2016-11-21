@@ -10,8 +10,16 @@ namespace Hearts.Deal
     /// </summary>
     public class EvenHandDealAlgorithm : IDealAlgorithm
     {
-        public void DealStartingHands(Deck deck, IEnumerable<Player> players)
+        public Dictionary<Player, IEnumerable<Card>> DealStartingHands(Deck deck, IEnumerable<Player> players)
         {
+            // TODO: Check this still works since I made it return the result
+            var result = new Dictionary<Player, IEnumerable<Card>>();
+
+            foreach (var player in players)
+            {
+                result.Add(player, new List<Card>());
+            }
+
             int playerCount = players.Count();
             int cardsPerPlayer = (int)Math.Floor(deck.Cards.Count() / (double)playerCount);
 
@@ -19,9 +27,11 @@ namespace Hearts.Deal
             {
                 foreach (var player in players)
                 {
-                    player.Receive(deck.DealNextCard());
+                    result[player] = result[player].Union(new List<Card> { deck.DealNextCard() });
                 }
             }
+
+            return result;
         }
     }
 }

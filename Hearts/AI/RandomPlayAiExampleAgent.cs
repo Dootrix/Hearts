@@ -6,10 +6,12 @@ using Hearts.Extensions;
 
 namespace Hearts.AI
 {
-    public class TerribleRandomAiAgent : IAgent
+    public class RandomPlayAiExampleAgent : IAgent
     {
         public string AgentName { get { return "Random AI"; } }
-        
+
+        public Player Player { get; set; }
+
         public IEnumerable<Card> ChooseCardsToPass(IEnumerable<Card> startingCards, Pass pass)
         {
             return startingCards.RandomSelection(3);

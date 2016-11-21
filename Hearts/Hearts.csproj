@@ -50,7 +50,7 @@
     <Compile Include="AI\Strategies\PassHighestCards.cs" />
     <Compile Include="AI\Strategies\RiskReductionPassStrategy.cs" />
     <Compile Include="AI\NoobCrusher.cs" />
-    <Compile Include="AI\TerribleRandomAiAgent.cs" />
+    <Compile Include="AI\RandomPlayAiExampleAgent.cs" />
     <Compile Include="AI\Noob2AiExampleAgent.cs" />
     <Compile Include="AI\Noob1AiExampleAgent.cs" />
     <Compile Include="AI\IAgent.cs" />

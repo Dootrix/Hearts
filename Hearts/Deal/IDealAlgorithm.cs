@@ -10,6 +10,6 @@ namespace Hearts.Deal
         /// </summary>
         /// <param name="deck">The pre-shuffled deck to remove cards from</param>
         /// <param name="players">The players to give cards to</param>
-        void DealStartingHands(Deck deck, IEnumerable<Player> players);
+        Dictionary<Player, IEnumerable<Card>> DealStartingHands(Deck deck, IEnumerable<Player> players);
     }
 }

@@ -18,7 +18,7 @@ namespace Hearts.Logging
             Console.WriteLine(string.Empty);
         }
 
-        public static void StartingHands(Dictionary<Player, List<Card>> hands)
+        public static void StartingHands(Dictionary<Player, IEnumerable<Card>> hands)
         {
             if (!Options.DisplayStartingHands) return;
 
@@ -33,7 +33,7 @@ namespace Hearts.Logging
             NewLine();
         }
 
-        public static void HandsAfterPass(Dictionary<Player, List<Card>> hands)
+        public static void HandsAfterPass(Dictionary<Player, IEnumerable<Card>> hands)
         {
             if (!Options.DisplayHandsAfterPass) return;
 
@@ -237,7 +237,8 @@ namespace Hearts.Logging
 
         public static void Player(Player player)
         {
-            var cards = player.RemainingCards;
+            // TODO: Re-implement log player
+            /*var cards = player.RemainingCards;
             int padToLength = 38;
             ToBlue();
             Console.Write(" " + player.Name.PadLeft(Options.NamePad) + " ");
@@ -255,7 +256,7 @@ namespace Hearts.Logging
                 Console.Write(new string(' ', padToLength - cardsOfSuit.Count() * 3));
             }
 
-            NewLine();
+            NewLine();*/
         }
 
         public static void Card(Card card)

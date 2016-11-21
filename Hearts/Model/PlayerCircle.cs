@@ -14,14 +14,6 @@ namespace Hearts.Model
             this.players = new List<Player>();
         }
 
-        public void Reset()
-        {
-            foreach(var player in this.players)
-            {
-                player.RemainingCards.Clear();
-            }
-        }
-
         public void AddPlayer(Player player)
         {
             var previousPlayer = this.players.LastOrDefault();
@@ -61,15 +53,15 @@ namespace Hearts.Model
             return tempPlayers;
         }
 
-        public Player GetStartingPlayer()
+        public Player GetStartingPlayer(Dictionary<Player, IEnumerable<Card>> startingHands)
         {
-            var lowestClub = this.AllPlayers
-                .SelectMany(i => i.RemainingCards)
+            var lowestClub = startingHands
+                .SelectMany(i => i.Value)
                 .Where(j => j.Suit == Suit.Clubs)
                 .Min(k => k.Kind);
 
-            return this.AllPlayers
-                .Single(i => i.RemainingCards.Any(j => j.Suit == Suit.Clubs && j.Kind == lowestClub));
+            return startingHands
+                .Single(i => i.Value.Any(j => j.Suit == Suit.Clubs && j.Kind == lowestClub)).Key;
         }
     }
 }

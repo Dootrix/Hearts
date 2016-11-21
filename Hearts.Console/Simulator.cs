@@ -27,12 +27,12 @@ namespace Hearts.Console
                 }
             }
 
-            int attempts = BeastAi.Passing.AdamPassEngine.BeastMoonshotAttempts;
+            int attempts = 0; // TODO: Refactor Shot Attempt reporting BeastAi.Passing.AdamPassEngine.BeastMoonshotAttempts;
             int successes = Simulator.BeastMoonshotSuccesses;
             
             foreach(var player in players)
             {
-                if (player.Agent.AgentName == new SavageBeast().AgentName)
+                if (player.Agent.AgentName == "Savage Beast")
                 {
                     moonshots.Add(player, new Tuple<int, int>(successes, attempts));
                 }
@@ -47,17 +47,17 @@ namespace Hearts.Console
 
         private Dictionary<Player, int> SimulateGame(IEnumerable<Player> players)
         {
-            var game = new GameManager(players);
+            var gameManager = new GameManager(players);
             var cumulativeScores = players.ToDictionary(i => i, i => 0);
             int roundNumber = 0;
 
             do
             {
-                var result = game.Play(roundNumber);
+                var result = gameManager.Play(roundNumber);
 
                 var moonShots = result.Scores.Where(i => i.Value == 26);
 
-                Simulator.BeastMoonshotSuccesses += moonShots.Where(i => i.Key.Agent.AgentName == new SavageBeast().AgentName).Count();
+                Simulator.BeastMoonshotSuccesses += moonShots.Where(i => i.Key.Agent.AgentName == "Savage Beast").Count();
 
                 if (moonShots.Any())
                 {

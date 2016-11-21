@@ -18,11 +18,11 @@ namespace Hearts.Deal
 
         public Deck Deck { get; private set; }
 
-        public void DealStartingHands(IEnumerable<Player> players)
+        public Dictionary<Player, IEnumerable<Card>> DealStartingHands(IEnumerable<Player> players)
         {
             this.NewDeck();
             this.Deck.Shuffle();
-            this.dealAlgorithm.DealStartingHands(this.Deck, players);
+            return this.dealAlgorithm.DealStartingHands(this.Deck, players);
         }
 
         private void NewDeck()

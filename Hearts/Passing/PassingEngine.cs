@@ -41,8 +41,10 @@ namespace Hearts.Passing
             return this.PassSchedule[playerCount - 1][roundNumber % playerCount];
         }
 
-        public void OrchestratePassing(int roundNumber, List<Player> players, Dictionary<Player, List<Card>> startingHands, Player playerFrom)
+        public Dictionary<Player, IEnumerable<Card>> OrchestratePassing(int roundNumber, List<Player> players, Dictionary<Player, IEnumerable<Card>> startingHands, Player playerFrom)
         {
+            var result = startingHands.ToDictionary(i => i.Key, i => i.Value.ToList().AsEnumerable());
+
             var passedCards = new List<IEnumerable<Card>>();
             
             for (int i = 0; i < players.Count; i++)
@@ -59,7 +61,8 @@ namespace Hearts.Passing
                 Log.Pass(playerFrom, pass);
 
                 passedCards.Add(pass);
-                playerFrom.Pass(pass);
+                result[playerFrom] = result[playerFrom].Except(pass);
+
 
                 if (i < players.Count - 1)
                 {
@@ -71,8 +74,10 @@ namespace Hearts.Passing
             {
                 var receivingCards = passedCards[i];
                 var playerTo = this.GetPassRecipient(roundNumber, players.Count, players[i]);
-                playerTo.Receive(receivingCards);
+                result[playerTo] = result[playerTo].Union(receivingCards);
             }
+
+            return result;
         }
     }
 }

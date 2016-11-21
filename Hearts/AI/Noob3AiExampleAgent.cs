@@ -9,7 +9,9 @@ namespace Hearts.AI
     public class Noob3AiExampleAgent : IAgent
     {
         public string AgentName { get { return "Noob 2 AI"; } }
-        
+
+        public Player Player { get; set; }
+
         public IEnumerable<Card> ChooseCardsToPass(IEnumerable<Card> startingCards, Pass pass)
         {
             // Basic "pass your highest cards" strategy
