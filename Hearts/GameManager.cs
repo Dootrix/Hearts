@@ -11,13 +11,13 @@ using Hearts.Logging;
 
 namespace Hearts
 {
-    public class Game
+    public class GameManager
     {
         private PlayerCircle playerCircle;
-        private GameState gameState;
+        private Round round;
         private Dealer dealer;
 
-        public Game(IEnumerable<Player> players)
+        public GameManager(IEnumerable<Player> players)
         {
             this.playerCircle = new PlayerCircle();
             this.AddPlayers(players);
@@ -29,20 +29,17 @@ namespace Hearts
             this.dealer = new Dealer(new StandardDeckFactory(), new EvenHandDealAlgorithm());
             this.playerCircle.Reset();
 
-            if (this.gameState != null)
+            if (this.round != null)
             {
-                this.gameState.Reset();
+                this.round.Reset();
             }
         }
-
-        public int RoundIndex { get; private set; }
 
         public RoundResult Play(int roundIndex)
         {
             this.Reset();
-            this.RoundIndex = roundIndex;
             var players = this.playerCircle.AllPlayers;
-            this.gameState = new GameState(players.Count);
+            this.round = new Round(players.Count, roundIndex);
             this.dealer.DealStartingHands(players);
             var startingHands = players.ToDictionary(i => i, i => i.RemainingCards.ToList());
             
@@ -58,12 +55,12 @@ namespace Hearts
             
             while (players.Sum(i => i.RemainingCards.Count) > 0)
             {
-                this.gameState.BeginTrick();
+                this.round.BeginTrick();
 
                 foreach (var player in this.playerCircle.GetOrderedPlayersStartingWith(startingPlayer))
                 {
-                    var legalCards = rulesEngine.GetPlayableCards(player.RemainingCards, this.gameState);
-                    var card = player.Agent.ChooseCardToPlay(this.gameState, startingHands[player], player.RemainingCards, legalCards.ToList());
+                    var legalCards = rulesEngine.GetPlayableCards(player.RemainingCards, this.round);
+                    var card = player.Agent.ChooseCardToPlay(this.round, startingHands[player], player.RemainingCards, legalCards.ToList());
                     
                     if (!legalCards.Contains(card))
                     {
@@ -73,11 +70,11 @@ namespace Hearts
                     }
 
                     player.Play(card);
-                    this.gameState.Play(player, card);
+                    this.round.Play(player, card);
                 }
 
-                this.gameState.EndTrick();
-                var trick = this.gameState.PlayedTricks.Last();
+                this.round.EndTrick();
+                var trick = this.round.PlayedTricks.Last();
                 var trickWinner = handEvaluator.EvaluateWinner(trick);
                 trick.Winner = trickWinner;
                 startingPlayer = trick.Winner;
@@ -85,8 +82,8 @@ namespace Hearts
                 Log.TrickSummary(trick);
             }
 
-            var scores = players.ToDictionary(i => i, i => new ScoreEvaluator().CalculateScore(this.gameState.PlayedTricks.Where(j => j.Winner == i)));
-            var tricks = players.ToDictionary(i => i, i => this.gameState.PlayedTricks.Where(j => j.Winner == i).ToList());
+            var scores = players.ToDictionary(i => i, i => new ScoreEvaluator().CalculateScore(this.round.PlayedTricks.Where(j => j.Winner == i)));
+            var tricks = players.ToDictionary(i => i, i => this.round.PlayedTricks.Where(j => j.Winner == i).ToList());
 
             Log.PointsForRound(scores);
 

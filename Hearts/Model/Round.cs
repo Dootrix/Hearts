@@ -3,15 +3,18 @@ using System.Linq;
 
 namespace Hearts.Model
 {
-    public class GameState
+    public class Round
     {
-        public GameState(int numberOfPlayers)
+        public Round(int numberOfPlayers, int roundIndex)
         {
             this.NumberOfPlayers = numberOfPlayers;
+            this.RoundIndex = roundIndex;
             this.Reset();
         }
 
         public int NumberOfPlayers { get; private set; }
+
+        public int RoundIndex { get; private set; }
 
         public List<PlayedCard> CurrentTrick { get; private set; }
 
@@ -56,7 +59,6 @@ namespace Hearts.Model
                 return this.IsLeadTurn && this.IsFirstHand;
             }
         }
-
 
         public void Reset()
         {

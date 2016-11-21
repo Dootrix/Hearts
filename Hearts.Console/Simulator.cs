@@ -47,7 +47,7 @@ namespace Hearts.Console
 
         private Dictionary<Player, int> SimulateGame(IEnumerable<Player> players)
         {
-            var game = new Game(players);
+            var game = new GameManager(players);
             var cumulativeScores = players.ToDictionary(i => i, i => 0);
             int roundNumber = 0;
 

@@ -62,7 +62,7 @@ namespace Hearts.AI
         }
 
         public Card ChooseCardToPlay(
-            GameState gameState,
+            Round gameState,
             IEnumerable<Card> startingCards,
             IEnumerable<Card> availableCards,
             IEnumerable<Card> legalCards)
@@ -84,7 +84,7 @@ namespace Hearts.AI
             return cardToPlay;
         }
 
-        private Card GetNonLeadCard(GameState gameState, IEnumerable<Card> availableCards, IEnumerable<Card> legalCards)
+        private Card GetNonLeadCard(Round gameState, IEnumerable<Card> availableCards, IEnumerable<Card> legalCards)
         {
             var leadSuit = gameState.CurrentTrick.First().Card.Suit;
 

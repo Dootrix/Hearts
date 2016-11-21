@@ -11,6 +11,6 @@ namespace Hearts.AI
 
         IEnumerable<Card> ChooseCardsToPass(IEnumerable<Card> startingCards, Pass pass);
 
-        Card ChooseCardToPlay(GameState gameState, IEnumerable<Card> startingCards, IEnumerable<Card> availableCards, IEnumerable<Card> legalCards);
+        Card ChooseCardToPlay(Round gameState, IEnumerable<Card> startingCards, IEnumerable<Card> availableCards, IEnumerable<Card> legalCards);
     }
 }

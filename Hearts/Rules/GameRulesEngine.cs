@@ -20,7 +20,7 @@ namespace Hearts.Rules
             };
         }
 
-        public IEnumerable<Card> GetPlayableCards(IEnumerable<Card> cardsInHand, GameState gameState)
+        public IEnumerable<Card> GetPlayableCards(IEnumerable<Card> cardsInHand, Round gameState)
         {
             var filteredCards = cardsInHand;
 

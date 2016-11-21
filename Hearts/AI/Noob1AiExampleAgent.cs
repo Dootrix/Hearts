@@ -22,7 +22,7 @@ namespace Hearts.AI
             };
         }
 
-        public Card ChooseCardToPlay(GameState gameState, IEnumerable<Card> startingCards, IEnumerable<Card> availableCards, IEnumerable<Card> legalCards)
+        public Card ChooseCardToPlay(Round gameState, IEnumerable<Card> startingCards, IEnumerable<Card> availableCards, IEnumerable<Card> legalCards)
         {
             if (legalCards.Count() == 1)
             {
