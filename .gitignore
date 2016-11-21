@@ -1,0 +1,36 @@
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.aps
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+
+# Visual Studio
+Debug/
+Release/
+/build
+*/Build/
+bin/
+/lib
+*.suo
+*.ncb
+*.user
+ipch/*
+_Resharper.*
+*.dotcover
+*.cache
+*.GhostDoc.xml
+
+# XCode
+.DS_Store
+
+# Project Specific
+*.userprefs

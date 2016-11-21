@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{38962076-4DF1-404B-A06E-C3C8771DC366}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Hearts</RootNamespace>
+    <AssemblyName>Hearts</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AI\Noob3AiExampleAgent.cs" />
+    <Compile Include="AI\Strategies\IPassStrategy.cs" />
+    <Compile Include="AI\Strategies\FollowSuitStrategy.cs" />
+    <Compile Include="AI\IllegalMoveAgent.cs" />
+    <Compile Include="AI\Strategies\FollowWithoutSuitStrategy.cs" />
+    <Compile Include="AI\Strategies\IPlayStrategy.cs" />
+    <Compile Include="AI\Strategies\LeadCardStrategy.cs" />
+    <Compile Include="AI\Strategies\PassHighestCards.cs" />
+    <Compile Include="AI\Strategies\RiskReductionPassStrategy.cs" />
+    <Compile Include="AI\NoobCrusher.cs" />
+    <Compile Include="AI\TerribleRandomAiAgent.cs" />
+    <Compile Include="AI\Noob2AiExampleAgent.cs" />
+    <Compile Include="AI\Noob1AiExampleAgent.cs" />
+    <Compile Include="AI\IAgent.cs" />
+    <Compile Include="Attributes\AbbreviationAttribute.cs" />
+    <Compile Include="Extensions\PlayedCardExtensions.cs" />
+    <Compile Include="Extensions\PlayedTrickExtensions.cs" />
+    <Compile Include="Extensions\CardListExtensions.cs" />
+    <Compile Include="GameEventHandlers\ShowHandHandler.cs" />
+    <Compile Include="GameEventHandlers\HandsChangedHandler.cs" />
+    <Compile Include="GameEventHandlers\HandFinishedHandler.cs" />
+    <Compile Include="GameEventHandlers\CardPlayedByPlayerHandler.cs" />
+    <Compile Include="GameEventHandlers\CardDealtToPlayerHandler.cs" />
+    <Compile Include="GameEventHandlers\PlayerAddedToGameHandler.cs" />
+    <Compile Include="GameEventHandlers\CardAddedToDeckHandler.cs" />
+    <Compile Include="GameEventHandlers\IGameEventHandler.cs" />
+    <Compile Include="Logging\SummaryOnlyLogOptions.cs" />
+    <Compile Include="Logging\ILogDisplayOptions.cs" />
+    <Compile Include="Logging\DefaultLogOptions.cs" />
+    <Compile Include="Logging\Log.cs" />
+    <Compile Include="Model\Cards.cs" />
+    <Compile Include="Model\GameEventType.cs" />
+    <Compile Include="Model\Card.cs" />
+    <Compile Include="Deal\Dealer.cs" />
+    <Compile Include="Deal\EvenHandDealAlgorithm.cs" />
+    <Compile Include="Deal\IDealAlgorithm.cs" />
+    <Compile Include="Deal\NaiveWholeDeckDealAlgorithm.cs" />
+    <Compile Include="Model\PlayedCard.cs" />
+    <Compile Include="Model\PlayerCircle.cs" />
+    <Compile Include="Model\PlayedTrick.cs" />
+    <Compile Include="Model\Deck.cs" />
+    <Compile Include="Extensions\KindExtensions.cs" />
+    <Compile Include="Extensions\CardExtensions.cs" />
+    <Compile Include="Extensions\ArrayExtensions.cs" />
+    <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Extensions\SuitExtensions.cs" />
+    <Compile Include="Factories\IFactory.cs" />
+    <Compile Include="Game.cs" />
+    <Compile Include="Model\GameState.cs" />
+    <Compile Include="Model\Kind.cs" />
+    <Compile Include="Model\Player.cs" />
+    <Compile Include="Model\Pass.cs" />
+    <Compile Include="Passing\PassingEngine.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Factories\StandardDeckFactory.cs" />
+    <Compile Include="Model\Suit.cs" />
+    <Compile Include="Rules\GameRulesEngine.cs" />
+    <Compile Include="Rules\MustLeadLowestClubOnFirstPlayRule.cs" />
+    <Compile Include="Rules\MustFollowSuitIfPossibleRule.cs" />
+    <Compile Include="Rules\CannotPlayQueenSpadesOrHeartsOnFirstHandIfPossibleRule.cs" />
+    <Compile Include="Rules\CannotLeadHeartsUntilBrokenRule.cs" />
+    <Compile Include="Rules\IGameRule.cs" />
+    <Compile Include="Scoring\RoundResult.cs" />
+    <Compile Include="Scoring\ScoreEvaluator.cs" />
+    <Compile Include="Scoring\HandWinEvaluator.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
