@@ -46,6 +46,21 @@ namespace Hearts.Tests.Extensions
                 var result = cards.Ascending(Suit.Clubs, Suit.Diamonds, Suit.Hearts, Suit.Spades).ToDebugString();
                 Assert.AreEqual("7♣,T♣,8♦,T♦,2♥,T♥,T♠,J♠", result);
             }
+
+            [Test]
+            public void OneSuitSpecifiedBroughtToFrontRemainderInCDSHdescendingKindOrder()
+            {
+                var cards = new List<Card>
+                {
+                    Cards.TenOfDiamonds,
+                    Cards.TenOfSpades,
+                    Cards.TenOfClubs,
+                    Cards.TenOfHearts
+                };
+
+                var result = cards.Ascending(Suit.Clubs).ToDebugString();
+                Assert.AreEqual("T♣,T♦,T♠,T♥", result);
+            }
         }
     }
 }
