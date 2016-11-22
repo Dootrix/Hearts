@@ -49,7 +49,7 @@ namespace Hearts.Console
         {
             var gameManager = new GameManager(players);
             var cumulativeScores = players.ToDictionary(i => i, i => 0);
-            int roundNumber = 0;
+            int roundNumber = 1;
 
             do
             {

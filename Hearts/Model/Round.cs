@@ -5,10 +5,10 @@ namespace Hearts.Model
 {
     public class Round
     {
-        public Round(int numberOfPlayers, int roundIndex)
+        public Round(int numberOfPlayers, int roundNumber)
         {
             this.NumberOfPlayers = numberOfPlayers;
-            this.RoundIndex = roundIndex;
+            this.RoundNumber = roundNumber;
             this.Reset();
         }
 
@@ -16,7 +16,7 @@ namespace Hearts.Model
 
         public int NumberOfPlayers { get; private set; }
 
-        public int RoundIndex { get; private set; }
+        public int RoundNumber { get; private set; }
 
         public List<PlayedCard> CurrentTrick { get; private set; }
 

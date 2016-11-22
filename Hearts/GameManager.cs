@@ -37,11 +37,11 @@ namespace Hearts
             }
         }
 
-        public RoundResult Play(int roundIndex)
+        public RoundResult Play(int roundNumber)
         {
             this.Reset();
             var players = this.playerCircle.AllPlayers;
-            this.round = new Round(players.Count, roundIndex);
+            this.round = new Round(players.Count, roundNumber);
             var startingHands = this.dealer.DealStartingHands(players);
 
             foreach (var startingHand in startingHands)
@@ -52,7 +52,7 @@ namespace Hearts
 
             Log.StartingHands(startingHands);
 
-            foreach (var postPassHand in new PassService().OrchestratePassing(roundIndex, this.playerCards, this.playerCircle.FirstPlayer, this.round))
+            foreach (var postPassHand in new PassService().OrchestratePassing(roundNumber, this.playerCards, this.playerCircle.FirstPlayer, this.round))
             {
                 this.playerCards[postPassHand.Key].PostPass = postPassHand.Value;
             }
