@@ -47,6 +47,8 @@
     <Compile Include="Collections\UniqueListTests.cs" />
     <Compile Include="Collections\SelectiveListTests.cs" />
     <Compile Include="Extensions\CardListOrderingExtensionTests.cs" />
+    <Compile Include="Extensions\SuitExtensionTests.cs" />
+    <Compile Include="Extensions\KindExtensionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rules\GameRulesEngineTests.cs" />
   </ItemGroup>
