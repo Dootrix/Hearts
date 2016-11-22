@@ -17,6 +17,7 @@ namespace Hearts.AI
         Card ChooseCardToPlay(Round round, PlayerCards cards); // TODO: Add player I passed to, Add player I received from, Add Game history, e.g. scores
 
 
-        // (Game game
+        // IEnumerable<Card> ChooseCardsToPass(GameState gameState);
+        // Card ChooseCardToPlay(GameState gameState);
     }
 }

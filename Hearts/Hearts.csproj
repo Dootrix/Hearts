@@ -77,6 +77,8 @@
     <Compile Include="Deal\EvenHandDealAlgorithm.cs" />
     <Compile Include="Deal\IDealAlgorithm.cs" />
     <Compile Include="Deal\NaiveWholeDeckDealAlgorithm.cs" />
+    <Compile Include="Model\Game.cs" />
+    <Compile Include="Model\GameState.cs" />
     <Compile Include="Model\PlayerCards.cs" />
     <Compile Include="Model\PlayedCard.cs" />
     <Compile Include="Model\PlayerCircle.cs" />
