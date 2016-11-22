@@ -16,9 +16,9 @@ namespace Hearts.Extensions
 
             foreach (var suit in new List<Suit> { Suit.Hearts, Suit.Spades, Suit.Diamonds, Suit.Clubs })
             {
-                var cardsOfSuit = self.Where(i => i.Suit == suit);
+                var cardsOfSuit = self.OfSuit(suit);
 
-                foreach (var card in cardsOfSuit.OrderBy(i => i.Kind))
+                foreach (var card in cardsOfSuit.Ascending())
                 {
                     Logging.Log.Card(card);
                     Console.Write(" ");

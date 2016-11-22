@@ -1,9 +1,7 @@
 ﻿using Hearts.Extensions;
-using System.Diagnostics;
 
 namespace Hearts.Model
 {
-    [DebuggerDisplay("{DebuggerDisplay}")]
     public class Card
     {   
         public Card(Kind kind, Suit suit)
@@ -15,8 +13,6 @@ namespace Hearts.Model
         public Suit Suit { get; private set; }
 
         public Kind Kind { get; private set; }
-
-        public string DebuggerDisplay { get { return this.ToString(); } }
 
         public override string ToString()
         {
