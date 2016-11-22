@@ -12,13 +12,13 @@ namespace Hearts.Console
 
         public void SimulateGames(int simulationCount)
         {
-            var players = Settings.Bots;
-            var victories = players.ToDictionary(i => i, i => 0);
-            var moonshots = new Dictionary<Player, Tuple<int, int>>();
+            var bots = Settings.Bots;
+            var victories = bots.Select(x => x.Player).ToDictionary(i => i, i => 0);
+            var moonshots = new Dictionary<Bot, Tuple<int, int>>();
 
             for (int i = 0; i < simulationCount; i++)
             {
-                var result = this.SimulateGame(players);
+                var result = this.SimulateGame(bots);
                 int winningScore = result.Min(j => j.Value);
 
                 foreach(var winner in result.Where(j => j.Value == result.Min(k => k.Value)))
@@ -30,25 +30,28 @@ namespace Hearts.Console
             int attempts = 0; // TODO: Refactor Shot Attempt reporting BeastAi.Passing.AdamPassEngine.BeastMoonshotAttempts;
             int successes = Simulator.BeastMoonshotSuccesses;
             
-            foreach(var player in players)
+            foreach(var bot in bots)
             {
-                if (player.Agent.AgentName == "Savage Beast")
+                if (bot.Agent.AgentName == "Savage Beast")
                 {
-                    moonshots.Add(player, new Tuple<int, int>(successes, attempts));
+                    moonshots.Add(bot, new Tuple<int, int>(successes, attempts));
                 }
                 else
                 {
-                    moonshots.Add(player, new Tuple<int, int>(0, 0));
+                    moonshots.Add(bot, new Tuple<int, int>(0, 0));
                 }
             }
 
             Log.LogSimulationSummary(simulationCount, victories, moonshots);
         }
 
-        private Dictionary<Player, int> SimulateGame(IEnumerable<Player> players)
+        private Dictionary<Player, int> SimulateGame(IEnumerable<Bot> bots)
         {
-            var gameManager = new GameManager(players);
-            var cumulativeScores = players.ToDictionary(i => i, i => 0);
+            var beast = bots.FirstOrDefault(x => x.Agent.AgentName == "Savage Beast");
+            var beastPlayer = beast != null ? beast.Player : null;
+
+            var gameManager = new GameManager(bots);
+            var cumulativeScores = bots.Select(x => x.Player).ToDictionary(i => i, i => 0);
             int roundNumber = 1;
 
             do
@@ -57,7 +60,7 @@ namespace Hearts.Console
 
                 var moonShots = result.Scores.Where(i => i.Value == 26);
 
-                Simulator.BeastMoonshotSuccesses += moonShots.Where(i => i.Key.Agent.AgentName == "Savage Beast").Count();
+                Simulator.BeastMoonshotSuccesses += moonShots.Where(i => i.Key == beastPlayer).Count();
 
                 if (moonShots.Any())
                 {

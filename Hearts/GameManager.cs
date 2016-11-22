@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Hearts.Extensions;
 using Hearts.Logging;
+using Hearts.AI;
 
 namespace Hearts
 {
@@ -16,13 +17,14 @@ namespace Hearts
     {
         private PlayerCircle playerCircle;
         private Dictionary<Player, PlayerState> playerCards;
+        private readonly Dictionary<Player, IAgent> playerAgentLookup = new Dictionary<Player, IAgent>();
         private Round round;
         private Dealer dealer;
 
-        public GameManager(IEnumerable<Player> players)
+        public GameManager(IEnumerable<Bot> bots)
         {
             this.playerCircle = new PlayerCircle();
-            this.AddPlayers(players);
+            this.AddBots(bots);
             this.Reset();
         }
 
@@ -52,7 +54,8 @@ namespace Hearts
 
             Log.StartingHands(startingHands);
 
-            foreach (var postPassHand in new PassService().OrchestratePassing(roundNumber, this.playerCards, this.playerCircle.FirstPlayer, this.round))
+            foreach (var postPassHand in new PassService(this.playerAgentLookup)
+                .OrchestratePassing(roundNumber, this.playerCards, this.playerCircle.FirstPlayer, this.round))
             {
                 this.playerCards[postPassHand.Key].PostPass = postPassHand.Value;
             }
@@ -71,7 +74,8 @@ namespace Hearts
                 {
                     var playerRemaining = this.playerCards[player].Current;
                     this.playerCards[player].Legal = rulesEngine.GetPlayableCards(playerRemaining, this.round);
-                    var card = player.Agent.ChooseCardToPlay(new GameState(player, new Game { Rounds = new List<Round> { this.round } }, this.playerCards[player]));
+                    var agent = this.playerAgentLookup[player];
+                    var card = agent.ChooseCardToPlay(new GameState(player, new Game { Rounds = new List<Round> { this.round } }, this.playerCards[player]));
 
                     if (!this.playerCards[player].Legal.Contains(card))
                     {
@@ -107,11 +111,12 @@ namespace Hearts
             };
         }
 
-        private void AddPlayers(IEnumerable<Player> players)
+        private void AddBots(IEnumerable<Bot> bots)
         {
-            foreach (var player in players)
+            foreach (var bot in bots)
             {
-                this.playerCircle.AddPlayer(player);
+                this.playerAgentLookup[bot.Player] = bot.Agent;
+                this.playerCircle.AddPlayer(bot.Player);
             }
         }
     }
