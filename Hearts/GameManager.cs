@@ -50,12 +50,8 @@ namespace Hearts
                 this.playerCards[startingHand.Key].RemainingCards = startingHand.Value.ToList();
             }
 
-            //this.remainingCards = this.startingHands.ToDictionary(i => i.Key, i => i.Value.ToList().AsEnumerable()); // Simple Clone
-
             // TODO: Logging - reinstate
             //Log.StartingHands(this.startingHands);
-
-            //this.postPassHands = new PassService().OrchestratePassing(roundIndex, players, startingHands, this.playerCircle.FirstPlayer);
 
             foreach (var postPassHand in new PassService().OrchestratePassing(roundIndex, startingHands, this.playerCircle.FirstPlayer))
             {
