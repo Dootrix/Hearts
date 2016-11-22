@@ -24,6 +24,22 @@ namespace Hearts.Extensions
                 : self.Clubs().Descending().ToList();
         }
 
+        public static IEnumerable<Card> GroupBySuitAmountDescending(this IEnumerable<Card> self)
+        {
+           var groupedCards = self.GroupBy(_ => _.Suit);
+           var orderedGroupedCards = groupedCards.OrderByDescending(_ => _.Count());
+
+            return orderedGroupedCards.SelectMany(_ => _);
+        }
+
+        public static IEnumerable<Card> GroupBySuitAmountAscending(this IEnumerable<Card> self)
+        {
+            var groupedCards = self.GroupBy(_ => _.Suit);
+            var orderedGroupedCards = groupedCards.OrderBy(_ => _.Count());
+
+            return orderedGroupedCards.SelectMany(_ => _);
+        }
+
         public static IEnumerable<Card> GroupBySuitDescending(this IEnumerable<Card> self, params Suit[] suitOrder)
         {
             var result = new UniqueList<Card>();

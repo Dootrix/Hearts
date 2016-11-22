@@ -138,6 +138,98 @@ namespace Hearts.Tests.Extensions
                 Assert.AreEqual("2♣,A♣,K♣,Q♣,J♣,T♣,9♣,8♣", result);
             }
         }
+        
+        [TestFixture]
+        public class GroupBySuitAmountDescending
+        {
+            [Test]
+            public void EmptyListReturnsEmptyList()
+            {
+                var cards = new List<Card>();
+
+                var result = cards.GroupBySuitAmountDescending();
+                Assert.IsEmpty(result);
+            }
+
+            [Test]
+            public void OneCardReturnsOneCard()
+            {
+                var cards = new List<Card> { Cards.TenOfDiamonds };
+
+                var result = cards.GroupBySuitAmountDescending().ToDebugString();
+                Assert.AreEqual("T♦", result);
+            }
+
+            [Test]
+            public void FourThreeTwoOneOfSuitsIsReordered()
+            {
+                var cards = new List<Card>
+                {
+                    Cards.TenOfSpades,
+                    Cards.NineOfSpades,
+                    Cards.TwoOfSpades,
+
+                    Cards.AceOfDiamonds,
+                    Cards.FiveOfDiamonds,
+                    Cards.ThreeOfDiamonds,
+                    Cards.KingOfDiamonds,
+
+                    Cards.TenOfClubs,
+                    Cards.NineOfClubs,
+
+                    Cards.JackOfHearts
+                };
+
+                var result = cards.GroupBySuitAmountDescending().ToDebugString();
+                Assert.AreEqual("A♦,5♦,3♦,K♦,T♠,9♠,2♠,T♣,9♣,J♥", result);
+            }
+        }
+
+        [TestFixture]
+        public class GroupBySuitAmountAscending
+        {
+            [Test]
+            public void EmptyListReturnsEmptyList()
+            {
+                var cards = new List<Card>();
+
+                var result = cards.GroupBySuitAmountAscending();
+                Assert.IsEmpty(result);
+            }
+
+            [Test]
+            public void OneCardReturnsOneCard()
+            {
+                var cards = new List<Card> { Cards.TenOfDiamonds };
+
+                var result = cards.GroupBySuitAmountAscending().ToDebugString();
+                Assert.AreEqual("T♦", result);
+            }
+
+            [Test]
+            public void FourThreeTwoOneOfSuitsIsReordered()
+            {
+                var cards = new List<Card>
+                {
+                    Cards.TenOfSpades,
+                    Cards.NineOfSpades,
+                    Cards.TwoOfSpades,
+
+                    Cards.AceOfDiamonds,
+                    Cards.FiveOfDiamonds,
+                    Cards.ThreeOfDiamonds,
+                    Cards.KingOfDiamonds,
+
+                    Cards.TenOfClubs,
+                    Cards.NineOfClubs,
+
+                    Cards.JackOfHearts
+                };
+
+                var result = cards.GroupBySuitAmountAscending().ToDebugString();
+                Assert.AreEqual("J♥,T♣,9♣,T♠,9♠,2♠,A♦,5♦,3♦,K♦", result);
+            }
+        }
 
         [TestFixture]
         public class GroupBySuitDescending
