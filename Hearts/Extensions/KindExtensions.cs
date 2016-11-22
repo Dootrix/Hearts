@@ -1,5 +1,4 @@
 ﻿using Hearts.Model;
-using System.Reflection;
 
 namespace Hearts.Extensions
 {
@@ -11,9 +10,6 @@ namespace Hearts.Extensions
             var memInfo = type.GetMember(rank.ToString());
             var attributes = memInfo[0].GetCustomAttributes(typeof(AbbreviationAttribute),
                 false);
-
-            var x = attributes[0];
-
 
             return ((AbbreviationAttribute)attributes[0]).Value;
         }
