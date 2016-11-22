@@ -17,7 +17,6 @@ namespace Hearts.Model
             this.guid = Guid.NewGuid();
             this.Agent = agent;
             this.Name = name;
-            this.Agent.Player = this;
         }
 
         public Guid Guid { get { return this.guid; } }

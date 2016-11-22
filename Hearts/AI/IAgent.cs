@@ -8,10 +8,7 @@ namespace Hearts.AI
     {
         // An fixed (optionally arbitrary) name for your AI, that allows other AIs to adjust to it
         string AgentName { get; }
-
-        // The owning player
-        Player Player { get; set; }
-
+        
         IEnumerable<Card> ChooseCardsToPass(GameState gameState);
 
         Card ChooseCardToPlay(GameState gameState);
