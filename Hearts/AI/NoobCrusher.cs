@@ -60,7 +60,7 @@ namespace Hearts.AI
 
         public IEnumerable<Card> ChooseCardsToPass(GameState gameState)
         {
-            var round = gameState.Round;
+            var round = gameState.Game.CurrentRound;
 
             if (round.Pass == Hearts.Model.Pass.NoPass)
             {
@@ -73,7 +73,7 @@ namespace Hearts.AI
 
         public Card ChooseCardToPlay(GameState gameState)
         {
-            var round = gameState.Round;
+            var round = gameState.Game.CurrentRound;
 
             if (gameState.LegalCards.Count() == 1)
                 return gameState.LegalCards.Single();

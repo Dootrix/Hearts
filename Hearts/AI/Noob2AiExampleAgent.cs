@@ -27,7 +27,7 @@ namespace Hearts.AI
 
         public Card ChooseCardToPlay(GameState gameState)
         {
-            var round = gameState.Round;
+            var round = gameState.Game.CurrentRound;
 
             if (gameState.LegalCards.Count() == 1)
             {
