@@ -73,7 +73,7 @@ namespace Hearts
                 {
                     var playerRemaining = this.playerCards[player].Current;
                     this.playerCards[player].Legal = rulesEngine.GetPlayableCards(playerRemaining, this.round);
-                    var card = player.Agent.ChooseCardToPlay(new GameState(this.round, this.playerCards[player]));
+                    var card = player.Agent.ChooseCardToPlay(new GameState(player, this.round, this.playerCards[player]));
 
                     if (!this.playerCards[player].Legal.Contains(card))
                     {

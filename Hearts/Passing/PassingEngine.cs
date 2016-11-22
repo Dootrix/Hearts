@@ -51,7 +51,7 @@ namespace Hearts.Passing
             for (int i = 0; i < players.Count; i++)
             {
                 round.Pass = this.GetPass(roundNumber, players.Count);
-                var pass = playerFrom.Agent.ChooseCardsToPass(new GameState(round, playerCards[playerFrom]));
+                var pass = playerFrom.Agent.ChooseCardsToPass(new GameState(playerFrom, round, playerCards[playerFrom]));
 
                 if (!pass.All(j => playerCards[playerFrom].Starting.Contains(j)) || pass.Distinct().Count() != 3)
                 {
