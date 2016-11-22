@@ -41,19 +41,19 @@ namespace Hearts.Passing
             return this.PassSchedule[playerCount - 1][roundNumber % playerCount];
         }
 
-        public Dictionary<Player, IEnumerable<Card>> OrchestratePassing(int roundNumber, Dictionary<Player, IEnumerable<Card>> startingHands, Player playerFrom, Round round)
+        public Dictionary<Player, IEnumerable<Card>> OrchestratePassing(int roundNumber, Dictionary<Player, PlayerCards> playerCards, Player playerFrom, Round round)
         {
-            var players = startingHands.Select(i => i.Key).ToList();
-            var result = startingHands.ToDictionary(i => i.Key, i => i.Value.ToList().AsEnumerable());
+            var players = playerCards.Select(i => i.Key).ToList();
+            var result = playerCards.ToDictionary(i => i.Key, i => playerCards[i.Key].Starting);
 
             var passedCards = new List<IEnumerable<Card>>();
             
             for (int i = 0; i < players.Count; i++)
             {
                 round.Pass = this.GetPass(roundNumber, players.Count);
-                var pass = playerFrom.Agent.ChooseCardsToPass(round, startingHands[playerFrom]);
+                var pass = playerFrom.Agent.ChooseCardsToPass(round, playerCards[playerFrom]);
 
-                if (!pass.All(j => startingHands[playerFrom].Contains(j)) || pass.Distinct().Count() != 3)
+                if (!pass.All(j => playerCards[playerFrom].Starting.Contains(j)) || pass.Distinct().Count() != 3)
                 {
                     // TODO: Handle illegal move
                     Log.IllegalPass(playerFrom, pass);
@@ -63,7 +63,7 @@ namespace Hearts.Passing
                 Log.Pass(playerFrom, pass);
 
                 passedCards.Add(pass);
-                result[playerFrom] = result[playerFrom].Except(pass);
+                result[playerFrom] = result[playerFrom].Except(pass).ToList();
 
 
                 if (i < players.Count - 1)

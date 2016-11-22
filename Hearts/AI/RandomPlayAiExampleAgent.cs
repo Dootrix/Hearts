@@ -12,9 +12,9 @@ namespace Hearts.AI
 
         public Player Player { get; set; }
 
-        public IEnumerable<Card> ChooseCardsToPass(Round round, IEnumerable<Card> startingCards)
+        public IEnumerable<Card> ChooseCardsToPass(Round round, PlayerCards playerCards)
         {
-            return startingCards.RandomSelection(3);
+            return playerCards.Starting.RandomSelection(3);
         }
 
         public Card ChooseCardToPlay(Round round, PlayerCards playerCards)

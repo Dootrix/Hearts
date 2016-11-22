@@ -58,15 +58,15 @@ namespace Hearts.AI
 
         public Player Player { get; set; }
 
-        public IEnumerable<Card> ChooseCardsToPass(Round round, IEnumerable<Card> startingCards)
+        public IEnumerable<Card> ChooseCardsToPass(Round round, PlayerCards playerCards)
         {
             if (round.Pass == Hearts.Model.Pass.NoPass)
             {
                 // Can skip any expensive logic as cards are irrelevant
-                return startingCards.Take(3);
+                return playerCards.Starting.Take(3);
             }
 
-            return this.passStrategy.ChooseCardsToPass(startingCards, round.Pass);
+            return this.passStrategy.ChooseCardsToPass(playerCards.Starting, round.Pass);
         }
 
         public Card ChooseCardToPlay(Round round, PlayerCards cards)

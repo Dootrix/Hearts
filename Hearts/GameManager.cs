@@ -53,7 +53,7 @@ namespace Hearts
             // TODO: Logging - reinstate
             //Log.StartingHands(this.startingHands);
 
-            foreach (var postPassHand in new PassService().OrchestratePassing(roundIndex, startingHands, this.playerCircle.FirstPlayer, this.round))
+            foreach (var postPassHand in new PassService().OrchestratePassing(roundIndex, this.playerCards, this.playerCircle.FirstPlayer, this.round))
             {
                 this.playerCards[postPassHand.Key].PostPass = postPassHand.Value;
             }
