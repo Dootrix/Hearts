@@ -50,16 +50,14 @@ namespace Hearts
                 this.playerCards[startingHand.Key].Current = startingHand.Value.ToList();
             }
 
-            // TODO: Logging - reinstate
-            //Log.StartingHands(this.startingHands);
+            Log.StartingHands(startingHands);
 
             foreach (var postPassHand in new PassService().OrchestratePassing(roundIndex, this.playerCards, this.playerCircle.FirstPlayer, this.round))
             {
                 this.playerCards[postPassHand.Key].PostPass = postPassHand.Value;
             }
 
-            // TODO: Logging - reinstate
-            //Log.HandsAfterPass(this.postPassHands);
+            Log.HandsAfterPass(this.playerCards.ToDictionary(i => i.Key, i => i.Value.PostPass));
 
             var handEvaluator = new HandWinEvaluator();
             var rulesEngine = new GameRulesEngine();
