@@ -95,7 +95,7 @@ namespace Hearts.Logging
             if (!Options.DisplayExceptions) return;
 
             ToBlue();
-            Console.WriteLine(player.Name + " made an ILLEGAL PASS! (" + string.Join(", ", cards.Select(i => i.DebuggerDisplay)) + ") - " + player.DebuggerDisplay);
+            Console.WriteLine(player.Name + " made an ILLEGAL PASS! (" + string.Join(", ", cards.Select(i => i.ToString())) + ") - " + player.DebuggerDisplay);
         }
 
         public static void IllegalPlay(Player player, Card card)
@@ -103,7 +103,7 @@ namespace Hearts.Logging
             if (!Options.DisplayExceptions) return;
 
             ToBlue();
-            Console.WriteLine(player.Name + " played an ILLEGAL CARD! (" + card.DebuggerDisplay + ") - " + player.DebuggerDisplay);
+            Console.WriteLine(player.Name + " played an ILLEGAL CARD! (" + card + ") - " + player.DebuggerDisplay);
         }
 
         public static void OutOfCardsException()
@@ -246,7 +246,7 @@ namespace Hearts.Logging
                 ToRed();
             }
 
-            Console.Write(card.DebuggerDisplay);
+            Console.Write(card);
         }
 
         #region Helpers
