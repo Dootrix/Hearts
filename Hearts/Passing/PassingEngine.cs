@@ -38,7 +38,7 @@ namespace Hearts.Passing
 
         public Pass GetPass(int roundNumber, int playerCount)
         {
-            return this.PassSchedule[playerCount - 1][roundNumber % playerCount];
+            return this.PassSchedule[playerCount - 1][(roundNumber -1) % playerCount];
         }
 
         public Dictionary<Player, IEnumerable<Card>> OrchestratePassing(int roundNumber, Dictionary<Player, PlayerState> playerCards, Player playerFrom, Round round)
