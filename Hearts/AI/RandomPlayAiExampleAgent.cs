@@ -19,7 +19,7 @@ namespace Hearts.AI
 
         public Card ChooseCardToPlay(Round round, PlayerCards playerCards)
         {
-            return playerCards.LegalCards.Random();
+            return playerCards.LegalPlays.Random();
         }
     }
 }

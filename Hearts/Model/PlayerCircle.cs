@@ -56,12 +56,12 @@ namespace Hearts.Model
         public Player GetStartingPlayer(Dictionary<Player, PlayerCards> playerCards)
         {
             var lowestClub = playerCards
-                .SelectMany(i => i.Value.StartingHands)
+                .SelectMany(i => i.Value.Starting)
                 .Where(j => j.Suit == Suit.Clubs)
                 .Min(k => k.Kind);
 
             return playerCards
-                .Single(i => i.Value.StartingHands.Any(j => j.Suit == Suit.Clubs && j.Kind == lowestClub)).Key;
+                .Single(i => i.Value.Starting.Any(j => j.Suit == Suit.Clubs && j.Kind == lowestClub)).Key;
         }
     }
 }

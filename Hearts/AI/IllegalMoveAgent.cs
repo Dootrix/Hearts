@@ -19,9 +19,9 @@ namespace Hearts.AI
 
         public Card ChooseCardToPlay(Round round, PlayerCards cards)
         {
-            var illegalCards = cards.RemainingCards.Except(cards.LegalCards).ToList();
+            var illegalCards = cards.CurrentRemaining.Except(cards.LegalPlays).ToList();
 
-            return illegalCards.Any() ? illegalCards.Random() : cards.LegalCards.Random();
+            return illegalCards.Any() ? illegalCards.Random() : cards.LegalPlays.Random();
         }
     }
 }

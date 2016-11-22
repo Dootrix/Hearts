@@ -46,8 +46,8 @@ namespace Hearts
 
             foreach (var startingHand in startingHands)
             {
-                this.playerCards[startingHand.Key].StartingHands = startingHand.Value;
-                this.playerCards[startingHand.Key].RemainingCards = startingHand.Value.ToList();
+                this.playerCards[startingHand.Key].Starting = startingHand.Value;
+                this.playerCards[startingHand.Key].CurrentRemaining = startingHand.Value.ToList();
             }
 
             // TODO: Logging - reinstate
@@ -55,7 +55,7 @@ namespace Hearts
 
             foreach (var postPassHand in new PassService().OrchestratePassing(roundIndex, startingHands, this.playerCircle.FirstPlayer))
             {
-                this.playerCards[postPassHand.Key].PostPassHands = postPassHand.Value;
+                this.playerCards[postPassHand.Key].PostPass = postPassHand.Value;
             }
 
             // TODO: Logging - reinstate
@@ -65,25 +65,25 @@ namespace Hearts
             var rulesEngine = new GameRulesEngine();
             var startingPlayer = this.playerCircle.GetStartingPlayer(this.playerCards);
 
-            while (this.playerCards.Select(i => i.Value.RemainingCards.Count()).Sum() > 0)
+            while (this.playerCards.Select(i => i.Value.CurrentRemaining.Count()).Sum() > 0)
             {
                 this.round.BeginTrick();
 
                 foreach (var player in this.playerCircle.GetOrderedPlayersStartingWith(startingPlayer))
                 {
-                    var playerRemainingCards = this.playerCards[player].RemainingCards;
-                    this.playerCards[player].LegalCards = rulesEngine.GetPlayableCards(playerRemainingCards, this.round);
+                    var playerRemainingCards = this.playerCards[player].CurrentRemaining;
+                    this.playerCards[player].LegalPlays = rulesEngine.GetPlayableCards(playerRemainingCards, this.round);
                     var card = player.Agent.ChooseCardToPlay(this.round, this.playerCards[player]);
 
-                    if (!this.playerCards[player].LegalCards.Contains(card))
+                    if (!this.playerCards[player].LegalPlays.Contains(card))
                     {
                         // TODO: Handle illegal move
                         Log.IllegalPlay(player, card);
                         player.AgentHasMadeIllegalMove = true;
-                        card = this.playerCards[player].LegalCards.First();
+                        card = this.playerCards[player].LegalPlays.First();
                     }
 
-                    this.playerCards[player].RemainingCards = playerRemainingCards.ExceptCard(card);
+                    this.playerCards[player].CurrentRemaining = playerRemainingCards.ExceptCard(card);
 
                     this.round.Play(player, card);
                 }

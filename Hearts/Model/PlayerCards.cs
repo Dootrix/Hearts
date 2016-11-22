@@ -8,10 +8,10 @@ namespace Hearts.Model
 {
     public class PlayerCards
     {
-        public IEnumerable<Card> StartingHands { get; set; }
-        public IEnumerable<Card> PassedCards { get; set; }
-        public IEnumerable<Card> PostPassHands { get; set; }
-        public IEnumerable<Card> RemainingCards { get; set; }
-        public IEnumerable<Card> LegalCards { get; set; }
+        public IEnumerable<Card> Starting { get; set; }
+        public IEnumerable<Card> Passed { get; set; }
+        public IEnumerable<Card> PostPass { get; set; }
+        public IEnumerable<Card> CurrentRemaining { get; set; }
+        public IEnumerable<Card> LegalPlays { get; set; }
     }
 }
