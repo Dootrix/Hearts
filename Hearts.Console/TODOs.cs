@@ -10,8 +10,6 @@ namespace Hearts.Console
     {
         // Overall longer term TODOs...
         //
-        // Refactor info passed to agents into a single packaged GameInfo object
-        // Pass in round number
         // Random Seed control
         // Stop the Player owning the agent to aid with testing.
     }
