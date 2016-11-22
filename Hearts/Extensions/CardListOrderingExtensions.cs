@@ -24,7 +24,7 @@ namespace Hearts.Extensions
                 : self.Clubs().Descending().ToList();
         }
 
-        public static IEnumerable<Card> Descending(this IEnumerable<Card> self, params Suit[] suitOrder)
+        public static IEnumerable<Card> GroupBySuitDescending(this IEnumerable<Card> self, params Suit[] suitOrder)
         {
             var result = new UniqueList<Card>();
             foreach (var suit in suitOrder)
@@ -38,7 +38,7 @@ namespace Hearts.Extensions
             return result;
         }
 
-        public static IEnumerable<Card> Ascending(this IEnumerable<Card> self, params Suit[] suitOrder)
+        public static IEnumerable<Card> GroupBySuitAscending(this IEnumerable<Card> self, params Suit[] suitOrder)
         {
             var result = new UniqueList<Card>();
             foreach (var suit in suitOrder)
