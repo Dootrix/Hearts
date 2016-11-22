@@ -25,36 +25,36 @@ namespace Hearts.AI
             };
         }
 
-        public Card ChooseCardToPlay(Round gameState, PlayerHolding holding)
+        public Card ChooseCardToPlay(Round round, PlayerCards cards)
         {
-            if (holding.LegalCards.Count() == 1)
+            if (cards.LegalCards.Count() == 1)
             {
-                return holding.LegalCards.First();
+                return cards.LegalCards.First();
             }
 
             // Cut cards down to matching suit if appropriate
-            if (!gameState.IsLeadTurn)
+            if (!round.IsLeadTurn)
             {
-                var constrainedSuit = gameState.CurrentTrick.First().Card.Suit;
+                var constrainedSuit = round.CurrentTrick.First().Card.Suit;
 
-                if (holding.RemainingCards.Any(i => i.Suit == constrainedSuit))
+                if (cards.RemainingCards.Any(i => i.Suit == constrainedSuit))
                 {
-                    return holding.LegalCards.Lowest();
+                    return cards.LegalCards.Lowest();
                 }
                 else
                 {
                     // Let's make our noob AI at least slightly viscious
                     // Queen someone at the first opportunity
-                    if (holding.LegalCards.Any(i => i.Kind == Kind.Queen && i.Suit == Suit.Spades))
+                    if (cards.LegalCards.Any(i => i.Kind == Kind.Queen && i.Suit == Suit.Spades))
                     {
-                        return holding.LegalCards.Single(i => i.Kind == Kind.Queen && i.Suit == Suit.Spades);
+                        return cards.LegalCards.Single(i => i.Kind == Kind.Queen && i.Suit == Suit.Spades);
                     }
                 }
             }
 
             // Return any low card
             // Terrible plan in long term for a game, but gives a half chance of dodging the queen against other noob AIs
-            return holding.LegalCards.OrderBy(i => i.Kind).ThenByDescending(i => i.Suit).First();
+            return cards.LegalCards.OrderBy(i => i.Kind).ThenByDescending(i => i.Suit).First();
         }
     }
 }

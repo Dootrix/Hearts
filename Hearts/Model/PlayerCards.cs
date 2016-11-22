@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hearts.Model
 {
-    public class PlayerHolding
+    public class PlayerCards
     {
         public IEnumerable<Card> StartingHands { get; set; }
         public IEnumerable<Card> PassedCards { get; set; }

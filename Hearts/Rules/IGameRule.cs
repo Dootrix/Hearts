@@ -9,8 +9,8 @@ namespace Hearts.Rules
 {
     public interface IGameRule
     {
-        IEnumerable<Card> FilterCards(IEnumerable<Card> cards, Round gameState);
+        IEnumerable<Card> FilterCards(IEnumerable<Card> cards, Round round);
 
-        bool Applies(Round gameState);
+        bool Applies(Round round);
     }
 }

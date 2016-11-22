@@ -15,7 +15,7 @@ namespace Hearts
     public class GameManager
     {
         private PlayerCircle playerCircle;
-        private Dictionary<Player, PlayerHolding> holdings;
+        private Dictionary<Player, PlayerCards> playerCards;
         private Round round;
         private Dealer dealer;
 
@@ -29,7 +29,7 @@ namespace Hearts
         public void Reset()
         {
             this.dealer = new Dealer(new StandardDeckFactory(), new EvenHandDealAlgorithm());
-            this.holdings = this.playerCircle.AllPlayers.ToDictionary(i => i, i => new PlayerHolding());
+            this.playerCards = this.playerCircle.AllPlayers.ToDictionary(i => i, i => new PlayerCards());
 
             if (this.round != null)
             {
@@ -46,8 +46,8 @@ namespace Hearts
 
             foreach (var startingHand in startingHands)
             {
-                this.holdings[startingHand.Key].StartingHands = startingHand.Value;
-                this.holdings[startingHand.Key].RemainingCards = startingHand.Value.ToList();
+                this.playerCards[startingHand.Key].StartingHands = startingHand.Value;
+                this.playerCards[startingHand.Key].RemainingCards = startingHand.Value.ToList();
             }
 
             //this.remainingCards = this.startingHands.ToDictionary(i => i.Key, i => i.Value.ToList().AsEnumerable()); // Simple Clone
@@ -59,7 +59,7 @@ namespace Hearts
 
             foreach (var postPassHand in new PassService().OrchestratePassing(roundIndex, startingHands, this.playerCircle.FirstPlayer))
             {
-                this.holdings[postPassHand.Key].PostPassHands = postPassHand.Value;
+                this.playerCards[postPassHand.Key].PostPassHands = postPassHand.Value;
             }
 
             // TODO: Logging - reinstate
@@ -67,27 +67,27 @@ namespace Hearts
 
             var handEvaluator = new HandWinEvaluator();
             var rulesEngine = new GameRulesEngine();
-            var startingPlayer = this.playerCircle.GetStartingPlayer(this.holdings);
+            var startingPlayer = this.playerCircle.GetStartingPlayer(this.playerCards);
 
-            while (this.holdings.Select(i => i.Value.RemainingCards.Count()).Sum() > 0)
+            while (this.playerCards.Select(i => i.Value.RemainingCards.Count()).Sum() > 0)
             {
                 this.round.BeginTrick();
 
                 foreach (var player in this.playerCircle.GetOrderedPlayersStartingWith(startingPlayer))
                 {
-                    var playerRemainingCards = this.holdings[player].RemainingCards;
-                    this.holdings[player].LegalCards = rulesEngine.GetPlayableCards(playerRemainingCards, this.round);
-                    var card = player.Agent.ChooseCardToPlay(this.round, this.holdings[player]);
+                    var playerRemainingCards = this.playerCards[player].RemainingCards;
+                    this.playerCards[player].LegalCards = rulesEngine.GetPlayableCards(playerRemainingCards, this.round);
+                    var card = player.Agent.ChooseCardToPlay(this.round, this.playerCards[player]);
 
-                    if (!this.holdings[player].LegalCards.Contains(card))
+                    if (!this.playerCards[player].LegalCards.Contains(card))
                     {
                         // TODO: Handle illegal move
                         Log.IllegalPlay(player, card);
                         player.AgentHasMadeIllegalMove = true;
-                        card = this.holdings[player].LegalCards.First();
+                        card = this.playerCards[player].LegalCards.First();
                     }
 
-                    this.holdings[player].RemainingCards = playerRemainingCards.ExceptCard(card);
+                    this.playerCards[player].RemainingCards = playerRemainingCards.ExceptCard(card);
 
                     this.round.Play(player, card);
                 }

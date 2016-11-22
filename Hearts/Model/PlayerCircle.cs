@@ -53,14 +53,14 @@ namespace Hearts.Model
             return tempPlayers;
         }
 
-        public Player GetStartingPlayer(Dictionary<Player, PlayerHolding> playerHoldings)
+        public Player GetStartingPlayer(Dictionary<Player, PlayerCards> playerCards)
         {
-            var lowestClub = playerHoldings
+            var lowestClub = playerCards
                 .SelectMany(i => i.Value.StartingHands)
                 .Where(j => j.Suit == Suit.Clubs)
                 .Min(k => k.Kind);
 
-            return playerHoldings
+            return playerCards
                 .Single(i => i.Value.StartingHands.Any(j => j.Suit == Suit.Clubs && j.Kind == lowestClub)).Key;
         }
     }

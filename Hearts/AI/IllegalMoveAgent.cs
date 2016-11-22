@@ -17,11 +17,11 @@ namespace Hearts.AI
             return startingCards.RandomSelection(2);
         }
 
-        public Card ChooseCardToPlay(Round gameState, PlayerHolding holding)
+        public Card ChooseCardToPlay(Round round, PlayerCards cards)
         {
-            var illegalCards = holding.RemainingCards.Except(holding.LegalCards).ToList();
+            var illegalCards = cards.RemainingCards.Except(cards.LegalCards).ToList();
 
-            return illegalCards.Any() ? illegalCards.Random() : holding.LegalCards.Random();
+            return illegalCards.Any() ? illegalCards.Random() : cards.LegalCards.Random();
         }
     }
 }

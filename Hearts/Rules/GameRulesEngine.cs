@@ -20,15 +20,15 @@ namespace Hearts.Rules
             };
         }
 
-        public IEnumerable<Card> GetPlayableCards(IEnumerable<Card> cardsInHand, Round gameState)
+        public IEnumerable<Card> GetPlayableCards(IEnumerable<Card> cardsInHand, Round round)
         {
             var filteredCards = cardsInHand;
 
             foreach (var rule in this.rules)
             {
-                if (rule.Applies(gameState))
+                if (rule.Applies(round))
                 {
-                    filteredCards = rule.FilterCards(filteredCards, gameState);
+                    filteredCards = rule.FilterCards(filteredCards, round);
 
                     if (!filteredCards.Any())
                     {

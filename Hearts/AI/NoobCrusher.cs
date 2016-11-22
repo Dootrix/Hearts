@@ -69,40 +69,38 @@ namespace Hearts.AI
             return this.passStrategy.ChooseCardsToPass(startingCards, pass);
         }
 
-        public Card ChooseCardToPlay(
-            Round gameState,
-            PlayerHolding holding)
+        public Card ChooseCardToPlay(Round round, PlayerCards cards)
         {
-            if (holding.LegalCards.Count() == 1)
-                return holding.LegalCards.Single();
+            if (cards.LegalCards.Count() == 1)
+                return cards.LegalCards.Single();
 
             Card cardToPlay;
 
-            if (gameState.IsLeadTurn)
+            if (round.IsLeadTurn)
             {
-                cardToPlay = this.leadCardStrategy.ChooseCardToPlay(gameState, holding.RemainingCards, holding.LegalCards);
+                cardToPlay = this.leadCardStrategy.ChooseCardToPlay(round, cards.RemainingCards, cards.LegalCards);
             }
             else
             {
-                cardToPlay = this.GetNonLeadCard(gameState, holding.RemainingCards, holding.LegalCards);
+                cardToPlay = this.GetNonLeadCard(round, cards.RemainingCards, cards.LegalCards);
             }
 
             return cardToPlay;
         }
 
-        private Card GetNonLeadCard(Round gameState, IEnumerable<Card> availableCards, IEnumerable<Card> legalCards)
+        private Card GetNonLeadCard(Round round, IEnumerable<Card> availableCards, IEnumerable<Card> legalCards)
         {
-            var leadSuit = gameState.CurrentTrick.First().Card.Suit;
+            var leadSuit = round.CurrentTrick.First().Card.Suit;
 
             Card cardToPlay;
 
             if (legalCards.Any(x => x.Suit == leadSuit))
             {
-                cardToPlay = this.followSuitStrategy.ChooseCardToPlay(gameState, availableCards, legalCards);
+                cardToPlay = this.followSuitStrategy.ChooseCardToPlay(round, availableCards, legalCards);
             }
             else
             {
-                cardToPlay = this.followWithoutSuitStrategy.ChooseCardToPlay(gameState, availableCards, legalCards);
+                cardToPlay = this.followWithoutSuitStrategy.ChooseCardToPlay(round, availableCards, legalCards);
             }
 
             return cardToPlay;

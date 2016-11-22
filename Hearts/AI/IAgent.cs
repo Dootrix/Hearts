@@ -14,6 +14,6 @@ namespace Hearts.AI
 
         IEnumerable<Card> ChooseCardsToPass(IEnumerable<Card> startingCards, Pass pass); // TODO: Add player I'm passing to, Add player I'm receiving from
 
-        Card ChooseCardToPlay(Round gameState, PlayerHolding holding);
+        Card ChooseCardToPlay(Round round, PlayerCards cards);
     }
 }
