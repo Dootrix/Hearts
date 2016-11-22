@@ -1,6 +1,7 @@
 ﻿using Hearts.Model;
 using System.Collections.Generic;
 using System.Linq;
+using Hearts.Collections;
 
 namespace Hearts.Extensions
 {
@@ -21,6 +22,34 @@ namespace Hearts.Extensions
             return self.Contains(Cards.TwoOfClubs) 
                 ? new List<Card> { Cards.TwoOfClubs }.Union(self.Where(i => i.Suit == Suit.Clubs && i.Kind != Kind.Two).Descending()) 
                 : self.Clubs().Descending().ToList();
+        }
+
+        public static IEnumerable<Card> Descending(this IEnumerable<Card> self, params Suit[] suitOrder)
+        {
+            var result = new UniqueList<Card>();
+            foreach (var suit in suitOrder)
+            {
+                result.AddRange(self.OfSuit(suit).Descending());
+            }
+
+            // Add any suits not specified
+            result.AddRange(self.OrderBy(i => i.Suit).ThenByDescending(_ => _.Kind));
+
+            return result;
+        }
+
+        public static IEnumerable<Card> Ascending(this IEnumerable<Card> self, params Suit[] suitOrder)
+        {
+            var result = new UniqueList<Card>();
+            foreach (var suit in suitOrder)
+            {
+                result.AddRange(self.OfSuit(suit).Ascending());
+            }
+
+            // Add any suits not specified
+            result.AddRange(self.OrderBy(i => i.Suit).ThenBy(_ => _.Kind));
+
+            return result;
         }
     }
 }

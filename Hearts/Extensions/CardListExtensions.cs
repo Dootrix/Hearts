@@ -34,5 +34,10 @@ namespace Hearts.Extensions
         {
             return new ScoreEvaluator().CalculateScore(self);
         }
+
+        public static string ToDebugString(this IEnumerable<Card> self)
+        {
+            return string.Join(",", self);
+        }
     }
 }
