@@ -84,7 +84,6 @@
     <Compile Include="Model\Deck.cs" />
     <Compile Include="Extensions\KindExtensions.cs" />
     <Compile Include="Extensions\CardExtensions.cs" />
-    <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\SuitExtensions.cs" />
     <Compile Include="Factories\IFactory.cs" />

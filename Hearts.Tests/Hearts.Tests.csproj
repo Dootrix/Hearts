@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\UniqueListTests.cs" />
+    <Compile Include="Collections\SelectiveListTests.cs" />
     <Compile Include="Extensions\CardListOrderingExtensionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

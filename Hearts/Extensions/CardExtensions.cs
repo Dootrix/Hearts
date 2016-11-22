@@ -6,7 +6,7 @@ namespace Hearts.Extensions
     {
         public static string ToAbbreviation(this Card card)
         {
-            return card.Kind.ToAbbreviation();
+            return card.Kind.ToAbbreviation() + card.Suit.ToAbbreviation();
         }
     }
 }
