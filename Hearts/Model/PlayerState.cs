@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hearts.Model
 {
-    public class PlayerCards
+    public class PlayerState
     {
         public IEnumerable<Card> Starting { get; set; }
         public IEnumerable<Card> Passed { get { return this.Starting.Except(this.PostPass); } }

@@ -15,7 +15,7 @@ namespace Hearts
     public class GameManager
     {
         private PlayerCircle playerCircle;
-        private Dictionary<Player, PlayerCards> playerCards;
+        private Dictionary<Player, PlayerState> playerCards;
         private Round round;
         private Dealer dealer;
 
@@ -29,7 +29,7 @@ namespace Hearts
         public void Reset()
         {
             this.dealer = new Dealer(new StandardDeckFactory(), new EvenHandDealAlgorithm());
-            this.playerCards = this.playerCircle.AllPlayers.ToDictionary(i => i, i => new PlayerCards());
+            this.playerCards = this.playerCircle.AllPlayers.ToDictionary(i => i, i => new PlayerState());
 
             if (this.round != null)
             {

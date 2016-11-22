@@ -8,10 +8,14 @@ namespace Hearts.Model
 {
     public class GameState
     {
-        public GameState(Round round, PlayerCards cards)
+        public GameState(Round round, PlayerState cards)
         {
             this.Round = round;
-            this.Cards = cards;
+            //this.Cards = cards;
+            this.StartingCards = cards.Starting;
+            this.PostPassCards = cards.PostPass;
+            this.CurrentCards = cards.Current;
+            this.LegalCards = cards.Legal;
         }
 
         // TODO: Build hierarchy
@@ -19,6 +23,12 @@ namespace Hearts.Model
 
         public Round Round { get; private set; } // Temporary, this will go inside Game
 
-        public PlayerCards Cards { get; private set; }
+        //public PlayerState Cards { get; private set; }
+
+        public IEnumerable<Card> StartingCards { get; set; }
+        public IEnumerable<Card> PassedCards { get { return this.StartingCards.Except(this.PostPassCards); } }
+        public IEnumerable<Card> PostPassCards { get; set; }
+        public IEnumerable<Card> CurrentCards { get; set; }
+        public IEnumerable<Card> LegalCards { get; set; }
     }
 }

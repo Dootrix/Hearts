@@ -15,7 +15,7 @@ namespace Hearts.AI
         public IEnumerable<Card> ChooseCardsToPass(GameState gameState)
         {
             // Basic "pass your highest cards" strategy
-            var cards = gameState.Cards.Starting.OrderByDescending(i => i.Kind).ThenBy(i => i.Suit).ToList();
+            var cards = gameState.StartingCards.OrderByDescending(i => i.Kind).ThenBy(i => i.Suit).ToList();
 
             return new List<Card>
             {
@@ -28,11 +28,10 @@ namespace Hearts.AI
         public Card ChooseCardToPlay(GameState gameState)
         {
             var round = gameState.Round;
-            var cards = gameState.Cards;
 
-            if (cards.Legal.Count() == 1)
+            if (gameState.LegalCards.Count() == 1)
             {
-                return cards.Legal.First();
+                return gameState.LegalCards.First();
             }
 
             // Cut cards down to matching suit if appropriate
@@ -40,24 +39,24 @@ namespace Hearts.AI
             {
                 var constrainedSuit = round.CurrentTrick.First().Card.Suit;
 
-                if (cards.Current.Any(i => i.Suit == constrainedSuit))
+                if (gameState.CurrentCards.Any(i => i.Suit == constrainedSuit))
                 {
-                    return cards.Legal.Lowest();
+                    return gameState.LegalCards.Lowest();
                 }
                 else
                 {
                     // Let's make our noob AI at least slightly viscious
                     // Queen someone at the first opportunity
-                    if (cards.Legal.Any(i => i.Kind == Kind.Queen && i.Suit == Suit.Spades))
+                    if (gameState.LegalCards.Any(i => i.Kind == Kind.Queen && i.Suit == Suit.Spades))
                     {
-                        return cards.Legal.Single(i => i.Kind == Kind.Queen && i.Suit == Suit.Spades);
+                        return gameState.LegalCards.Single(i => i.Kind == Kind.Queen && i.Suit == Suit.Spades);
                     }
                 }
             }
 
             // Return any low card
             // Terrible plan in long term for a game, but gives a half chance of dodging the queen against other noob AIs
-            return cards.Legal.OrderBy(i => i.Kind).ThenByDescending(i => i.Suit).First();
+            return gameState.LegalCards.OrderBy(i => i.Kind).ThenByDescending(i => i.Suit).First();
         }
     }
 }

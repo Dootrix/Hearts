@@ -79,7 +79,7 @@
     <Compile Include="Deal\NaiveWholeDeckDealAlgorithm.cs" />
     <Compile Include="Model\Game.cs" />
     <Compile Include="Model\GameState.cs" />
-    <Compile Include="Model\PlayerCards.cs" />
+    <Compile Include="Model\PlayerState.cs" />
     <Compile Include="Model\PlayedCard.cs" />
     <Compile Include="Model\PlayerCircle.cs" />
     <Compile Include="Model\PlayedTrick.cs" />

@@ -14,16 +14,14 @@ namespace Hearts.AI
 
         public IEnumerable<Card> ChooseCardsToPass(GameState gameState)
         {
-            return gameState.Cards.Starting.RandomSelection(2);
+            return gameState.StartingCards.RandomSelection(2);
         }
 
         public Card ChooseCardToPlay(GameState gameState)
         {
-            var cards = gameState.Cards;
+            var ilLegal = gameState.CurrentCards.Except(gameState.LegalCards).ToList();
 
-            var ilLegal = cards.Current.Except(cards.Legal).ToList();
-
-            return ilLegal.Any() ? ilLegal.Random() : cards.Legal.Random();
+            return ilLegal.Any() ? ilLegal.Random() : gameState.LegalCards.Random();
         }
     }
 }

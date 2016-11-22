@@ -60,35 +60,33 @@ namespace Hearts.AI
 
         public IEnumerable<Card> ChooseCardsToPass(GameState gameState)
         {
-            var playerCards = gameState.Cards;
             var round = gameState.Round;
 
             if (round.Pass == Hearts.Model.Pass.NoPass)
             {
                 // Can skip any expensive logic as cards are irrelevant
-                return playerCards.Starting.Take(3);
+                return gameState.StartingCards.Take(3);
             }
 
-            return this.passStrategy.ChooseCardsToPass(playerCards.Starting, round.Pass);
+            return this.passStrategy.ChooseCardsToPass(gameState.StartingCards, round.Pass);
         }
 
         public Card ChooseCardToPlay(GameState gameState)
         {
-            var cards = gameState.Cards;
             var round = gameState.Round;
 
-            if (cards.Legal.Count() == 1)
-                return cards.Legal.Single();
+            if (gameState.LegalCards.Count() == 1)
+                return gameState.LegalCards.Single();
 
             Card cardToPlay;
 
             if (round.IsLeadTurn)
             {
-                cardToPlay = this.leadCardStrategy.ChooseCardToPlay(round, cards.Current, cards.Legal);
+                cardToPlay = this.leadCardStrategy.ChooseCardToPlay(round, gameState.CurrentCards, gameState.LegalCards);
             }
             else
             {
-                cardToPlay = this.GetNonLeadCard(round, cards.Current, cards.Legal);
+                cardToPlay = this.GetNonLeadCard(round, gameState.CurrentCards, gameState.LegalCards);
             }
 
             return cardToPlay;
