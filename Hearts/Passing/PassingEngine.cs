@@ -41,7 +41,7 @@ namespace Hearts.Passing
             return this.PassSchedule[playerCount - 1][roundNumber % playerCount];
         }
 
-        public Dictionary<Player, IEnumerable<Card>> OrchestratePassing(int roundNumber, Dictionary<Player, IEnumerable<Card>> startingHands, Player playerFrom)
+        public Dictionary<Player, IEnumerable<Card>> OrchestratePassing(int roundNumber, Dictionary<Player, IEnumerable<Card>> startingHands, Player playerFrom, Round round)
         {
             var players = startingHands.Select(i => i.Key).ToList();
             var result = startingHands.ToDictionary(i => i.Key, i => i.Value.ToList().AsEnumerable());
@@ -50,7 +50,7 @@ namespace Hearts.Passing
             
             for (int i = 0; i < players.Count; i++)
             {
-                var pass = playerFrom.Agent.ChooseCardsToPass(startingHands[playerFrom], this.GetPass(roundNumber, players.Count));
+                var pass = playerFrom.Agent.ChooseCardsToPass(round, startingHands[playerFrom], this.GetPass(roundNumber, players.Count));
 
                 if (!pass.All(j => startingHands[playerFrom].Contains(j)) || pass.Distinct().Count() != 3)
                 {
