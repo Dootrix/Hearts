@@ -20,7 +20,7 @@ namespace Hearts.Extensions
         public static IEnumerable<Card> TwoThenDescendingClubs(this IEnumerable<Card> self)
         {
             return self.Contains(Cards.TwoOfClubs) 
-                ? new List<Card> { Cards.TwoOfClubs }.Union(self.Where(i => i.Suit == Suit.Clubs && i.Kind != Kind.Two).Descending()) 
+                ? new List<Card> { Cards.TwoOfClubs }.Concat(self.Where(i => i.Suit == Suit.Clubs && i.Kind != Kind.Two).Descending()) 
                 : self.Clubs().Descending().ToList();
         }
 
