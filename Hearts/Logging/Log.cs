@@ -171,7 +171,7 @@ namespace Hearts.Logging
             Console.WriteLine(string.Empty);
         }
         
-        public static void LogSimulationSummary(int gameCount, Dictionary<Player, int> victories, Dictionary<Player, Tuple<int, int>> moonshots)
+        public static void LogSimulationSummary(int gameCount, Dictionary<Player, int> victories, Dictionary<Bot, Tuple<int, int>> moonshots)
         {
             if (!Options.DisplaySimulationSummary) return;
 
@@ -184,9 +184,10 @@ namespace Hearts.Logging
             Console.WriteLine("Based on {0} game{1}", gameCount, gameCount > 1 ? "s" : string.Empty);
             Console.WriteLine("Moonshots:");
 
-            foreach (var player in moonshots)
+            foreach (var moonshot in moonshots)
             {
-                Console.WriteLine("{0} {1}/{2}", player.Key.Name, player.Value.Item1, player.Value.Item2);
+                var player = moonshot.Key.Player;
+                Console.WriteLine("{0} {1}/{2}", player.Name, moonshot.Value.Item1, moonshot.Value.Item2);
             }
 
             Console.WriteLine(string.Empty);

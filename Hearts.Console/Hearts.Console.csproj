@@ -54,6 +54,10 @@
     <Compile Include="TODOs.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\HeartsCrusher\HeartsCrusher.csproj">
+      <Project>{e1f9ceca-cd32-4ca1-8609-588a64e2f242}</Project>
+      <Name>HeartsCrusher</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Hearts\Hearts.csproj">
       <Project>{38962076-4df1-404b-a06e-c3c8771dc366}</Project>
       <Name>Hearts</Name>

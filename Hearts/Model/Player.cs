@@ -12,10 +12,9 @@ namespace Hearts.Model
     {
         private Guid guid;
 
-        public Player(string name, IAgent agent)
+        public Player(string name)
         {
             this.guid = Guid.NewGuid();
-            this.Agent = agent;
             this.Name = name;
         }
 
@@ -26,8 +25,6 @@ namespace Hearts.Model
         public Player NextPlayer { get; set; }
 
         public Player PreviousPlayer { get; set; }
-
-        public IAgent Agent { get; private set; }
 
         public bool AgentHasMadeIllegalMove { get; set; }
 
