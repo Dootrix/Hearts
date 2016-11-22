@@ -64,24 +64,29 @@ namespace Hearts.Extensions
             return self.Except(Cards.Clubs);
         }
 
+        public static IEnumerable<Card> OfSuit(this IEnumerable<Card> self, Suit suit)
+        {
+            return self.Where(i => i.Suit == suit);
+        }
+
         public static IEnumerable<Card> Hearts(this IEnumerable<Card> self)
         {
-            return self.Where(i => i.Suit == Suit.Hearts);
+            return self.OfSuit(Suit.Hearts);
         }
 
         public static IEnumerable<Card> Spades(this IEnumerable<Card> self)
         {
-            return self.Where(i => i.Suit == Suit.Spades);
+            return self.OfSuit(Suit.Spades);
         }
 
         public static IEnumerable<Card> Diamonds(this IEnumerable<Card> self)
         {
-            return self.Where(i => i.Suit == Suit.Diamonds);
+            return self.OfSuit(Suit.Diamonds);
         }
 
         public static IEnumerable<Card> Clubs(this IEnumerable<Card> self)
         {
-            return self.Where(i => i.Suit == Suit.Clubs);
+            return self.OfSuit(Suit.Clubs);
         }
     }
 }

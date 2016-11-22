@@ -55,6 +55,8 @@
     <Compile Include="AI\Noob1AiExampleAgent.cs" />
     <Compile Include="AI\IAgent.cs" />
     <Compile Include="Attributes\AbbreviationAttribute.cs" />
+    <Compile Include="Collections\UniqueList.cs" />
+    <Compile Include="Collections\SelectiveList.cs" />
     <Compile Include="Extensions\CardListFilteringExtensions.cs" />
     <Compile Include="Extensions\CardListRetrievalExtensions.cs" />
     <Compile Include="Extensions\CardListContainsExtensions.cs" />

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hearts", "Hearts\Hearts.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hearts.Console", "Hearts.Console\Hearts.Console.csproj", "{67EDE0FB-0E49-4161-9362-DF10F082ABBD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hearts.Tests", "Hearts.Tests\Hearts.Tests.csproj", "{1D7C7872-1038-4675-ABBB-7A748AB1F510}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{67EDE0FB-0E49-4161-9362-DF10F082ABBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67EDE0FB-0E49-4161-9362-DF10F082ABBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67EDE0FB-0E49-4161-9362-DF10F082ABBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D7C7872-1038-4675-ABBB-7A748AB1F510}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D7C7872-1038-4675-ABBB-7A748AB1F510}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D7C7872-1038-4675-ABBB-7A748AB1F510}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D7C7872-1038-4675-ABBB-7A748AB1F510}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
