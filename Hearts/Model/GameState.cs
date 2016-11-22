@@ -8,7 +8,17 @@ namespace Hearts.Model
 {
     public class GameState
     {
-        public Game Game { get; set; }
-        public PlayerCards Cards { get; set; }
+        public GameState(Round round, PlayerCards cards)
+        {
+            this.Round = round;
+            this.Cards = cards;
+        }
+
+        // TODO: Build hierarchy
+        //public Game Game { get; set; }
+
+        public Round Round { get; private set; } // Temporary, this will go inside Game
+
+        public PlayerCards Cards { get; private set; }
     }
 }

@@ -12,14 +12,16 @@ namespace Hearts.AI
 
         public Player Player { get; set; }
 
-        public IEnumerable<Card> ChooseCardsToPass(Round round, PlayerCards playerCards)
+        public IEnumerable<Card> ChooseCardsToPass(GameState gameState)
         {
-            return playerCards.Starting.RandomSelection(3);
+            return gameState.Cards.Starting.RandomSelection(3);
         }
 
-        public Card ChooseCardToPlay(Round round, PlayerCards playerCards)
+        public Card ChooseCardToPlay(GameState gameState)
         {
-            return playerCards.Legal.Random();
+            var cards = gameState.Cards;
+
+            return cards.Legal.Random();
         }
     }
 }

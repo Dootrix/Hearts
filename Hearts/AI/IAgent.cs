@@ -12,12 +12,8 @@ namespace Hearts.AI
         // The owning player
         Player Player { get; set; }
 
-        IEnumerable<Card> ChooseCardsToPass(Round round, PlayerCards cards); // TODO: Add player I'm passing to, Add player I'm receiving from, Add Game history, e.g. scores
+        IEnumerable<Card> ChooseCardsToPass(GameState gameState);
 
-        Card ChooseCardToPlay(Round round, PlayerCards cards); // TODO: Add player I passed to, Add player I received from, Add Game history, e.g. scores
-
-
-        // IEnumerable<Card> ChooseCardsToPass(GameState gameState);
-        // Card ChooseCardToPlay(GameState gameState);
+        Card ChooseCardToPlay(GameState gameState);
     }
 }

@@ -12,10 +12,10 @@ namespace Hearts.AI
 
         public Player Player { get; set; }
 
-        public IEnumerable<Card> ChooseCardsToPass(Round round, PlayerCards playerCards)
+        public IEnumerable<Card> ChooseCardsToPass(GameState gameState)
         {
             // Basic "pass your highest cards" strategy
-            var cards = playerCards.Starting.OrderByDescending(i => i.Kind).ThenBy(i => i.Suit).ToList();
+            var cards = gameState.Cards.Starting.OrderByDescending(i => i.Kind).ThenBy(i => i.Suit).ToList();
 
             return new List<Card>
             {
@@ -25,8 +25,11 @@ namespace Hearts.AI
             };
         }
 
-        public Card ChooseCardToPlay(Round round, PlayerCards cards)
+        public Card ChooseCardToPlay(GameState gameState)
         {
+            var cards = gameState.Cards;
+            var round = gameState.Round;
+
             if (cards.Legal.Count() == 1)
             {
                 return cards.Legal.First();
