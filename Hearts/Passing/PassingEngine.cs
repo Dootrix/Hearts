@@ -36,7 +36,7 @@ namespace Hearts.Passing
             return passFunction(fromPlayer);
         }
 
-        private Pass GetPass(int roundNumber, int playerCount)
+        public Pass GetPass(int roundNumber, int playerCount)
         {
             return this.PassSchedule[playerCount - 1][roundNumber % playerCount];
         }
@@ -50,7 +50,8 @@ namespace Hearts.Passing
             
             for (int i = 0; i < players.Count; i++)
             {
-                var pass = playerFrom.Agent.ChooseCardsToPass(round, startingHands[playerFrom], this.GetPass(roundNumber, players.Count));
+                round.Pass = this.GetPass(roundNumber, players.Count);
+                var pass = playerFrom.Agent.ChooseCardsToPass(round, startingHands[playerFrom]);
 
                 if (!pass.All(j => startingHands[playerFrom].Contains(j)) || pass.Distinct().Count() != 3)
                 {

@@ -12,6 +12,8 @@ namespace Hearts.Model
             this.Reset();
         }
 
+        public Pass Pass { get; set; }
+
         public int NumberOfPlayers { get; private set; }
 
         public int RoundIndex { get; private set; }
