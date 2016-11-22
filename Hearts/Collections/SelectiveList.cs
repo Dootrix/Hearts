@@ -4,11 +4,20 @@ using System.Collections.Generic;
 
 namespace Hearts.Collections
 {
+    /// <summary>
+    /// A list that only adds items if a predicate returns true.  This is useful if you want to avoid repetitive
+    /// conditional checks in code when adding to a list.
+    /// </summary>
+    /// <typeparam name="T">The type of item in the list</typeparam>
     public class SelectiveList<T> : IList<T>
     {
         private readonly Func<ICollection<T>, T, bool> predicate;
         private readonly List<T> list = new List<T>();
  
+        /// <summary>
+        /// Initializes a new instance of the SelectiveList class.
+        /// </summary>
+        /// <param name="predicate">The predicate to apply on insert or add</param>
         public SelectiveList(Func<ICollection<T>, T, bool> predicate)
         {
             this.predicate = predicate;
