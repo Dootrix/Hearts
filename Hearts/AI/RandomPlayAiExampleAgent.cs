@@ -17,9 +17,9 @@ namespace Hearts.AI
             return startingCards.RandomSelection(3);
         }
 
-        public Card ChooseCardToPlay(Round gameState, IEnumerable<Card> startingCards, IEnumerable<Card> availableCards, IEnumerable<Card> legalCards)
+        public Card ChooseCardToPlay(Round gameState, PlayerHolding holding)
         {
-            return legalCards.Random();
+            return holding.LegalCards.Random();
         }
     }
 }

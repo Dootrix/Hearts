@@ -16,9 +16,6 @@ namespace Hearts
     {
         private PlayerCircle playerCircle;
         private Dictionary<Player, PlayerHolding> holdings;
-        private Dictionary<Player, IEnumerable<Card>> startingHands;
-        private Dictionary<Player, IEnumerable<Card>> postPassHands;
-        private Dictionary<Player, IEnumerable<Card>> remainingCards;
         private Round round;
         private Dealer dealer;
 
@@ -33,9 +30,6 @@ namespace Hearts
         {
             this.dealer = new Dealer(new StandardDeckFactory(), new EvenHandDealAlgorithm());
             this.holdings = this.playerCircle.AllPlayers.ToDictionary(i => i, i => new PlayerHolding());
-            this.startingHands = new Dictionary<Player, IEnumerable<Card>>();
-            this.postPassHands = new Dictionary<Player, IEnumerable<Card>>();
-            this.remainingCards = new Dictionary<Player, IEnumerable<Card>>();
 
             if (this.round != null)
             {
@@ -48,8 +42,9 @@ namespace Hearts
             this.Reset();
             var players = this.playerCircle.AllPlayers;
             this.round = new Round(players.Count, roundIndex);
-            
-            foreach (var startingHand in this.dealer.DealStartingHands(players))
+            var startingHands = this.dealer.DealStartingHands(players);
+
+            foreach (var startingHand in startingHands)
             {
                 this.holdings[startingHand.Key].StartingHands = startingHand.Value;
                 this.holdings[startingHand.Key].RemainingCards = startingHand.Value.ToList();
@@ -62,7 +57,7 @@ namespace Hearts
 
             //this.postPassHands = new PassService().OrchestratePassing(roundIndex, players, startingHands, this.playerCircle.FirstPlayer);
 
-            foreach (var postPassHand in new PassService().OrchestratePassing(roundIndex, players, startingHands, this.playerCircle.FirstPlayer))
+            foreach (var postPassHand in new PassService().OrchestratePassing(roundIndex, startingHands, this.playerCircle.FirstPlayer))
             {
                 this.holdings[postPassHand.Key].PostPassHands = postPassHand.Value;
             }
@@ -81,16 +76,15 @@ namespace Hearts
                 foreach (var player in this.playerCircle.GetOrderedPlayersStartingWith(startingPlayer))
                 {
                     var playerRemainingCards = this.holdings[player].RemainingCards;
-                    var legalCards = rulesEngine.GetPlayableCards(playerRemainingCards, this.round);
-                    this.holdings[player].LegalCards = legalCards;
-                    var card = player.Agent.ChooseCardToPlay(this.round, this.holdings[player].StartingHands, playerRemainingCards, legalCards.ToList());
+                    this.holdings[player].LegalCards = rulesEngine.GetPlayableCards(playerRemainingCards, this.round);
+                    var card = player.Agent.ChooseCardToPlay(this.round, this.holdings[player]);
 
-                    if (!legalCards.Contains(card))
+                    if (!this.holdings[player].LegalCards.Contains(card))
                     {
                         // TODO: Handle illegal move
                         Log.IllegalPlay(player, card);
                         player.AgentHasMadeIllegalMove = true;
-                        card = legalCards.First();
+                        card = this.holdings[player].LegalCards.First();
                     }
 
                     this.holdings[player].RemainingCards = playerRemainingCards.ExceptCard(card);

@@ -25,11 +25,11 @@ namespace Hearts.AI
             };
         }
 
-        public Card ChooseCardToPlay(Round gameState, IEnumerable<Card> startingCards, IEnumerable<Card> availableCards, IEnumerable<Card> legalCards)
+        public Card ChooseCardToPlay(Round gameState, PlayerHolding holding)
         {
-            if (legalCards.Count() == 1)
+            if (holding.LegalCards.Count() == 1)
             {
-                return legalCards.First();
+                return holding.LegalCards.First();
             }
 
             // Cut cards down to matching suit if appropriate
@@ -37,24 +37,20 @@ namespace Hearts.AI
             {
                 var constrainedSuit = gameState.CurrentTrick.First().Card.Suit;
 
-                if (availableCards.Any(i => i.Suit == constrainedSuit))
-                {
-                    availableCards = availableCards.Where(i => i.Suit == constrainedSuit).ToList();
-                }
-                else
+                if (!holding.RemainingCards.Any(i => i.Suit == constrainedSuit))
                 {
                     // Let's make our noob AI at least slightly viscious
                     // Queen someone at the first opportunity
-                    if (legalCards.Any(i => i.Kind == Kind.Queen && i.Suit == Suit.Spades))
+                    if (holding.LegalCards.Any(i => i.Kind == Kind.Queen && i.Suit == Suit.Spades))
                     {
-                        return legalCards.Single(i => i.Kind == Kind.Queen && i.Suit == Suit.Spades);
+                        return holding.LegalCards.Single(i => i.Kind == Kind.Queen && i.Suit == Suit.Spades);
                     }
                     else
                     {
                         // Noob 2 is slightly improved in that it punishes people with Hearts at the first opportunity
-                        if (legalCards.Any(i => i.Suit == Suit.Hearts))
+                        if (holding.LegalCards.Any(i => i.Suit == Suit.Hearts))
                         {
-                            return legalCards.Where(i => i.Suit == Suit.Hearts).OrderByDescending(i => i.Kind).First();
+                            return holding.LegalCards.Where(i => i.Suit == Suit.Hearts).OrderByDescending(i => i.Kind).First();
                         }
                     }
                 }
@@ -65,15 +61,15 @@ namespace Hearts.AI
             {
                 var suit = gameState.CurrentTrick.First().Card.Suit;
 
-                if (legalCards.Any(i => i.Suit == suit) && gameState.CurrentTrick.SelectCards().Score() == 0)
+                if (holding.LegalCards.Any(i => i.Suit == suit) && gameState.CurrentTrick.SelectCards().Score() == 0)
                 {
-                    return legalCards.Where(i => i.Suit == suit).Highest();
+                    return holding.LegalCards.Where(i => i.Suit == suit).Highest();
                 }
             }
 
             // Return any low card
             // Terrible plan in long term for a game, but gives a half chance of dodging the queen against other noob AIs
-            return legalCards.OrderBy(i => i.Kind).ThenByDescending(i => i.Suit).First();
+            return holding.LegalCards.OrderBy(i => i.Kind).ThenByDescending(i => i.Suit).First();
         }
     }
 }

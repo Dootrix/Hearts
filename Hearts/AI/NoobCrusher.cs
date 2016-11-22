@@ -71,22 +71,20 @@ namespace Hearts.AI
 
         public Card ChooseCardToPlay(
             Round gameState,
-            IEnumerable<Card> startingCards,
-            IEnumerable<Card> availableCards,
-            IEnumerable<Card> legalCards)
+            PlayerHolding holding)
         {
-            if (legalCards.Count() == 1)
-                return legalCards.Single();
+            if (holding.LegalCards.Count() == 1)
+                return holding.LegalCards.Single();
 
             Card cardToPlay;
 
             if (gameState.IsLeadTurn)
             {
-                cardToPlay = this.leadCardStrategy.ChooseCardToPlay(gameState, availableCards, legalCards);
+                cardToPlay = this.leadCardStrategy.ChooseCardToPlay(gameState, holding.RemainingCards, holding.LegalCards);
             }
             else
             {
-                cardToPlay = this.GetNonLeadCard(gameState, availableCards, legalCards);
+                cardToPlay = this.GetNonLeadCard(gameState, holding.RemainingCards, holding.LegalCards);
             }
 
             return cardToPlay;

@@ -41,8 +41,9 @@ namespace Hearts.Passing
             return this.PassSchedule[playerCount - 1][roundNumber % playerCount];
         }
 
-        public Dictionary<Player, IEnumerable<Card>> OrchestratePassing(int roundNumber, List<Player> players, Dictionary<Player, IEnumerable<Card>> startingHands, Player playerFrom)
+        public Dictionary<Player, IEnumerable<Card>> OrchestratePassing(int roundNumber, Dictionary<Player, IEnumerable<Card>> startingHands, Player playerFrom)
         {
+            var players = startingHands.Select(i => i.Key).ToList();
             var result = startingHands.ToDictionary(i => i.Key, i => i.Value.ToList().AsEnumerable());
 
             var passedCards = new List<IEnumerable<Card>>();
