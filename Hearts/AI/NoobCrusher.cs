@@ -71,36 +71,36 @@ namespace Hearts.AI
 
         public Card ChooseCardToPlay(Round round, PlayerCards cards)
         {
-            if (cards.LegalPlays.Count() == 1)
-                return cards.LegalPlays.Single();
+            if (cards.Legal.Count() == 1)
+                return cards.Legal.Single();
 
             Card cardToPlay;
 
             if (round.IsLeadTurn)
             {
-                cardToPlay = this.leadCardStrategy.ChooseCardToPlay(round, cards.CurrentRemaining, cards.LegalPlays);
+                cardToPlay = this.leadCardStrategy.ChooseCardToPlay(round, cards.Current, cards.Legal);
             }
             else
             {
-                cardToPlay = this.GetNonLeadCard(round, cards.CurrentRemaining, cards.LegalPlays);
+                cardToPlay = this.GetNonLeadCard(round, cards.Current, cards.Legal);
             }
 
             return cardToPlay;
         }
 
-        private Card GetNonLeadCard(Round round, IEnumerable<Card> availableCards, IEnumerable<Card> legalCards)
+        private Card GetNonLeadCard(Round round, IEnumerable<Card> availableCards, IEnumerable<Card> Legal)
         {
             var leadSuit = round.CurrentTrick.First().Card.Suit;
 
             Card cardToPlay;
 
-            if (legalCards.Any(x => x.Suit == leadSuit))
+            if (Legal.Any(x => x.Suit == leadSuit))
             {
-                cardToPlay = this.followSuitStrategy.ChooseCardToPlay(round, availableCards, legalCards);
+                cardToPlay = this.followSuitStrategy.ChooseCardToPlay(round, availableCards, Legal);
             }
             else
             {
-                cardToPlay = this.followWithoutSuitStrategy.ChooseCardToPlay(round, availableCards, legalCards);
+                cardToPlay = this.followWithoutSuitStrategy.ChooseCardToPlay(round, availableCards, Legal);
             }
 
             return cardToPlay;

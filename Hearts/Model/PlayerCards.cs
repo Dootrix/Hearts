@@ -9,9 +9,9 @@ namespace Hearts.Model
     public class PlayerCards
     {
         public IEnumerable<Card> Starting { get; set; }
-        public IEnumerable<Card> Passed { get; set; }
+        public IEnumerable<Card> Passed { get { return this.Starting.Except(this.PostPass); } }
         public IEnumerable<Card> PostPass { get; set; }
-        public IEnumerable<Card> CurrentRemaining { get; set; }
-        public IEnumerable<Card> LegalPlays { get; set; }
+        public IEnumerable<Card> Current { get; set; }
+        public IEnumerable<Card> Legal { get; set; }
     }
 }

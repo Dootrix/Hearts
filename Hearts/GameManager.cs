@@ -47,7 +47,7 @@ namespace Hearts
             foreach (var startingHand in startingHands)
             {
                 this.playerCards[startingHand.Key].Starting = startingHand.Value;
-                this.playerCards[startingHand.Key].CurrentRemaining = startingHand.Value.ToList();
+                this.playerCards[startingHand.Key].Current = startingHand.Value.ToList();
             }
 
             // TODO: Logging - reinstate
@@ -65,25 +65,25 @@ namespace Hearts
             var rulesEngine = new GameRulesEngine();
             var startingPlayer = this.playerCircle.GetStartingPlayer(this.playerCards);
 
-            while (this.playerCards.Select(i => i.Value.CurrentRemaining.Count()).Sum() > 0)
+            while (this.playerCards.Select(i => i.Value.Current.Count()).Sum() > 0)
             {
                 this.round.BeginTrick();
 
                 foreach (var player in this.playerCircle.GetOrderedPlayersStartingWith(startingPlayer))
                 {
-                    var playerRemainingCards = this.playerCards[player].CurrentRemaining;
-                    this.playerCards[player].LegalPlays = rulesEngine.GetPlayableCards(playerRemainingCards, this.round);
+                    var playerRemaining = this.playerCards[player].Current;
+                    this.playerCards[player].Legal = rulesEngine.GetPlayableCards(playerRemaining, this.round);
                     var card = player.Agent.ChooseCardToPlay(this.round, this.playerCards[player]);
 
-                    if (!this.playerCards[player].LegalPlays.Contains(card))
+                    if (!this.playerCards[player].Legal.Contains(card))
                     {
                         // TODO: Handle illegal move
                         Log.IllegalPlay(player, card);
                         player.AgentHasMadeIllegalMove = true;
-                        card = this.playerCards[player].LegalPlays.First();
+                        card = this.playerCards[player].Legal.First();
                     }
 
-                    this.playerCards[player].CurrentRemaining = playerRemainingCards.ExceptCard(card);
+                    this.playerCards[player].Current = playerRemaining.ExceptCard(card);
 
                     this.round.Play(player, card);
                 }

@@ -10,7 +10,7 @@ namespace Hearts.AI.Strategies
 {
     public class FollowSuitStrategy : IPlayStrategy
     {
-        public Card ChooseCardToPlay(Round round, IEnumerable<Card> availableCards, IEnumerable<Card> legalCards)
+        public Card ChooseCardToPlay(Round round, IEnumerable<Card> availableCards, IEnumerable<Card> Legal)
         {
             Card cardToPlay = null;
 
@@ -28,14 +28,14 @@ namespace Hearts.AI.Strategies
                 // if there is nothing to win, then play high.
                 if (pointsToWin == 0)
                 {
-                    cardToPlay = legalCards.OrderByDescending(x => x.Kind).FirstOrDefault();
+                    cardToPlay = Legal.OrderByDescending(x => x.Kind).FirstOrDefault();
                 }
             }
 
             if (cardToPlay == null && playedCards.Count(x => x.Suit == leadSuit) == 0)
             {
                 // play high if the suit hasn't already been led.
-                cardToPlay = legalCards
+                cardToPlay = Legal
                     .Except(GetHighSpades())
                     .OrderByDescending(x => x.Kind)
                     .FirstOrDefault();
@@ -46,11 +46,11 @@ namespace Hearts.AI.Strategies
                 var currentWinner = round.CurrentTrick.Select(x => x.Card).Max(y => y.Kind);
 
                 // highest card below the current winner.
-                cardToPlay = legalCards.Where(x => x.Kind < currentWinner).OrderByDescending(y => y.Kind).FirstOrDefault();
+                cardToPlay = Legal.Where(x => x.Kind < currentWinner).OrderByDescending(y => y.Kind).FirstOrDefault();
 
                 // otherwise play the lowest...
                 if (cardToPlay == null)
-                    cardToPlay = legalCards.OrderBy(x => x.Kind).First();
+                    cardToPlay = Legal.OrderBy(x => x.Kind).First();
             }
 
             return cardToPlay;

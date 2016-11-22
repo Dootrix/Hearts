@@ -9,7 +9,7 @@ namespace Hearts.AI.Strategies
 {
     public class FollowWithoutSuitStrategy : IPlayStrategy
     {
-        public Card ChooseCardToPlay(Round round, IEnumerable<Card> availableCards, IEnumerable<Card> legalCards)
+        public Card ChooseCardToPlay(Round round, IEnumerable<Card> availableCards, IEnumerable<Card> Legal)
         {
             Card cardToPlay = null;
 
@@ -20,7 +20,7 @@ namespace Hearts.AI.Strategies
 
             foreach (var idealCard in idealCards)
             {
-                if (legalCards.Contains(idealCard))
+                if (Legal.Contains(idealCard))
                 {
                     cardToPlay = idealCard;
                     break;
@@ -30,7 +30,7 @@ namespace Hearts.AI.Strategies
             if (cardToPlay == null)
             {
                 // assume legal cards are all cards in this situation, but this ain't always true!
-                cardToPlay = this.GetSuitVoiders(legalCards, 1).First();
+                cardToPlay = this.GetSuitVoiders(Legal, 1).First();
             }
 
             return cardToPlay;

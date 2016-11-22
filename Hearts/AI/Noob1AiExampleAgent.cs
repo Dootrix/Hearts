@@ -27,9 +27,9 @@ namespace Hearts.AI
 
         public Card ChooseCardToPlay(Round round, PlayerCards cards)
         {
-            if (cards.LegalPlays.Count() == 1)
+            if (cards.Legal.Count() == 1)
             {
-                return cards.LegalPlays.First();
+                return cards.Legal.First();
             }
 
             // Cut cards down to matching suit if appropriate
@@ -37,24 +37,24 @@ namespace Hearts.AI
             {
                 var constrainedSuit = round.CurrentTrick.First().Card.Suit;
 
-                if (cards.CurrentRemaining.Any(i => i.Suit == constrainedSuit))
+                if (cards.Current.Any(i => i.Suit == constrainedSuit))
                 {
-                    return cards.LegalPlays.Lowest();
+                    return cards.Legal.Lowest();
                 }
                 else
                 {
                     // Let's make our noob AI at least slightly viscious
                     // Queen someone at the first opportunity
-                    if (cards.LegalPlays.Any(i => i.Kind == Kind.Queen && i.Suit == Suit.Spades))
+                    if (cards.Legal.Any(i => i.Kind == Kind.Queen && i.Suit == Suit.Spades))
                     {
-                        return cards.LegalPlays.Single(i => i.Kind == Kind.Queen && i.Suit == Suit.Spades);
+                        return cards.Legal.Single(i => i.Kind == Kind.Queen && i.Suit == Suit.Spades);
                     }
                 }
             }
 
             // Return any low card
             // Terrible plan in long term for a game, but gives a half chance of dodging the queen against other noob AIs
-            return cards.LegalPlays.OrderBy(i => i.Kind).ThenByDescending(i => i.Suit).First();
+            return cards.Legal.OrderBy(i => i.Kind).ThenByDescending(i => i.Suit).First();
         }
     }
 }

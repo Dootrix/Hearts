@@ -9,7 +9,7 @@ namespace Hearts.AI.Strategies
 {
     class LeadCardStrategy : IPlayStrategy
     {
-        public Card ChooseCardToPlay(Round round, IEnumerable<Card> availableCards, IEnumerable<Card> legalCards)
+        public Card ChooseCardToPlay(Round round, IEnumerable<Card> availableCards, IEnumerable<Card> Legal)
         {
             var playedCards = round
                 .PlayedTricks
@@ -22,7 +22,7 @@ namespace Hearts.AI.Strategies
             {
                 if (!playedCards.Any(x => x.Suit == suit))
                 {
-                    cardToPlay = legalCards
+                    cardToPlay = Legal
                         .Where(x => x.Suit == suit)
                         .Except(GetHighSpades())
                         .OrderByDescending(y => y.Kind)
@@ -39,7 +39,7 @@ namespace Hearts.AI.Strategies
             if (cardToPlay == null)
             {
                 // play low
-                cardToPlay = legalCards.OrderBy(i => i.Kind).First();
+                cardToPlay = Legal.OrderBy(i => i.Kind).First();
             }
 
             return cardToPlay;

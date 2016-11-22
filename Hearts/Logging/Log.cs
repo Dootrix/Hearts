@@ -238,7 +238,7 @@ namespace Hearts.Logging
         public static void Player(Player player)
         {
             // TODO: Re-implement log player
-            /*var cards = player.RemainingCards;
+            /*var cards = player.Remaining;
             int padToLength = 38;
             ToBlue();
             Console.Write(" " + player.Name.PadLeft(Options.NamePad) + " ");
