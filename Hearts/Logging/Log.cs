@@ -27,7 +27,7 @@ namespace Hearts.Logging
 
             foreach (var hand in hands)
             {
-                Player(hand.Key);
+                hand.Value.Log(hand.Key.Name);
             }
 
             NewLine();
@@ -42,7 +42,7 @@ namespace Hearts.Logging
 
             foreach (var hand in hands)
             {
-                Player(hand.Key);
+                hand.Value.Log(hand.Key.Name);
             }
 
             NewLine();
@@ -233,30 +233,6 @@ namespace Hearts.Logging
                 ToBlue();
                 Console.WriteLine(note);
             }
-        }
-
-        public static void Player(Player player)
-        {
-            // TODO: Re-implement log player
-            /*var cards = player.Remaining;
-            int padToLength = 38;
-            ToBlue();
-            Console.Write(" " + player.Name.PadLeft(Options.NamePad) + " ");
-            
-            foreach(var suit in new List<Suit> { Suit.Hearts, Suit.Spades, Suit.Diamonds, Suit.Clubs })
-            {
-                var cardsOfSuit = cards.Where(i => i.Suit == suit);
-
-                foreach (var card in cardsOfSuit.OrderBy(i => i.Kind))
-                {
-                    Card(card);
-                    Console.Write(" ");
-                }
-
-                Console.Write(new string(' ', padToLength - cardsOfSuit.Count() * 3));
-            }
-
-            NewLine();*/
         }
 
         public static void Card(Card card)
