@@ -24,8 +24,8 @@ namespace Hearts.Console
                 //    • NoobCrusher.Create(NoobCrusherVersion.v1) (Tony Beasley)
                 //    • NoobCrusher.Create(NoobCrusherVersion.v2) (Tony Beasley)
                 
-                Bot.Create(new Player("A"), new Noob3AiExampleAgent()),
-                Bot.Create(new Player("B"), new Noob1AiExampleAgent()),
+                Bot.Create(new Player("A"), new Noob2AiExampleAgent()),
+                Bot.Create(new Player("B"), new Noob2AiExampleAgent()),
                 Bot.Create(new Player("C"), new Noob2AiExampleAgent()),
                 Bot.Create(new Player("D"), NoobCrusher.Create(NoobCrusherVersion.v2))
             };
