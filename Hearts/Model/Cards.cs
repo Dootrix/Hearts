@@ -1,9 +1,10 @@
-﻿using Hearts.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Hearts.Extensions;
+using Hearts.Model;
 
 namespace Hearts.Model
 {
@@ -70,6 +71,16 @@ namespace Hearts.Model
         public static List<Card> Diamonds = new List<Card> { TwoOfDiamonds, ThreeOfDiamonds, FourOfDiamonds, FiveOfDiamonds, SixOfDiamonds, SevenOfDiamonds, EightOfDiamonds, NineOfDiamonds, TenOfDiamonds, JackOfDiamonds, QueenOfDiamonds, KingOfDiamonds, AceOfDiamonds };
         public static List<Card> Clubs = new List<Card> { TwoOfClubs, ThreeOfClubs, FourOfClubs, FiveOfClubs, SixOfClubs, SevenOfClubs, EightOfClubs, NineOfClubs, TenOfClubs, JackOfClubs, QueenOfClubs, KingOfClubs, AceOfClubs };
 
+        public static List<Card> AscendingHearts = new List<Card> { TwoOfHearts, ThreeOfHearts, FourOfHearts, FiveOfHearts, SixOfHearts, SevenOfHearts, EightOfHearts, NineOfHearts, TenOfHearts, JackOfHearts, QueenOfHearts, KingOfHearts, AceOfHearts };
+        public static List<Card> AscendingSpades = new List<Card> { TwoOfSpades, ThreeOfSpades, FourOfSpades, FiveOfSpades, SixOfSpades, SevenOfSpades, EightOfSpades, NineOfSpades, TenOfSpades, JackOfSpades, QueenOfSpades, KingOfSpades, AceOfSpades };
+        public static List<Card> AscendingDiamonds = new List<Card> { TwoOfDiamonds, ThreeOfDiamonds, FourOfDiamonds, FiveOfDiamonds, SixOfDiamonds, SevenOfDiamonds, EightOfDiamonds, NineOfDiamonds, TenOfDiamonds, JackOfDiamonds, QueenOfDiamonds, KingOfDiamonds, AceOfDiamonds };
+        public static List<Card> AscendingClubs = new List<Card> { TwoOfClubs, ThreeOfClubs, FourOfClubs, FiveOfClubs, SixOfClubs, SevenOfClubs, EightOfClubs, NineOfClubs, TenOfClubs, JackOfClubs, QueenOfClubs, KingOfClubs, AceOfClubs };
+
+        public static List<Card> DescendingHearts = new List<Card> { AceOfHearts, KingOfHearts, QueenOfHearts, JackOfHearts, TenOfHearts, NineOfHearts, EightOfHearts, SevenOfHearts, SixOfHearts, FiveOfHearts, FourOfHearts, ThreeOfHearts, TwoOfHearts };
+        public static List<Card> DescendingSpades = new List<Card> { AceOfSpades, KingOfSpades, QueenOfSpades, JackOfSpades, TenOfSpades, NineOfSpades, EightOfSpades, SevenOfSpades, SixOfSpades, FiveOfSpades, FourOfSpades, ThreeOfSpades, TwoOfSpades };
+        public static List<Card> DescendingDiamonds = new List<Card> { AceOfDiamonds, KingOfDiamonds, QueenOfDiamonds, JackOfDiamonds, TenOfDiamonds, NineOfDiamonds, EightOfDiamonds, SevenOfDiamonds, SixOfDiamonds, FiveOfDiamonds, FourOfDiamonds, ThreeOfDiamonds, TwoOfDiamonds };
+        public static List<Card> DescendingClubs = new List<Card> { AceOfClubs, KingOfClubs, QueenOfClubs, JackOfClubs, TenOfClubs, NineOfClubs, EightOfClubs, SevenOfClubs, SixOfClubs, FiveOfClubs, FourOfClubs, ThreeOfClubs, TwoOfClubs };
+        
         public static List<Card> Deck = Hearts.Union(Spades).Union(Diamonds).Union(Clubs).ToList();
     }
 }

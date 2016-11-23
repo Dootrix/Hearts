@@ -88,5 +88,10 @@ namespace Hearts.Extensions
         {
             return self.OfSuit(Suit.Clubs);
         }
+
+        public static IEnumerable<Card> ClubsExceptTwoOfClubs(this IEnumerable<Card> self)
+        {
+            return self.Where(i => i.Suit == Suit.Clubs && i.Kind != Kind.Two);
+        }
     }
 }

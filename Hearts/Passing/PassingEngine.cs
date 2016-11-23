@@ -53,7 +53,7 @@ namespace Hearts.Passing
                 round.Pass = this.GetPass(roundNumber, players.Count);
                 var pass = playerFrom.Agent.ChooseCardsToPass(new GameState(playerFrom, new Game { Rounds = new List<Round> { round } }, playerCards[playerFrom]));
 
-                if (!pass.All(j => playerCards[playerFrom].Starting.Contains(j)) || pass.Distinct().Count() != 3)
+                if (!pass.All(j => playerCards[playerFrom].Starting.Contains(j)) || pass.Count() != 3 || pass.Distinct().Count() != 3)
                 {
                     // TODO: Handle illegal move
                     Log.IllegalPass(playerFrom, pass);
