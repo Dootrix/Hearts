@@ -11,6 +11,6 @@ A means of simulating [Hearts](https://en.wikipedia.org/wiki/Hearts) games for c
 # Rules
 
 * No decompiling or inspecting other peoples' bots / code without their permission
-* No hacking / using accidentally exposed info your bot shouldn't have (yet... we mind encourage this when the project is more mature)
+* No hacking / using accidentally exposed info your bot shouldn't have (yet... we might encourage this when the project is more mature)
 * Try to beat each example bot before examining its code
 * No delegating to other players' bots in a published DLL (it's fine for testing)
