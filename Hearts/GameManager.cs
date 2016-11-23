@@ -48,7 +48,7 @@ namespace Hearts
 
             foreach (var startingHand in startingHands)
             {
-                this.playerCards[startingHand.Key].Starting = startingHand.Value;
+                this.playerCards[startingHand.Key].Starting = startingHand.Value.ToList();
                 this.playerCards[startingHand.Key].Current = startingHand.Value.ToList();
             }
 
@@ -57,7 +57,8 @@ namespace Hearts
             foreach (var postPassHand in new PassService(this.playerAgentLookup)
                 .OrchestratePassing(roundNumber, this.playerCards, this.playerCircle.FirstPlayer, this.round))
             {
-                this.playerCards[postPassHand.Key].PostPass = postPassHand.Value;
+                this.playerCards[postPassHand.Key].PostPass = postPassHand.Value.ToList();
+                this.playerCards[postPassHand.Key].Current = postPassHand.Value.ToList();
             }
 
             Log.HandsAfterPass(this.playerCards.ToDictionary(i => i.Key, i => i.Value.PostPass));
