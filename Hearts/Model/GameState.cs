@@ -10,6 +10,7 @@ namespace Hearts.Model
     {
         public GameState(Player player, Game game, PlayerState cards)
         {
+            this.Player = player;
             this.Game = game;
             this.StartingCards = cards.Starting;
             this.PostPassCards = cards.PostPass;
