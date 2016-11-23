@@ -1,4 +1,4 @@
-﻿using Hearts;
+﻿
 using Hearts.Model;
 
 namespace Hearts.Extensions

@@ -1,4 +1,5 @@
-﻿using Hearts.Logging;
+﻿using Hearts.AI;
+using Hearts.Logging;
 using Hearts.Model;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,8 @@ namespace Hearts.Passing
 {
     public class PassService
     {
+        private readonly IDictionary<Player, IAgent> playerAgentLookup;
+
         public List<List<Pass>> PassSchedule = new List<List<Pass>>
         {
             new List<Pass> { Pass.NoPass },
@@ -29,6 +32,11 @@ namespace Hearts.Passing
             { Pass.TwoToRight, (i) => { return i.PreviousPlayer.PreviousPlayer; }}
         };
 
+        public PassService(IDictionary<Player, IAgent> playerAgentLookup)
+        {
+            this.playerAgentLookup = playerAgentLookup;
+        }
+
         public Player GetPassRecipient(int roundNumber, int playerCount, Player fromPlayer)
         {
             var passFunction = this.PassFunctions[this.GetPass(roundNumber, playerCount)];
@@ -38,7 +46,7 @@ namespace Hearts.Passing
 
         public Pass GetPass(int roundNumber, int playerCount)
         {
-            return this.PassSchedule[playerCount - 1][roundNumber % playerCount];
+            return this.PassSchedule[playerCount - 1][(roundNumber -1) % playerCount];
         }
 
         public Dictionary<Player, IEnumerable<Card>> OrchestratePassing(int roundNumber, Dictionary<Player, PlayerState> playerCards, Player playerFrom, Round round)
@@ -51,7 +59,8 @@ namespace Hearts.Passing
             for (int i = 0; i < players.Count; i++)
             {
                 round.Pass = this.GetPass(roundNumber, players.Count);
-                var pass = playerFrom.Agent.ChooseCardsToPass(new GameState(playerFrom, new Game { Rounds = new List<Round> { round } }, playerCards[playerFrom]));
+                var agent = this.playerAgentLookup[playerFrom];
+                var pass = agent.ChooseCardsToPass(new GameState(playerFrom, new Game { Rounds = new List<Round> { round } }, playerCards[playerFrom]));
 
                 if (!pass.All(j => playerCards[playerFrom].Starting.Contains(j)) || pass.Count() != 3 || pass.Distinct().Count() != 3)
                 {

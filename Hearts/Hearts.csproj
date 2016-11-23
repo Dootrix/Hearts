@@ -41,15 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AI\Noob3AiExampleAgent.cs" />
-    <Compile Include="AI\Strategies\IPassStrategy.cs" />
-    <Compile Include="AI\Strategies\FollowSuitStrategy.cs" />
     <Compile Include="AI\IllegalMoveAgent.cs" />
-    <Compile Include="AI\Strategies\FollowWithoutSuitStrategy.cs" />
-    <Compile Include="AI\Strategies\IPlayStrategy.cs" />
-    <Compile Include="AI\Strategies\LeadCardStrategy.cs" />
-    <Compile Include="AI\Strategies\PassHighestCards.cs" />
-    <Compile Include="AI\Strategies\RiskReductionPassStrategy.cs" />
-    <Compile Include="AI\NoobCrusher.cs" />
     <Compile Include="AI\RandomPlayAiExampleAgent.cs" />
     <Compile Include="AI\Noob2AiExampleAgent.cs" />
     <Compile Include="AI\Noob1AiExampleAgent.cs" />
@@ -76,6 +68,7 @@
     <Compile Include="Logging\ILogDisplayOptions.cs" />
     <Compile Include="Logging\DefaultLogOptions.cs" />
     <Compile Include="Logging\Log.cs" />
+    <Compile Include="Model\Bot.cs" />
     <Compile Include="Model\Cards.cs" />
     <Compile Include="Model\GameEventType.cs" />
     <Compile Include="Model\Card.cs" />
@@ -92,7 +85,6 @@
     <Compile Include="Model\Deck.cs" />
     <Compile Include="Extensions\KindExtensions.cs" />
     <Compile Include="Extensions\CardExtensions.cs" />
-    <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\SuitExtensions.cs" />
     <Compile Include="Factories\IFactory.cs" />
