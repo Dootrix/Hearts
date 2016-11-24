@@ -46,6 +46,7 @@
     <Compile Include="AI\Noob2AiExampleAgent.cs" />
     <Compile Include="AI\Noob1AiExampleAgent.cs" />
     <Compile Include="AI\IAgent.cs" />
+    <Compile Include="Attributes\Abbreviation.cs" />
     <Compile Include="Attributes\AbbreviationAttribute.cs" />
     <Compile Include="Collections\UniqueList.cs" />
     <Compile Include="Collections\SelectiveList.cs" />

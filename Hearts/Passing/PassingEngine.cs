@@ -80,7 +80,9 @@ namespace Hearts.Passing
                     playerFrom = players[i + 1];
                 }
             }
-            
+
+            Log.Gap();
+
             for (int i = 0; i < players.Count; i++)
             {
                 var receivingCards = passedCards[i];

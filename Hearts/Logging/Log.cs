@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Hearts.Extensions;
 using Hearts.Model;
 using Hearts.Scoring;
+using Hearts.Attributes;
 
 namespace Hearts.Logging
 {
@@ -30,6 +31,13 @@ namespace Hearts.Logging
                 hand.Value.Log(hand.Key.Name);
             }
 
+            NewLine();
+        }
+
+        public static void PassDirection(Pass pass)
+        {
+            ToGrey();
+            Console.WriteLine("Pass direction: " + Abbreviation.Get(pass));
             NewLine();
         }
 

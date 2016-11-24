@@ -54,14 +54,7 @@ namespace Hearts
 
             Log.StartingHands(startingHands);
 
-            foreach (var postPassHand in new PassService(this.playerAgentLookup)
-                .OrchestratePassing(roundNumber, this.playerCards, this.playerCircle.FirstPlayer, this.round))
-            {
-                this.playerCards[postPassHand.Key].PostPass = postPassHand.Value.ToList();
-                this.playerCards[postPassHand.Key].Current = postPassHand.Value.ToList();
-            }
-
-            Log.HandsAfterPass(this.playerCards.ToDictionary(i => i.Key, i => i.Value.PostPass));
+            this.PerformPass(startingHands);
 
             var handEvaluator = new HandWinEvaluator();
             var rulesEngine = new GameRulesEngine();
@@ -110,6 +103,40 @@ namespace Hearts
                 Scores = scores,
                 Tricks = tricks
             };
+        }
+
+        private void PerformPass(Dictionary<Player, IEnumerable<Card>> startingHands)
+        {
+            int roundNumber = this.round.RoundNumber;
+
+            var passService = new PassService(this.playerAgentLookup);
+            var pass = passService.GetPass(roundNumber, this.round.NumberOfPlayers);
+
+            Log.PassDirection(pass);
+
+            if (pass != Pass.NoPass)
+            {
+                var postPassHands = passService.OrchestratePassing(
+                roundNumber,
+                this.playerCards,
+                this.playerCircle.FirstPlayer,
+                this.round);
+
+                foreach (var postPassHand in postPassHands)
+                {
+                    this.playerCards[postPassHand.Key].PostPass = postPassHand.Value.ToList();
+                    this.playerCards[postPassHand.Key].Current = postPassHand.Value.ToList();
+                }
+
+                Log.HandsAfterPass(this.playerCards.ToDictionary(i => i.Key, i => i.Value.PostPass));
+            }
+            else
+            {
+                foreach (var startingHand in startingHands)
+                {
+                    this.playerCards[startingHand.Key].PostPass = startingHand.Value.ToList();
+                }
+            }
         }
 
         private void AddBots(IEnumerable<Bot> bots)

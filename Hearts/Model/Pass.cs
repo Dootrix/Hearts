@@ -1,17 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Hearts.Model
+﻿namespace Hearts.Model
 {
     public enum Pass
     {
+        [Abbreviation("Left")]
         OneToLeft,
+
+        [Abbreviation("Right")]
         OneToRight,
+
+        [Abbreviation("No pass")]
         NoPass,
+
+        [Abbreviation("Two to left")]
         TwoToLeft,
+
+        [Abbreviation("Two to right")]
         TwoToRight
     }
 }

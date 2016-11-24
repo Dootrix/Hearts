@@ -1,4 +1,5 @@
-﻿using Hearts.Model;
+﻿using Hearts.Attributes;
+using Hearts.Model;
 
 namespace Hearts.Extensions
 {
@@ -6,12 +7,7 @@ namespace Hearts.Extensions
     {
         public static string ToAbbreviation(this Kind rank)
         {
-            var type = typeof(Kind);
-            var memInfo = type.GetMember(rank.ToString());
-            var attributes = memInfo[0].GetCustomAttributes(typeof(AbbreviationAttribute),
-                false);
-
-            return ((AbbreviationAttribute)attributes[0]).Value;
+            return Abbreviation.Get(rank);
         }
     }
 }
