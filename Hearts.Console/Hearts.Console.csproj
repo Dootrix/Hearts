@@ -78,6 +78,8 @@
     <Content Include="AIs\Beast.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="AIs\Cargowire.Hearts.dll" />
+    <Content Include="AIs\Deathstar.dll" />
     <Content Include="AIs\HeartsCrusher.dll" />
     <Content Include="AIs\QueenCatcherAI.dll" />
   </ItemGroup>

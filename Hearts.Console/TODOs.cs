@@ -11,6 +11,7 @@ namespace Hearts.Console
         // Overall longer term TODOs...
         //
         // Random Seed control
-        // Stop the Player owning the agent to aid with testing.
+        // Timers
+        // Log shoots for all player
     }
 }
