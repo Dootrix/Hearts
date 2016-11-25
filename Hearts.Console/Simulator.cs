@@ -1,105 +1,95 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Hearts.Model;
 using Hearts.Logging;
+using Hearts.Scoring;
 
 namespace Hearts.Console
 {
     public class Simulator
     {
-        public static int BeastMoonshotSuccesses = 0;
+        private const int MoonshotPoints = 26;
+        private const int GameLosingPoints = 100;
 
-        public void SimulateGames(int simulationCount)
+        public void SimulateGames(IEnumerable<Bot> bots, int simulationCount)
         {
-            var bots = Settings.Bots;
-            var victories = bots.Select(x => x.Player).ToDictionary(i => i, i => 0);
-            var moonshots = new Dictionary<Bot, Tuple<int, int>>();
+            var simulationResult = new SimulationResult();
 
             for (int i = 0; i < simulationCount; i++)
             {
-                var result = this.SimulateGame(bots);
-                int winningScore = result.Min(j => j.Value);
-
-                foreach(var winner in result.Where(j => j.Value == result.Min(k => k.Value)))
-                {
-                    ++victories[winner.Key];
-                }
+                var gameResult = this.SimulateGame(bots, i + 1);
+                simulationResult.GameResults.Add(gameResult);
             }
 
-            int attempts = 0; // TODO: Refactor Shot Attempt reporting BeastAi.Passing.AdamPassEngine.BeastMoonshotAttempts;
-            int successes = Simulator.BeastMoonshotSuccesses;
-            
-            foreach(var bot in bots)
-            {
-                if (bot.Agent.AgentName == "Savage Beast")
-                {
-                    moonshots.Add(bot, new Tuple<int, int>(successes, attempts));
-                }
-                else
-                {
-                    moonshots.Add(bot, new Tuple<int, int>(0, 0));
-                }
-            }
-
-            Log.LogSimulationSummary(simulationCount, victories, moonshots);
+            Log.LogSimulationSummary(simulationResult);
         }
 
-        private Dictionary<Player, int> SimulateGame(IEnumerable<Bot> bots)
+        private GameResult SimulateGame(IEnumerable<Bot> bots, int gameNumber)
         {
-            var beast = bots.FirstOrDefault(x => x.Agent.AgentName == "Savage Beast");
-            var beastPlayer = beast != null ? beast.Player : null;
-
             var gameManager = new GameManager(bots);
-            var cumulativeScores = bots.Select(x => x.Player).ToDictionary(i => i, i => 0);
+            var gameResult = new GameResult(bots.Select(i => i.Player), gameNumber);
             int roundNumber = 1;
+            bool gameHasEnded;
 
             do
             {
-                var result = gameManager.Play(roundNumber);
+                var roundResult = gameManager.Play(roundNumber);
 
-                var moonShots = result.Scores.Where(i => i.Value == 26);
-
-                Simulator.BeastMoonshotSuccesses += moonShots.Where(i => i.Key == beastPlayer).Count();
-
-                if (moonShots.Any())
+                foreach (var player in bots.Select(i => i.Player))
                 {
-                    const int MoonshotPoints = 26;
-                    var shooter = moonShots.First().Key;
-                    int shooterCumulativeScore = cumulativeScores[shooter];
-                    var otherScores = cumulativeScores.Where(i => i.Key != shooter).ToList();
-                    var otherScoresPlus26 = otherScores.Select(i => i.Value + 26).ToList();
-                    bool hasShooterLostIfAddsScoreToOthers = 
-                        otherScoresPlus26.Any(i => i >= 100) 
-                        && shooterCumulativeScore > otherScoresPlus26.Min();
+                    int playerScore = roundResult.Scores[player];
 
-                    if (hasShooterLostIfAddsScoreToOthers)
+                    if (playerScore < MoonshotPoints)
                     {
-                        cumulativeScores[shooter] -= MoonshotPoints;
+                        gameResult.Scores[player] += playerScore;
                     }
                     else
                     {
-                        foreach (var score in otherScores)
+                        ++gameResult.Moonshots[player];
+                        int shooterCumulativeScore = gameResult.Scores[player];
+                        var otherScores = gameResult.Scores.Where(i => i.Key != player).ToList();
+                        var otherScoresPlus26 = otherScores.Select(i => i.Value + MoonshotPoints).ToList();
+                        bool hasShooterLostIfAddsScoreToOthers = otherScoresPlus26.Any(i => i >= GameLosingPoints) && shooterCumulativeScore > otherScoresPlus26.Min();
+
+                        if (hasShooterLostIfAddsScoreToOthers)
                         {
-                            cumulativeScores[score.Key] += MoonshotPoints;
+                            gameResult.Scores[player] -= MoonshotPoints;
+                        }
+                        else
+                        {
+                            foreach (var otherPlayer in otherScores.Select(i => i.Key))
+                            {
+                                gameResult.Scores[otherPlayer] += MoonshotPoints;
+                            }
                         }
                     }
+
+                    gameResult.RoundWins[player] += roundResult.Winners.Count(i => i == player); // TODO: make sure what ever sets winners and losers understands to account for 26pts elsewhere and on self
+                    gameResult.RoundLosses[player] += roundResult.Losers.Count(i => i == player); // TODO: make sure what ever sets winners and losers understands to account for 26pts elsewhere and on self
                 }
-                else
+
+                gameHasEnded = gameResult.Scores.Any(i => i.Value >= GameLosingPoints);
+
+                if (gameHasEnded)
                 {
-                    foreach (var score in result.Scores)
+                    foreach (var player in gameResult.Scores.Where(i => i.Value == gameResult.Scores.Min(j => j.Value)).Select(i => i.Key))
                     {
-                        cumulativeScores[score.Key] += score.Value;
+                        gameResult.Winners.Add(player);
+                    }
+
+                    foreach (var player in gameResult.Scores.Where(i => i.Value == gameResult.Scores.Max(j => j.Value)).Select(i => i.Key))
+                    {
+                        gameResult.Losers.Add(player);
                     }
                 }
 
+                ++gameResult.RoundsPlayed;
                 ++roundNumber;
+            } while (!gameHasEnded);
 
-            } while (cumulativeScores.All(i => i.Value < 100));
+            Log.LogFinalWinner(gameResult);
 
-            Log.LogFinalWinner(cumulativeScores);
-
-            return cumulativeScores;
+            return gameResult;
         }
     }
 }

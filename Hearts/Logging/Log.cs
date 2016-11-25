@@ -124,9 +124,11 @@ namespace Hearts.Logging
             Console.WriteLine("*** OUT OF CARDS! ***");
         }
 
-        public static void PointsForRound(Dictionary<Player, int> scores)
+        public static void PointsForRound(RoundResult roundResult)
         {
             if (!Options.DisplayPointsForRound) return;
+
+            var scores = roundResult.Scores;
 
             foreach (var score in scores)
             {
@@ -144,17 +146,32 @@ namespace Hearts.Logging
             NewLine();
         }
 
-        public static void LogFinalWinner(Dictionary<Player, int> results)
+        public static void LogFinalWinner(GameResult gameResult)
         {
             if (!Options.DisplayLogFinalWinner) return;
 
             ToGrey();
             Console.WriteLine(string.Empty);
-            Console.WriteLine(string.Empty);
             Console.WriteLine("__________________________________________________________________");
             Console.WriteLine(string.Empty);
 
-            foreach (var score in results)
+            Console.WriteLine("Moonshots:");
+
+            foreach (var player in gameResult.Moonshots)
+            {
+                Console.WriteLine("{0} : {1}", player.Key.Name, player.Value);
+            }
+
+            Console.WriteLine("Rounds: W/L/P");
+
+            foreach (var player in gameResult.RoundWins)
+            {
+                Console.WriteLine("{0} : {1}/{2}/{3}", player.Key.Name, player.Value, gameResult.RoundLosses[player.Key], gameResult.RoundsPlayed);
+            }
+
+            Console.WriteLine("Scores");
+
+            foreach (var score in gameResult.Scores)
             {
                 ToBlue();
                 Console.Write(" " + score.Key.Name.PadLeft(Options.NamePad) + " ");
@@ -165,7 +182,7 @@ namespace Hearts.Logging
                 ToGrey();
                 Console.Write(" pts ");
 
-                if (score.Value == results.Min(i => i.Value))
+                if (score.Value == gameResult.Scores.Min(i => i.Value))
                 {
                     ToBlue();
                     Console.Write("Wins");
@@ -181,9 +198,11 @@ namespace Hearts.Logging
             Console.WriteLine(string.Empty);
         }
         
-        public static void LogSimulationSummary(int gameCount, Dictionary<Player, int> victories, Dictionary<Bot, Tuple<int, int>> moonshots)
+        public static void LogSimulationSummary(SimulationResult result)
         {
             if (!Options.DisplaySimulationSummary) return;
+
+            var players = result.GameResults.First().Scores.Select(i => i.Key);
 
             ToGrey();
             Console.WriteLine(string.Empty);
@@ -191,29 +210,60 @@ namespace Hearts.Logging
             Console.WriteLine("__________________________________________________________________");
             Console.WriteLine(string.Empty);
             Console.WriteLine("Simulation Stats");
-            Console.WriteLine("Based on {0} game{1}", gameCount, gameCount > 1 ? "s" : string.Empty);
+            Console.WriteLine("Based on {0} game{1}", result.GameResults.Count, result.GameResults.Count > 1 ? "s" : string.Empty);
+
+            Console.WriteLine(string.Empty);
             Console.WriteLine("Moonshots:");
 
-            foreach (var moonshot in moonshots)
+            foreach (var player in players)
             {
-                var player = moonshot.Key.Player;
-                Console.WriteLine("{0} {1}/{2}", player.Name, moonshot.Value.Item1, moonshot.Value.Item2);
+                int moonshots = result.GameResults.SelectMany(i => i.Moonshots).Where(i => i.Key == player).Select(i => i.Value).Sum();
+                Console.WriteLine("{0} : {1}", player.Name, moonshots);
             }
 
             Console.WriteLine(string.Empty);
+            Console.WriteLine("Rounds: W/L/P");
 
-            foreach (var victory in victories)
+            foreach (var player in players)
+            {
+                var playerName = player.Name;
+                var roundsWon = result.GameResults.SelectMany(i => i.RoundWins).Where(i => i.Key == player).Select(i => i.Value).Sum();
+                var roundsLost = result.GameResults.SelectMany(i => i.RoundLosses).Where(i => i.Key == player).Select(i => i.Value).Sum();
+                int roundsPlayed = result.GameResults.Select(i => i.RoundsPlayed).Sum();
+                Console.WriteLine("{0} : {1}/{2}/{3}", playerName, roundsWon, roundsLost, roundsPlayed);
+            }
+
+            Console.WriteLine(string.Empty);
+            Console.WriteLine("Games: W/L/P");
+
+            var totalWon = new Dictionary<Player, int>();
+            int gamesPlayed = result.GameResults.Count();
+
+            foreach (var player in players)
+            {
+                var playerName = player.Name;
+                int gamesWon = result.GameResults.SelectMany(i => i.Winners).Where(i => i == player).Count();
+                int gameLost = result.GameResults.SelectMany(i => i.Losers).Where(i => i == player).Count();
+                Console.WriteLine("{0} : {1}/{2}/{3}", playerName, gamesWon, gameLost, gamesPlayed);
+                totalWon.Add(player, gamesWon);
+            }
+
+            Console.WriteLine(string.Empty);
+            Console.WriteLine("__________________________________________________________________");
+            Console.WriteLine(string.Empty);
+
+            foreach (var player in players)
             {
                 ToBlue();
-                Console.Write(" " + victory.Key.Name.PadLeft(Options.NamePad) + " ");
+                Console.Write(" " + player.Name.PadLeft(Options.NamePad) + " ");
                 ToGrey();
                 Console.Write(" : ");
                 ToBlue();
-                float percent = (float)victory.Value / gameCount;
+                float percent = (float)totalWon[player] / gamesPlayed;
                 Console.Write(percent.ToString("0.00% ").PadLeft(8));
                 ToGrey();
 
-                if (victory.Value == victories.Max(i => i.Value))
+                if (totalWon[player] == totalWon.Max(i => i.Value))
                 {
                     ToBlue();
                     Console.Write(" Best");

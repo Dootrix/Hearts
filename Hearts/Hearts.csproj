@@ -106,6 +106,9 @@
     <Compile Include="Rules\CannotPlayQueenSpadesOrHeartsOnFirstHandIfPossibleRule.cs" />
     <Compile Include="Rules\CannotLeadHeartsUntilBrokenRule.cs" />
     <Compile Include="Rules\IGameRule.cs" />
+    <Compile Include="Scoring\SimulationResult.cs" />
+    <Compile Include="Scoring\PlayerScore.cs" />
+    <Compile Include="Scoring\GameResult.cs" />
     <Compile Include="Scoring\RoundResult.cs" />
     <Compile Include="Scoring\ScoreEvaluator.cs" />
     <Compile Include="Scoring\HandWinEvaluator.cs" />

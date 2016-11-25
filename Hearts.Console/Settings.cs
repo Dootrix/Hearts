@@ -27,6 +27,8 @@ namespace Hearts.Console
         //    • NoobCrusher.Create(NoobCrusherVersion.v1) (Tony Beasley)
         //    • NoobCrusher.Create(NoobCrusherVersion.v2) (Tony Beasley)
         //    • Craghoul (Craig Rowe)
+        //    • Deathstar (James Robinson)
+        //    • QueenCatcher (Dan White)
 
         public static List<Bot> Bots = new HeartsPlayerList
             {
