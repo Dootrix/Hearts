@@ -28,7 +28,7 @@ namespace Hearts.Console
                 Bot.Create(new Player("A"), new SavageBeast(true)),
                 Bot.Create(new Player("B"), NoobCrusher.Create(NoobCrusherVersion.v2)),
                 Bot.Create(new Player("C"), new QueenCatcherAI.QueenCatcher()),
-                Bot.Create(new Player("D"), new Noob3AiExampleAgent())
+                Bot.Create(new Player("D"), new Deathstar())
             };
     }
 }
