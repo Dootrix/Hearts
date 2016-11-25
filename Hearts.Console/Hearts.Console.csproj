@@ -37,6 +37,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>AIs\Beast.dll</HintPath>
     </Reference>
+    <Reference Include="Cargowire.Hearts">
+      <HintPath>AIs\Cargowire.Hearts.dll</HintPath>
+    </Reference>
     <Reference Include="HeartsCrusher, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>AIs\HeartsCrusher.dll</HintPath>
@@ -53,6 +56,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Deathstar">
+      <HintPath>AIs\Deathstar.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Settings.cs" />
@@ -72,6 +78,8 @@
     <Content Include="AIs\Beast.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="AIs\Cargowire.Hearts.dll" />
+    <Content Include="AIs\Deathstar.dll" />
     <Content Include="AIs\HeartsCrusher.dll" />
     <Content Include="AIs\QueenCatcherAI.dll" />
   </ItemGroup>

@@ -20,10 +20,14 @@ namespace Hearts
         private readonly Dictionary<Player, IAgent> playerAgentLookup = new Dictionary<Player, IAgent>();
         private Round round;
         private Dealer dealer;
+        private HandWinEvaluator handEvaluator;
+        private GameRulesEngine rulesEngine;
 
         public GameManager(IEnumerable<Bot> bots)
         {
             this.playerCircle = new PlayerCircle();
+            this.handEvaluator = new HandWinEvaluator();
+            this.rulesEngine = new GameRulesEngine();
             this.AddBots(bots);
             this.Reset();
         }
@@ -43,6 +47,9 @@ namespace Hearts
         {
             this.Reset();
             var players = this.playerCircle.AllPlayers;
+
+            var roundResult = new RoundResult(players, roundNumber);
+
             this.round = new Round(players.Count, roundNumber);
             var startingHands = this.dealer.DealStartingHands(players);
 
@@ -55,9 +62,7 @@ namespace Hearts
             Log.StartingHands(startingHands);
 
             this.PerformPass(startingHands);
-
-            var handEvaluator = new HandWinEvaluator();
-            var rulesEngine = new GameRulesEngine();
+            
             var startingPlayer = this.playerCircle.GetStartingPlayer(this.playerCards);
 
             while (this.playerCards.Select(i => i.Value.Current.Count()).Sum() > 0)
@@ -67,7 +72,7 @@ namespace Hearts
                 foreach (var player in this.playerCircle.GetOrderedPlayersStartingWith(startingPlayer))
                 {
                     var playerRemaining = this.playerCards[player].Current;
-                    this.playerCards[player].Legal = rulesEngine.GetPlayableCards(playerRemaining, this.round);
+                    this.playerCards[player].Legal = this.rulesEngine.GetPlayableCards(playerRemaining, this.round);
                     var agent = this.playerAgentLookup[player];
                     var card = agent.ChooseCardToPlay(new GameState(player, new Game { Rounds = new List<Round> { this.round } }, this.playerCards[player]));
 
@@ -79,30 +84,63 @@ namespace Hearts
                         card = this.playerCards[player].Legal.First();
                     }
 
-                    this.playerCards[player].Current = playerRemaining.ExceptCard(card);
+                    this.playerCards[player].Current = playerRemaining.ExceptCards(card);
 
                     this.round.Play(player, card);
                 }
 
                 this.round.EndTrick();
                 var trick = this.round.PlayedTricks.Last();
-                var trickWinner = handEvaluator.EvaluateWinner(trick);
+                var trickWinner = this.handEvaluator.EvaluateWinner(trick);
                 trick.Winner = trickWinner;
                 startingPlayer = trick.Winner;
 
                 Log.TrickSummary(trick);
             }
 
-            var scores = players.ToDictionary(i => i, i => new ScoreEvaluator().CalculateScore(this.round.PlayedTricks.Where(j => j.Winner == i)));
-            var tricks = players.ToDictionary(i => i, i => this.round.PlayedTricks.Where(j => j.Winner == i).ToList());
+            var scores = players.ToDictionary(i => i, i => this.round.PlayedTricks.Where(j => j.Winner == i).SelectCards().Score());
+            var tricks = players.ToDictionary(i => i, i => this.round.PlayedTricks.Where(j => j.Winner == i).ToList()); // TODO: I think we can probably remove Tricks from roundResult
+            roundResult.Scores = scores;
+            roundResult.Tricks = tricks;
 
-            Log.PointsForRound(scores);
-
-            return new RoundResult
+            foreach (var player in scores.Where(i => i.Value == 26).Select(i => i.Key))
             {
-                Scores = scores,
-                Tricks = tricks
-            };
+                roundResult.Shooters.Add(player);
+            }
+
+            foreach (var player in scores.Where(i => i.Value == roundResult.Scores.Min(j => j.Value)).Select(i => i.Key))
+            {
+                // +26 is actually a winning score, so account for moonshots swapping definition of winner / loser
+                if (roundResult.Shooters.Any())
+                {
+                    roundResult.Losers.Add(player);
+                }
+                else
+                {
+                    roundResult.Winners.Add(player);
+                }
+                
+            }
+
+            foreach (var player in scores.Where(i => i.Value == roundResult.Scores.Max(j => j.Value)).Select(i => i.Key))
+            {
+                // +26 is actually a winning score, so account for moonshots swapping definition of winner / loser
+                if (roundResult.Shooters.Any())
+                {
+                    roundResult.Winners.Add(player);
+                }
+                else
+                {
+                    roundResult.Losers.Add(player);
+                }
+            }
+
+            // TODO: Raise event OnRoundComplete
+
+            Log.PointsForRound(roundResult);
+
+
+            return roundResult;
         }
 
         private void PerformPass(Dictionary<Player, IEnumerable<Card>> startingHands)

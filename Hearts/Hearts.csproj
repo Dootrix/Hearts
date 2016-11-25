@@ -48,12 +48,14 @@
     <Compile Include="AI\IAgent.cs" />
     <Compile Include="Attributes\Abbreviation.cs" />
     <Compile Include="Attributes\AbbreviationAttribute.cs" />
+    <Compile Include="Collections\OrderDirection.cs" />
     <Compile Include="Collections\UniqueList.cs" />
     <Compile Include="Collections\SelectiveList.cs" />
     <Compile Include="Extensions\CardListFilteringExtensions.cs" />
     <Compile Include="Extensions\CardListRetrievalExtensions.cs" />
     <Compile Include="Extensions\CardListContainsExtensions.cs" />
     <Compile Include="Extensions\CardListOrderingExtensions.cs" />
+    <Compile Include="Extensions\RoundExtensions.cs" />
     <Compile Include="Extensions\PlayedCardExtensions.cs" />
     <Compile Include="Extensions\PlayedTrickExtensions.cs" />
     <Compile Include="Extensions\CardListExtensions.cs" />
@@ -104,6 +106,9 @@
     <Compile Include="Rules\CannotPlayQueenSpadesOrHeartsOnFirstHandIfPossibleRule.cs" />
     <Compile Include="Rules\CannotLeadHeartsUntilBrokenRule.cs" />
     <Compile Include="Rules\IGameRule.cs" />
+    <Compile Include="Scoring\SimulationResult.cs" />
+    <Compile Include="Scoring\PlayerScore.cs" />
+    <Compile Include="Scoring\GameResult.cs" />
     <Compile Include="Scoring\RoundResult.cs" />
     <Compile Include="Scoring\ScoreEvaluator.cs" />
     <Compile Include="Scoring\HandWinEvaluator.cs" />

@@ -11,7 +11,7 @@ namespace Hearts.Console
                 Log.Options = new SummaryOnlyLogOptions();
             }
 
-            new Simulator().SimulateGames(Settings.GameSimulationCount);
+            new Simulator().SimulateGames(Settings.Bots, Settings.GameSimulationCount);
             System.Console.ReadLine();
         }
     }
