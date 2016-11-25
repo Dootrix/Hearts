@@ -7,6 +7,19 @@ namespace Hearts.Extensions
 {
     public static class CardListOrderingExtensions
     {
+        public static IEnumerable<Card> Ordered(this IEnumerable<Card> self, OrderDirection orderDirection)
+        {
+            switch (orderDirection)
+            {
+                case OrderDirection.Ascending:
+                    return self.Ascending();
+                case OrderDirection.Descending:
+                    return self.Descending();
+                default:
+                    return self;
+            }
+        }
+
         public static IEnumerable<Card> Ascending(this IEnumerable<Card> self)
         {
             return self.OrderBy(i => i.Kind);
@@ -24,20 +37,20 @@ namespace Hearts.Extensions
                 : self.Clubs().Descending().ToList();
         }
 
-        public static IEnumerable<Card> GroupBySuitAmountDescending(this IEnumerable<Card> self)
+        public static IEnumerable<Card> GroupBySuitAmountDescending(this IEnumerable<Card> self, OrderDirection orderDirection = OrderDirection.Unordered)
         {
            var groupedCards = self.GroupBy(_ => _.Suit);
            var orderedGroupedCards = groupedCards.OrderByDescending(_ => _.Count());
 
-            return orderedGroupedCards.SelectMany(_ => _);
+            return orderedGroupedCards.SelectMany(_ => _.Ordered(orderDirection));
         }
 
-        public static IEnumerable<Card> GroupBySuitAmountAscending(this IEnumerable<Card> self)
+        public static IEnumerable<Card> GroupBySuitAmountAscending(this IEnumerable<Card> self, OrderDirection orderDirection = OrderDirection.Unordered)
         {
             var groupedCards = self.GroupBy(_ => _.Suit);
             var orderedGroupedCards = groupedCards.OrderBy(_ => _.Count());
 
-            return orderedGroupedCards.SelectMany(_ => _);
+            return orderedGroupedCards.SelectMany(_ => _.Ordered(orderDirection));
         }
 
         public static IEnumerable<Card> GroupBySuitDescending(this IEnumerable<Card> self, params Suit[] suitOrder)

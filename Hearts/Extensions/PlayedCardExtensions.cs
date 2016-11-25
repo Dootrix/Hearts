@@ -32,5 +32,10 @@ namespace Hearts.Extensions
 
             return null;
         }
+
+        public static bool HasCardBeenPlayed(this IEnumerable<PlayedCard> self, Card card)
+        {
+            return self.SelectCards().Any(_ => _ == card);
+        }
     }
 }
