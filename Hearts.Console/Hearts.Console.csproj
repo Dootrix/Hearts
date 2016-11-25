@@ -37,6 +37,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>AIs\Beast.dll</HintPath>
     </Reference>
+    <Reference Include="Cargowire.Hearts">
+      <HintPath>AIs\Cargowire.Hearts.dll</HintPath>
+    </Reference>
     <Reference Include="HeartsCrusher, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>AIs\HeartsCrusher.dll</HintPath>
@@ -55,9 +58,6 @@
     <Reference Include="System.Xml" />
     <Reference Include="Deathstar">
       <HintPath>AIs\Deathstar.dll</HintPath>
-    </Reference>
-    <Reference Include="Hearts.Cargowire">
-      <HintPath>AIs\Hearts.Cargowire.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
