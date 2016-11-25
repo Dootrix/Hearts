@@ -32,6 +32,11 @@ namespace Hearts.Extensions
             return self.OrderByDescending(i => i.Kind).Skip(1);
         }
 
+        public static IEnumerable<Card> ExceptCard(this IEnumerable<Card> self, Card card)
+        {
+            return self.Except(new[] { card });
+        }
+
         public static IEnumerable<Card> ExceptCards(this IEnumerable<Card> self, params Card[] cards)
         {
             return self.Except(cards);
