@@ -13,7 +13,7 @@ namespace Hearts.Extensions
 
         public static Card Highest(this IEnumerable<Card> self)
         {
-            return self.OrderByDescending(i => i.Kind).First();
+            return self.OrderByDescending(i => i.Kind).FirstOrDefault();
         }
 
         public static Card HighestButOne(this IEnumerable<Card> self)
@@ -23,7 +23,18 @@ namespace Hearts.Extensions
 
         public static Card Lowest(this IEnumerable<Card> self)
         {
-            return self.OrderBy(i => i.Kind).First();
+            return self.OrderBy(i => i.Kind).FirstOrDefault();
+        }
+
+        public static Suit? FirstSuit(this IEnumerable<Card> self)
+        {
+            var firstCard = self.FirstOrDefault();
+            if (firstCard == null)
+            {
+                return null;
+            }
+
+            return firstCard.Suit;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿
 using System.Collections.Generic;
+using Hearts.Collections;
 using Hearts.Extensions;
 using Hearts.Model;
 using NUnit.Framework;
@@ -183,6 +184,54 @@ namespace Hearts.Tests.Extensions
                 var result = cards.GroupBySuitAmountDescending().ToDebugString();
                 Assert.AreEqual("A♦,5♦,3♦,K♦,T♠,9♠,2♠,T♣,9♣,J♥", result);
             }
+
+            [Test]
+            public void FourThreeTwoOneOfSuitsIsReorderedAndEachSuitOrderedByPassedDirectionDescending()
+            {
+                var cards = new List<Card>
+                {
+                    Cards.TenOfSpades,
+                    Cards.NineOfSpades,
+                    Cards.TwoOfSpades,
+
+                    Cards.AceOfDiamonds,
+                    Cards.FiveOfDiamonds,
+                    Cards.ThreeOfDiamonds,
+                    Cards.KingOfDiamonds,
+
+                    Cards.TenOfClubs,
+                    Cards.NineOfClubs,
+
+                    Cards.JackOfHearts
+                };
+
+                var result = cards.GroupBySuitAmountDescending(OrderDirection.Descending).ToDebugString();
+                Assert.AreEqual("A♦,K♦,5♦,3♦,T♠,9♠,2♠,T♣,9♣,J♥", result);
+            }
+
+            [Test]
+            public void FourThreeTwoOneOfSuitsIsReorderedAndEachSuitOrderedByPassedDirectionAscending()
+            {
+                var cards = new List<Card>
+                {
+                    Cards.TenOfSpades,
+                    Cards.NineOfSpades,
+                    Cards.TwoOfSpades,
+
+                    Cards.AceOfDiamonds,
+                    Cards.FiveOfDiamonds,
+                    Cards.ThreeOfDiamonds,
+                    Cards.KingOfDiamonds,
+
+                    Cards.TenOfClubs,
+                    Cards.NineOfClubs,
+
+                    Cards.JackOfHearts
+                };
+
+                var result = cards.GroupBySuitAmountDescending(OrderDirection.Ascending).ToDebugString();
+                Assert.AreEqual("3♦,5♦,K♦,A♦,2♠,9♠,T♠,9♣,T♣,J♥", result);
+            }
         }
 
         [TestFixture]
@@ -228,6 +277,54 @@ namespace Hearts.Tests.Extensions
 
                 var result = cards.GroupBySuitAmountAscending().ToDebugString();
                 Assert.AreEqual("J♥,T♣,9♣,T♠,9♠,2♠,A♦,5♦,3♦,K♦", result);
+            }
+
+            [Test]
+            public void FourThreeTwoOneOfSuitsIsReorderedAndEachSuitOrderedByPassedDirectionDescending()
+            {
+                var cards = new List<Card>
+                {
+                    Cards.TenOfSpades,
+                    Cards.NineOfSpades,
+                    Cards.TwoOfSpades,
+
+                    Cards.AceOfDiamonds,
+                    Cards.FiveOfDiamonds,
+                    Cards.ThreeOfDiamonds,
+                    Cards.KingOfDiamonds,
+
+                    Cards.TenOfClubs,
+                    Cards.NineOfClubs,
+
+                    Cards.JackOfHearts
+                };
+
+                var result = cards.GroupBySuitAmountAscending(OrderDirection.Descending).ToDebugString();
+                Assert.AreEqual("J♥,T♣,9♣,T♠,9♠,2♠,A♦,K♦,5♦,3♦", result);
+            }
+
+            [Test]
+            public void FourThreeTwoOneOfSuitsIsReorderedAndEachSuitOrderedByPassedDirectionAscending()
+            {
+                var cards = new List<Card>
+                {
+                    Cards.TenOfSpades,
+                    Cards.NineOfSpades,
+                    Cards.TwoOfSpades,
+
+                    Cards.AceOfDiamonds,
+                    Cards.FiveOfDiamonds,
+                    Cards.ThreeOfDiamonds,
+                    Cards.KingOfDiamonds,
+
+                    Cards.TenOfClubs,
+                    Cards.NineOfClubs,
+
+                    Cards.JackOfHearts
+                };
+
+                var result = cards.GroupBySuitAmountAscending(OrderDirection.Ascending).ToDebugString();
+                Assert.AreEqual("J♥,9♣,T♣,2♠,9♠,T♠,3♦,5♦,K♦,A♦", result);
             }
         }
 
