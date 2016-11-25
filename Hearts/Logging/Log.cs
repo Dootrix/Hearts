@@ -36,6 +36,8 @@ namespace Hearts.Logging
 
         public static void PassDirection(Pass pass)
         {
+            if (!Options.DisplayPass) return;
+
             ToGrey();
             Console.WriteLine("Pass direction: " + Abbreviation.Get(pass));
             NewLine();
