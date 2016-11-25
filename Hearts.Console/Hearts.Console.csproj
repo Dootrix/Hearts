@@ -56,6 +56,9 @@
     <Reference Include="Deathstar">
       <HintPath>AIs\Deathstar.dll</HintPath>
     </Reference>
+    <Reference Include="Hearts.Cargowire">
+      <HintPath>AIs\Hearts.Cargowire.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Settings.cs" />
