@@ -79,7 +79,7 @@ namespace Hearts
                         card = this.playerCards[player].Legal.First();
                     }
 
-                    this.playerCards[player].Current = playerRemaining.ExceptCard(card);
+                    this.playerCards[player].Current = playerRemaining.ExceptCards(card);
 
                     this.round.Play(player, card);
                 }
