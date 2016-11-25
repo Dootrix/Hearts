@@ -30,7 +30,7 @@ namespace Hearts.Console
 
         public static List<Bot> Bots = new HeartsPlayerList
             {
-                NoobCrusher.Create(NoobCrusherVersion.v2),
+                NoobCrusher.Create(NoobCrusherVersion.v3),
                 new Deathstar(),
                 new QueenCatcher(),
                 new Craghoul()
