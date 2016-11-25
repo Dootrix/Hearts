@@ -101,7 +101,7 @@ namespace Hearts.Console
 
             public void Add(IAgent agent)
             {
-                this.Add(Bot.Create(new Player((playerNamePrefix + " (" + agent.AgentName + ")").PadRight(25, ' ')), agent));
+                base.Add(Bot.Create(new Player((playerNamePrefix + " (" + agent.AgentName + ")").PadRight(25, ' ')), agent));
                 playerNamePrefix++;
             }
 
