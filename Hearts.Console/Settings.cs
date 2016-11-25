@@ -94,6 +94,7 @@ namespace Hearts.Console
 
             public new void Add(Bot bot)
             {
+                base.Add(bot);
                 this.playerNamePrefix++;
             }
 
