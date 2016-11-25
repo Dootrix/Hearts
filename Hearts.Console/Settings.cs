@@ -26,6 +26,7 @@ namespace Hearts.Console
         //    • SavageBeast (Adam Hill)
         //    • NoobCrusher.Create(NoobCrusherVersion.v1) (Tony Beasley)
         //    • NoobCrusher.Create(NoobCrusherVersion.v2) (Tony Beasley)
+        //    • NoobCrusher.Create(NoobCrusherVersion.v3) (Tony Beasley)
         //    • Craghoul (Craig Rowe)
         //    • Deathstar (James Robinson)
         //    • QueenCatcher (Dan White)
