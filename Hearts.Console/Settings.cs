@@ -11,7 +11,7 @@ namespace Hearts.Console
         //      1 game  - 0s
         //  1,000 games - 3s
         // 10,000 games - 30s
-        public static int GameSimulationCount = 1;
+        public static int GameSimulationCount = 100;
         public static bool ShowFullOutput = GameSimulationCount == 1;
         public static List<Bot> Bots = new List<Bot>
             {
@@ -26,7 +26,7 @@ namespace Hearts.Console
                 //    • NoobCrusher.Create(NoobCrusherVersion.v2) (Tony Beasley)
                 
                 Bot.Create(new Player("A"), new SavageBeast(true)),
-                Bot.Create(new Player("B"), NoobCrusher.Create(NoobCrusherVersion.v2)),
+                Bot.Create(new Player("B"), NoobCrusher.Create(NoobCrusherVersion.v3)),
                 Bot.Create(new Player("C"), new QueenCatcherAI.QueenCatcher()),
                 Bot.Create(new Player("D"), new Noob3AiExampleAgent())
             };
