@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿
+using System.Collections.Generic;
 using Hearts.AI;
-using Hearts.Collections;
 using Hearts.Model;
 using HeartsCrusher;
+using QueenCatcherAI;
 
 namespace Hearts.Console
 {
@@ -12,7 +13,7 @@ namespace Hearts.Console
         //      1 game  - 0s
         //  1,000 games - 3s
         // 10,000 games - 30s
-        public static int GameSimulationCount = 250;
+        public static int GameSimulationCount = 1000;
 
         public static bool ShowFullOutput = GameSimulationCount == 1;
 
@@ -29,9 +30,9 @@ namespace Hearts.Console
 
         public static List<Bot> Bots = new HeartsPlayerList
             {
-                NoobCrusher.Create(NoobCrusherVersion.v2) ,
+                NoobCrusher.Create(NoobCrusherVersion.v2),
                 new Deathstar(),
-                new SavageBeast(true),
+                new QueenCatcher(),
                 new Craghoul()
             };
 
@@ -100,7 +101,7 @@ namespace Hearts.Console
 
             public void Add(IAgent agent)
             {
-                this.Add(Bot.Create(new Player(playerNamePrefix + " (" + agent.AgentName + ")"), agent));
+                this.Add(Bot.Create(new Player((playerNamePrefix + " (" + agent.AgentName + ")").PadRight(25, ' ')), agent));
                 playerNamePrefix++;
             }
 
