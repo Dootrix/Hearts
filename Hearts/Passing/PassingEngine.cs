@@ -3,6 +3,7 @@ using Hearts.Logging;
 using Hearts.Model;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,7 +50,7 @@ namespace Hearts.Passing
             return this.PassSchedule[playerCount - 1][(roundNumber -1) % playerCount];
         }
 
-        public Dictionary<Player, IEnumerable<Card>> OrchestratePassing(int roundNumber, Dictionary<Player, PlayerState> playerCards, Player playerFrom, Round round)
+        public Dictionary<Player, IEnumerable<Card>> OrchestratePassing(int roundNumber, Dictionary<Player, PlayerState> playerCards, Player playerFrom, Round round, Dictionary<Player, List<int>> passTimings)
         {
             var players = playerCards.Select(i => i.Key).ToList();
             var result = playerCards.ToDictionary(i => i.Key, i => playerCards[i.Key].Starting);
@@ -60,7 +61,10 @@ namespace Hearts.Passing
             {
                 round.Pass = this.GetPass(roundNumber, players.Count);
                 var agent = this.playerAgentLookup[playerFrom];
+                var stopwatch = Stopwatch.StartNew();
                 var pass = agent.ChooseCardsToPass(new GameState(playerFrom, new Game { Rounds = new List<Round> { round } }, playerCards[playerFrom]));
+                stopwatch.Stop();
+                passTimings[playerFrom].Add(Convert.ToInt32(stopwatch.ElapsedMilliseconds));
 
                 if (!pass.All(j => playerCards[playerFrom].Starting.Contains(j)) || pass.Count() != 3 || pass.Distinct().Count() != 3)
                 {

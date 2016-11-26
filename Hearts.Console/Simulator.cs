@@ -13,18 +13,18 @@ namespace Hearts.Console
 
         public void SimulateGames(IEnumerable<Bot> bots, int simulationCount)
         {
-            var simulationResult = new SimulationResult();
+            var simulationResult = new SimulationResult(bots);
 
             for (int i = 0; i < simulationCount; i++)
             {
-                var gameResult = this.SimulateGame(bots, i + 1);
+                var gameResult = this.SimulateGame(bots, i + 1, simulationResult.PassTimings, simulationResult.PlayTimings);
                 simulationResult.GameResults.Add(gameResult);
             }
 
             Log.LogSimulationSummary(simulationResult);
         }
 
-        private GameResult SimulateGame(IEnumerable<Bot> bots, int gameNumber)
+        private GameResult SimulateGame(IEnumerable<Bot> bots, int gameNumber, Dictionary<Player, List<int>> passTimings, Dictionary<Player, List<int>> playTimings)
         {
             var gameManager = new GameManager(bots);
             var gameResult = new GameResult(bots.Select(i => i.Player), gameNumber);
@@ -33,7 +33,7 @@ namespace Hearts.Console
 
             do
             {
-                var roundResult = gameManager.Play(roundNumber);
+                var roundResult = gameManager.Play(roundNumber, passTimings, playTimings);
 
                 foreach (var player in bots.Select(i => i.Player))
                 {

@@ -213,6 +213,14 @@ namespace Hearts.Logging
             Console.WriteLine("Based on {0} game{1}", result.GameResults.Count, result.GameResults.Count > 1 ? "s" : string.Empty);
 
             Console.WriteLine(string.Empty);
+            Console.WriteLine("Execution Times: Pass/Play");
+
+            foreach (var player in players)
+            {
+                int moonshots = result.GameResults.SelectMany(i => i.Moonshots).Where(i => i.Key == player).Select(i => i.Value).Sum();
+                Console.WriteLine("{0} : {1:0}ms / {2:0}ms", player.Name, result.PassTimings[player].Average(), result.PlayTimings[player].Average());
+            }
+            Console.WriteLine(string.Empty);
             Console.WriteLine("Moonshots:");
 
             foreach (var player in players)
