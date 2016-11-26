@@ -6,8 +6,8 @@ namespace Hearts.Deal
 {
     public class Dealer
     {
-        private IFactory<Deck> factory;
-        private IDealAlgorithm dealAlgorithm;
+        private readonly IFactory<Deck> factory;
+        private readonly IDealAlgorithm dealAlgorithm;
 
         public Dealer(IFactory<Deck> factory, IDealAlgorithm dealAlgorithm)
         {

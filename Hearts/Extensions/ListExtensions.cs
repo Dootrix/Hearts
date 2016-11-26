@@ -6,8 +6,26 @@ namespace Hearts.Extensions
 {
     public static class ListExtensions
     {
+        private static int StartingSeed;
+        private static Random privateRandom;
+
         // TODO: Allow seeding of this randomization
-        private static readonly Random PrivateRandom = new Random();
+        private static Random PrivateRandom
+        {
+            get
+            {
+                if (privateRandom == null)
+                {
+                    // This is exactly equivalent to new Random(), except that the seed 
+                    // value is captured allowing replay of interesting games.
+                    StartingSeed = Environment.TickCount;
+                    Logging.Log.LogRandomSeed(StartingSeed);
+                    privateRandom = new Random(StartingSeed);
+                }
+
+                return privateRandom;
+            }
+        }
 
         public static T Random<T>(this IEnumerable<T> self)
         {

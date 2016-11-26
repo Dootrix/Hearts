@@ -304,6 +304,13 @@ namespace Hearts.Logging
             }
         }
 
+        public static void LogRandomSeed(int randomSeed)
+        {
+            Console.WriteLine(string.Empty);
+            Console.WriteLine("Simulation random seed: {0}", randomSeed);
+            Console.WriteLine(string.Empty);
+        }
+
         public static void Card(Card card)
         {
             if (card.Suit == Suit.Clubs || card.Suit == Suit.Spades)
