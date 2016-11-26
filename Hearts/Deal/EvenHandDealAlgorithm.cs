@@ -8,16 +8,16 @@ namespace Hearts.Deal
     /// <summary>
     /// Deals cards, alternating player each time. If there are insufficient cards to deal another card to each play, the deal is stopped there.
     /// </summary>
-    public class EvenHandDealAlgorithm : IDealAlgorithm
+    internal class EvenHandDealAlgorithm : IDealAlgorithm
     {
-        public Dictionary<Player, IEnumerable<Card>> DealStartingHands(Deck deck, IEnumerable<Player> players)
+        public IEnumerable<CardHand> DealStartingHands(Deck deck, IEnumerable<Player> players)
         {
             // TODO: Check this still works since I made it return the result
-            var result = new Dictionary<Player, IEnumerable<Card>>();
+            var hands = new Dictionary<Player, IEnumerable<Card>>();
 
             foreach (var player in players)
             {
-                result.Add(player, new List<Card>());
+                hands.Add(player, new List<Card>());
             }
 
             int playerCount = players.Count();
@@ -27,11 +27,13 @@ namespace Hearts.Deal
             {
                 foreach (var player in players)
                 {
-                    result[player] = result[player].Union(new List<Card> { deck.DealNextCard() });
+                    hands[player] = hands[player].Union(new List<Card> { deck.DealNextCard() });
                 }
             }
 
-            return result;
+            return hands
+                .Select(x => new CardHand(x.Key, x.Value))
+                .ToArray();
         }
     }
 }
