@@ -34,6 +34,11 @@ namespace Hearts.Logging
             NewLine();
         }
 
+        public static void TotalSimulationTime(long elapsedMilliseconds)
+        {
+            Console.WriteLine("Total simulation time: {0}s.", elapsedMilliseconds / 1000.0);
+        }
+
         public static void PassDirection(Pass pass)
         {
             if (!Options.DisplayPass) return;
@@ -306,9 +311,12 @@ namespace Hearts.Logging
 
         public static void LogRandomSeed(int randomSeed)
         {
-            Console.WriteLine(string.Empty);
-            Console.WriteLine("Simulation random seed: {0}", randomSeed);
-            Console.WriteLine(string.Empty);
+            if (Options.DisplayRandomSeed)
+            {
+                Console.WriteLine(string.Empty);
+                Console.WriteLine("Simulation random seed: {0}", randomSeed);
+                Console.WriteLine(string.Empty);
+            }
         }
 
         public static void Card(Card card)

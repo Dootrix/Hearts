@@ -1,6 +1,7 @@
-﻿using System;
-using Hearts.Logging;
+﻿using Hearts.Logging;
 using Hearts.Randomisation;
+using System;
+using System.Diagnostics;
 
 namespace Hearts.Console
 {
@@ -15,7 +16,12 @@ namespace Hearts.Console
                 Log.Options = new SummaryOnlyLogOptions();
             }
 
+            var timer = Stopwatch.StartNew();
             new Simulator().SimulateGames(Settings.Bots, Settings.GameSimulationCount);
+            timer.Stop();
+
+            Log.TotalSimulationTime(timer.ElapsedMilliseconds);
+
             System.Console.ReadLine();
         }
     }
