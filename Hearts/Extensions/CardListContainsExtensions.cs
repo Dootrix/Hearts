@@ -36,5 +36,9 @@ namespace Hearts.Extensions
             return self.Any(i => i.Suit == Suit.Clubs && i.Kind == Kind.Two);
         }
 
+        public static bool HasSuit(this IEnumerable<Card> self, Suit suit)
+        {
+            return self.Any(i => i.Suit == suit);
+        }
     }
 }

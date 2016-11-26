@@ -38,6 +38,16 @@ namespace Hearts.Model
             }
         }
 
+        public Suit LeadingSuit
+        {
+            get { return this.CurrentTrick.DefaultIfEmpty(null).First().Card.Suit; }
+        }
+
+        public bool IsLastTurn
+        {
+            get { return this.CurrentTrick.Count == NumberOfPlayers - 1; }
+        }
+
         public bool IsFollowTurn
         {
             get
