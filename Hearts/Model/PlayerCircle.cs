@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hearts.Extensions;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,15 +54,16 @@ namespace Hearts.Model
             return tempPlayers;
         }
 
-        public Player GetStartingPlayer(Dictionary<Player, PlayerState> playerCards)
+        public Player GetStartingPlayer(IEnumerable<CardHand> cardHands)
         {
-            var lowestClub = playerCards
-                .SelectMany(i => i.Value.Current)
-                .Where(j => j.Suit == Suit.Clubs)
-                .Min(k => k.Kind);
+            var lowestClub = cardHands
+                .SelectMany(x => x.AsEnumerable())
+                .Clubs()
+                .Min(x => x.Kind);
 
-            return playerCards
-                .Single(i => i.Value.Current.Any(j => j.Suit == Suit.Clubs && j.Kind == lowestClub)).Key;
+            return cardHands
+                .Single(i => i.Any(j => j.Suit == Suit.Clubs && j.Kind == lowestClub))
+                .Owner;
         }
     }
 }

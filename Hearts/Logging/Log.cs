@@ -45,7 +45,7 @@ namespace Hearts.Logging
             Console.WriteLine("Pass direction: " + Abbreviation.Get(pass));
         }
 
-        public static void HandsAfterPass(Dictionary<Player, IEnumerable<Card>> hands)
+        public static void HandsAfterPass(IEnumerable<CardHand> hands)
         {
             if (!Options.DisplayHandsAfterPass) return;
 
@@ -55,7 +55,7 @@ namespace Hearts.Logging
 
             foreach (var hand in hands)
             {
-                hand.Value.Log(hand.Key.Name);
+                hand.Log(hand.Owner.Name);
             }
 
             NewLine();

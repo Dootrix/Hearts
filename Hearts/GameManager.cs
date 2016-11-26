@@ -56,15 +56,16 @@ namespace Hearts
 
             foreach (var startingHand in startingHands)
             {
-                this.playerCards[startingHand.Owner].Starting = startingHand.ToList();
-                this.playerCards[startingHand.Owner].Current = startingHand.ToList();
+                var playerState = this.playerCards[startingHand.Owner];
+                playerState.Starting = startingHand.ToList();
+                playerState.Current = startingHand.ToList();
             }
 
             Log.StartingHands(startingHands);
 
-            this.PerformPass(startingHands, passTimings);
+            var postPassHands = this.GetPostPassHands(startingHands, passTimings);
             
-            var startingPlayer = this.playerCircle.GetStartingPlayer(this.playerCards);
+            var startingPlayer = this.playerCircle.GetStartingPlayer(postPassHands);
 
             while (this.playerCards.Select(i => i.Value.Current.Count()).Sum() > 0)
             {
@@ -147,7 +148,9 @@ namespace Hearts
             return roundResult;
         }
 
-        private void PerformPass(IEnumerable<CardHand> startingHands, Dictionary<Player, List<int>> passTimings)
+        private IEnumerable<CardHand> GetPostPassHands(
+            IEnumerable<CardHand> startingHands, 
+            Dictionary<Player, List<int>> passTimings)
         {
             int roundNumber = this.round.RoundNumber;
 
@@ -156,30 +159,31 @@ namespace Hearts
 
             Log.PassDirection(pass);
 
+            IEnumerable<CardHand> postPassHands;
+
             if (pass != Pass.NoPass)
             {
-                var postPassHands = passService.OrchestratePassing(
-                roundNumber,
-                this.playerCards,
-                this.playerCircle.FirstPlayer,
-                this.round,
-                passTimings);
+                postPassHands = passService.OrchestratePassing(
+                    roundNumber,
+                    this.playerCards,
+                    this.playerCircle.FirstPlayer,
+                    this.round,
+                    passTimings);
 
-                foreach (var postPassHand in postPassHands)
-                {
-                    this.playerCards[postPassHand.Key].PostPass = postPassHand.Value.ToList();
-                    this.playerCards[postPassHand.Key].Current = postPassHand.Value.ToList();
-                }
-
-                Log.HandsAfterPass(this.playerCards.ToDictionary(i => i.Key, i => i.Value.PostPass));
+                Log.HandsAfterPass(postPassHands);
             }
             else
             {
-                foreach (var startingHand in startingHands)
-                {
-                    this.playerCards[startingHand.Owner].PostPass = startingHand.ToList();
-                }
+                postPassHands = startingHands;
             }
+
+            foreach (var postPassHand in postPassHands)
+            {
+                this.playerCards[postPassHand.Owner].PostPass = postPassHand.ToList();
+                this.playerCards[postPassHand.Owner].Current = postPassHand.ToList();
+            }
+
+            return postPassHands;
         }
 
         private void AddBots(IEnumerable<Bot> bots)

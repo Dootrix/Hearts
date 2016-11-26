@@ -50,7 +50,12 @@ namespace Hearts.Passing
             return this.PassSchedule[playerCount - 1][(roundNumber -1) % playerCount];
         }
 
-        public Dictionary<Player, IEnumerable<Card>> OrchestratePassing(int roundNumber, Dictionary<Player, PlayerState> playerCards, Player playerFrom, Round round, Dictionary<Player, List<int>> passTimings)
+        public IEnumerable<CardHand> OrchestratePassing(
+            int roundNumber, 
+            Dictionary<Player, PlayerState> playerCards, 
+            Player playerFrom, 
+            Round round, 
+            Dictionary<Player, List<int>> passTimings)
         {
             var players = playerCards.Select(i => i.Key).ToList();
             var result = playerCards.ToDictionary(i => i.Key, i => playerCards[i.Key].Starting);
@@ -92,7 +97,9 @@ namespace Hearts.Passing
                 result[playerTo] = result[playerTo].Union(receivingCards);
             }
 
-            return result;
+            return result
+                .Select(x => new CardHand(x.Key, x.Value))
+                .ToArray();
         }
     }
 }

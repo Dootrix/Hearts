@@ -6,7 +6,7 @@ namespace Hearts.Model
     /// <summary>
     /// A collection of cards owned by a player.
     /// </summary>
-    internal class CardHand : IEnumerable<Card>
+    public class CardHand : IEnumerable<Card>
     {
         private readonly List<Card> cards;
 
