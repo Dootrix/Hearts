@@ -1,5 +1,6 @@
 ﻿
 using System.ComponentModel;
+using Hearts.Attributes;
 
 namespace Hearts.Model
 {

@@ -1,5 +1,4 @@
-﻿
-using Hearts.Extensions;
+﻿using Hearts.Extensions;
 using Hearts.Model;
 using NUnit.Framework;
 

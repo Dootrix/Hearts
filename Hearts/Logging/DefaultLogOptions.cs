@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Hearts.Extensions;
-using Hearts.Model;
-using Hearts.Scoring;
-
-namespace Hearts.Logging
+﻿namespace Hearts.Logging
 {
     public class DefaultLogOptions : ILogDisplayOptions
     {

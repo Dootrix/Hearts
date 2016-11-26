@@ -1,5 +1,4 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Hearts.Extensions;
 using Hearts.Model;
 using NUnit.Framework;

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Hearts.Extensions;
-using Hearts.Factories;
 using Hearts.Model;
 
 namespace Hearts.AI
