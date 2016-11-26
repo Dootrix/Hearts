@@ -7,16 +7,15 @@ namespace Hearts.Deal
     /// <summary>
     /// Deals every card, alternating player each time. Does not guarantee even distribution of cards if deck is not evenly distributable between players.
     /// </summary>
-    public class NaiveWholeDeckDealAlgorithm : IDealAlgorithm
+    internal class NaiveWholeDeckDealAlgorithm : IDealAlgorithm
     {
-        public Dictionary<Player, IEnumerable<Card>> DealStartingHands(Deck deck, IEnumerable<Player> players)
+        public IEnumerable<CardHand> DealStartingHands(Deck deck, IEnumerable<Player> players)
         {
-            // TODO: Check this still works since I made it return the result
-            var result = new Dictionary<Player, IEnumerable<Card>>();
+            var hands = new Dictionary<Player, IEnumerable<Card>>();
 
             foreach (var player in players)
             {
-                result.Add(player, new List<Card>());
+                hands.Add(player, new List<Card>());
             }
 
             var receivingPlayers = players.ToList();
@@ -25,7 +24,7 @@ namespace Hearts.Deal
 
             foreach (var card in deck.Cards.ToList())
             {
-                result[receivingPlayers[playerIndex]] = result[receivingPlayers[playerIndex]].Union(new List<Card>{deck.Deal(card)});
+                hands[receivingPlayers[playerIndex]] = hands[receivingPlayers[playerIndex]].Union(new List<Card>{deck.Deal(card)});
                 
                 if (++playerIndex > playerCount - 1)
                 {
@@ -33,7 +32,9 @@ namespace Hearts.Deal
                 }
             }
 
-            return result;
+            return hands
+                .Select(x => new CardHand(x.Key, x.Value))
+                .ToArray();
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Hearts.Deal
 {
-    public class Dealer
+    internal class Dealer
     {
         private readonly IFactory<Deck> factory;
         private readonly IDealAlgorithm dealAlgorithm;
@@ -18,7 +18,7 @@ namespace Hearts.Deal
 
         public Deck Deck { get; private set; }
 
-        public Dictionary<Player, IEnumerable<Card>> DealStartingHands(IEnumerable<Player> players)
+        public IEnumerable<CardHand> DealStartingHands(IEnumerable<Player> players)
         {
             this.NewDeck();
             this.Deck.Shuffle();

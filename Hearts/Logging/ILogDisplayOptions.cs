@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Hearts.Logging
+﻿namespace Hearts.Logging
 {
     public interface ILogDisplayOptions
     {
         int NamePad { get; }
+        bool DisplayRandomSeed { get; }
         bool DisplayStartingHands { get; }
         bool DisplayHandsAfterPass { get; }
         bool DisplayPass { get; }
@@ -19,5 +14,6 @@ namespace Hearts.Logging
         bool DisplaySimulationSummary { get; }
         bool DisplayAgentMoveNotes { get; }
         bool DisplayAgentSummaryNotes { get; }
+        bool DisplayTotalSimulationTime { get; }
     }
 }

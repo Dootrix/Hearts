@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Hearts.Extensions;
-using Hearts.Model;
-using Hearts.Scoring;
-
-namespace Hearts.Logging
+﻿namespace Hearts.Logging
 {
     public class SummaryOnlyLogOptions : ILogDisplayOptions
     {
         public int NamePad { get { return 12; } }
+        public bool DisplayRandomSeed { get { return true; } }
         public bool DisplayStartingHands { get { return false; } }
         public bool DisplayHandsAfterPass { get { return false; } }
         public bool DisplayPass { get { return false; } }
@@ -22,5 +14,6 @@ namespace Hearts.Logging
         public bool DisplaySimulationSummary { get { return true; } }
         public bool DisplayAgentMoveNotes { get { return false; } }
         public bool DisplayAgentSummaryNotes { get { return true; } }
+        public bool DisplayTotalSimulationTime { get { return true; } }
     }
 }

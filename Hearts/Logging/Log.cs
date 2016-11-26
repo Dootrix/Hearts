@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Hearts.Attributes;
 using Hearts.Extensions;
 using Hearts.Model;
 using Hearts.Scoring;
-using Hearts.Attributes;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Hearts.Logging
 {
@@ -19,7 +17,7 @@ namespace Hearts.Logging
             Console.WriteLine(string.Empty);
         }
 
-        public static void StartingHands(Dictionary<Player, IEnumerable<Card>> hands)
+        internal static void StartingHands(IEnumerable<CardHand> hands)
         {
             if (!Options.DisplayStartingHands) return;
 
@@ -28,10 +26,15 @@ namespace Hearts.Logging
 
             foreach (var hand in hands)
             {
-                hand.Value.Log(hand.Key.Name);
+                hand.Log(hand.Owner.Name);
             }
 
             NewLine();
+        }
+
+        public static void TotalSimulationTime(long elapsedMilliseconds)
+        {
+            Console.WriteLine("Total simulation time: {0}s.", elapsedMilliseconds / 1000.0);
         }
 
         public static void PassDirection(Pass pass)
@@ -312,9 +315,12 @@ namespace Hearts.Logging
 
         public static void LogRandomSeed(int randomSeed)
         {
-            Console.WriteLine(string.Empty);
-            Console.WriteLine("Simulation random seed: {0}", randomSeed);
-            Console.WriteLine(string.Empty);
+            if (Options.DisplayRandomSeed)
+            {
+                Console.WriteLine(string.Empty);
+                Console.WriteLine("Simulation random seed: {0}", randomSeed);
+                Console.WriteLine(string.Empty);
+            }
         }
 
         public static void Card(Card card)

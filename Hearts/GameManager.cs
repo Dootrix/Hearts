@@ -56,8 +56,8 @@ namespace Hearts
 
             foreach (var startingHand in startingHands)
             {
-                this.playerCards[startingHand.Key].Starting = startingHand.Value.ToList();
-                this.playerCards[startingHand.Key].Current = startingHand.Value.ToList();
+                this.playerCards[startingHand.Owner].Starting = startingHand.ToList();
+                this.playerCards[startingHand.Owner].Current = startingHand.ToList();
             }
 
             Log.StartingHands(startingHands);
@@ -147,7 +147,7 @@ namespace Hearts
             return roundResult;
         }
 
-        private void PerformPass(Dictionary<Player, IEnumerable<Card>> startingHands, Dictionary<Player, List<int>> passTimings)
+        private void PerformPass(IEnumerable<CardHand> startingHands, Dictionary<Player, List<int>> passTimings)
         {
             int roundNumber = this.round.RoundNumber;
 
@@ -177,7 +177,7 @@ namespace Hearts
             {
                 foreach (var startingHand in startingHands)
                 {
-                    this.playerCards[startingHand.Key].PostPass = startingHand.Value.ToList();
+                    this.playerCards[startingHand.Owner].PostPass = startingHand.ToList();
                 }
             }
         }
