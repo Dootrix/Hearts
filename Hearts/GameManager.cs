@@ -10,6 +10,7 @@ using System.Linq;
 using Hearts.Extensions;
 using Hearts.Logging;
 using Hearts.AI;
+using System.Diagnostics;
 
 namespace Hearts
 {
@@ -43,7 +44,7 @@ namespace Hearts
             }
         }
 
-        public RoundResult Play(int roundNumber)
+        public RoundResult Play(int roundNumber, Dictionary<Player, List<int>> passTimings, Dictionary<Player, List<int>> playTimings)
         {
             this.Reset();
             var players = this.playerCircle.AllPlayers;
@@ -61,7 +62,7 @@ namespace Hearts
 
             Log.StartingHands(startingHands);
 
-            this.PerformPass(startingHands);
+            this.PerformPass(startingHands, passTimings);
             
             var startingPlayer = this.playerCircle.GetStartingPlayer(this.playerCards);
 
@@ -74,7 +75,10 @@ namespace Hearts
                     var playerRemaining = this.playerCards[player].Current;
                     this.playerCards[player].Legal = this.rulesEngine.GetPlayableCards(playerRemaining, this.round);
                     var agent = this.playerAgentLookup[player];
+                    var stopwatch = Stopwatch.StartNew();
                     var card = agent.ChooseCardToPlay(new GameState(player, new Game { Rounds = new List<Round> { this.round } }, this.playerCards[player]));
+                    stopwatch.Stop();
+                    playTimings[player].Add(Convert.ToInt32(stopwatch.ElapsedMilliseconds));
 
                     if (!this.playerCards[player].Legal.Contains(card))
                     {
@@ -143,7 +147,7 @@ namespace Hearts
             return roundResult;
         }
 
-        private void PerformPass(Dictionary<Player, IEnumerable<Card>> startingHands)
+        private void PerformPass(Dictionary<Player, IEnumerable<Card>> startingHands, Dictionary<Player, List<int>> passTimings)
         {
             int roundNumber = this.round.RoundNumber;
 
@@ -158,7 +162,8 @@ namespace Hearts
                 roundNumber,
                 this.playerCards,
                 this.playerCircle.FirstPlayer,
-                this.round);
+                this.round,
+                passTimings);
 
                 foreach (var postPassHand in postPassHands)
                 {
