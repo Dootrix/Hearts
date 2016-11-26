@@ -95,6 +95,12 @@ namespace Hearts.Logging
                 {
                     ToBlue();
                     Console.Write(" Win");
+                    int trickScore = trick.Cards.Select(i => i.Value).Score();
+
+                    if (trickScore > 0)
+                    {
+                        Console.Write(" {0}pts", trickScore); 
+                    }
                 }
 
                 NewLine();
