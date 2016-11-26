@@ -40,13 +40,13 @@ namespace Hearts.Logging
 
             ToGrey();
             Console.WriteLine("Pass direction: " + Abbreviation.Get(pass));
-            NewLine();
         }
 
         public static void HandsAfterPass(Dictionary<Player, IEnumerable<Card>> hands)
         {
             if (!Options.DisplayHandsAfterPass) return;
 
+            NewLine();
             ToGrey();
             Console.WriteLine("Post-Pass Hands:");
 
