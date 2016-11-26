@@ -61,6 +61,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HeartsPlayerList.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Simulator.cs" />
     <Compile Include="Launcher.cs" />

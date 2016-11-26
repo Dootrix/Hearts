@@ -1,4 +1,5 @@
-﻿using Hearts.Randomisation;
+﻿using System;
+using Hearts.Randomisation;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,6 +7,15 @@ namespace Hearts.Extensions
 {
     public static class ListExtensions
     {
+        public static void ForEach<T>(this IEnumerable<T> self, Action<T, int> action)
+        {
+            var i = 0;
+            foreach (var item in self)
+            {
+                action(item, i++);
+            }
+        }
+
         public static T Random<T>(this IEnumerable<T> self)
         {
             return self.ElementAt(StaticRandomAccessor.ControlledRandom.Next(0, self.Count()));
