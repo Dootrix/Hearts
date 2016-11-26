@@ -75,9 +75,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="AIs\Beast.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="AIs\Beast.dll" />
     <Content Include="AIs\Cargowire.Hearts.dll" />
     <Content Include="AIs\Deathstar.dll" />
     <Content Include="AIs\HeartsCrusher.dll" />
