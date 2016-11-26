@@ -11,7 +11,6 @@ namespace Hearts.Console
         // Overall longer term TODOs...
         //
         // Random Seed control
-        // Timers
         // Log shoots for all player
     }
 }
