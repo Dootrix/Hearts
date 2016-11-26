@@ -17,7 +17,7 @@ namespace Hearts.Console
             }
 
             var timer = Stopwatch.StartNew();
-            new Simulator().SimulateGames(Settings.Bots, Settings.GameSimulationCount);
+            new Simulator(Settings.Notifier).SimulateGames(Settings.Bots, Settings.GameSimulationCount);
             timer.Stop();
 
             Log.TotalSimulationTime(timer.ElapsedMilliseconds);

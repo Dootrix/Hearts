@@ -1,51 +1,44 @@
-﻿using Hearts.Deal;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using Hearts.Deal;
 using Hearts.Factories;
 using Hearts.Model;
 using Hearts.Passing;
 using Hearts.Rules;
 using Hearts.Scoring;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Hearts.Extensions;
 using Hearts.Logging;
 using Hearts.AI;
-using System.Diagnostics;
+using Hearts.Events;
 
 namespace Hearts
 {
     public class GameManager
     {
+        private readonly Dictionary<Player, IAgent> playerAgentLookup = new Dictionary<Player, IAgent>();
+        private readonly HandWinEvaluator handEvaluator;
+        private readonly GameRulesEngine rulesEngine;
+        private readonly EventNotifier notifier;
         private PlayerCircle playerCircle;
         private Dictionary<Player, PlayerState> playerCards;
-        private readonly Dictionary<Player, IAgent> playerAgentLookup = new Dictionary<Player, IAgent>();
         private Round round;
         private Dealer dealer;
-        private HandWinEvaluator handEvaluator;
-        private GameRulesEngine rulesEngine;
 
-        public GameManager(IEnumerable<Bot> bots)
+        public GameManager(IEnumerable<Bot> bots, EventNotifier notifier)
         {
             this.playerCircle = new PlayerCircle();
             this.handEvaluator = new HandWinEvaluator();
             this.rulesEngine = new GameRulesEngine();
+            this.notifier = notifier;
             this.AddBots(bots);
             this.Reset();
         }
 
-        public void Reset()
-        {
-            this.dealer = new Dealer(new StandardDeckFactory(), new EvenHandDealAlgorithm());
-            this.playerCards = this.playerCircle.AllPlayers.ToDictionary(i => i, i => new PlayerState());
-
-            if (this.round != null)
-            {
-                this.round.Reset();
-            }
-        }
-
         public RoundResult Play(int roundNumber, Dictionary<Player, List<int>> passTimings, Dictionary<Player, List<int>> playTimings)
         {
+            this.notifier.CallRoundStarted();
             this.Reset();
             var players = this.playerCircle.AllPlayers;
 
@@ -144,8 +137,20 @@ namespace Hearts
 
             Log.PointsForRound(roundResult);
 
+            this.notifier.CallRoundEnded();
 
             return roundResult;
+        }
+
+        private void Reset()
+        {
+            this.dealer = new Dealer(new StandardDeckFactory(), new EvenHandDealAlgorithm());
+            this.playerCards = this.playerCircle.AllPlayers.ToDictionary(i => i, i => new PlayerState());
+
+            if (this.round != null)
+            {
+                this.round.Reset();
+            }
         }
 
         private IEnumerable<CardHand> GetPostPassHands(
@@ -181,6 +186,11 @@ namespace Hearts
             {
                 this.playerCards[postPassHand.Owner].PostPass = postPassHand.ToList();
                 this.playerCards[postPassHand.Owner].Current = postPassHand.ToList();
+            }
+
+            if (pass == Pass.NoPass)
+            {
+                this.notifier.CallNoPass();
             }
 
             return postPassHands;

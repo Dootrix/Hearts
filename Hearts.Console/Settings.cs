@@ -4,14 +4,16 @@ using Hearts.AI;
 using Hearts.Model;
 using HeartsCrusher;
 using QueenCatcherAI;
+using Hearts.Events;
 
 namespace Hearts.Console
 {
     public class Settings
     {
         // Controlled Randomisation
-        public static bool UseFixedSeed = false;
-        public static int FixedSeed = 4042500;
+        public static bool UseFixedSeed = true;
+        public static int FixedSeed = 4174562; //4174562
+        public static EventNotifier Notifier = new EventNotifier();
 
         // Note: This simulates at about 300 games per second, without console outputs, depending on the efficiency of the bots used
         //
