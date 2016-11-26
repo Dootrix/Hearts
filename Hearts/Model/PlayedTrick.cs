@@ -1,7 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using Hearts.Extensions;
-using System;
 
 namespace Hearts.Model
 {

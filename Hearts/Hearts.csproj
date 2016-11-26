@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AI\Agent.cs" />
     <Compile Include="AI\Noob3AiExampleAgent.cs" />
     <Compile Include="AI\IllegalMoveAgent.cs" />
     <Compile Include="AI\RandomPlayAiExampleAgent.cs" />
@@ -51,6 +52,8 @@
     <Compile Include="Collections\OrderDirection.cs" />
     <Compile Include="Collections\UniqueList.cs" />
     <Compile Include="Collections\SelectiveList.cs" />
+    <Compile Include="Events\EventNotifier.cs" />
+    <Compile Include="Events\INotifier.cs" />
     <Compile Include="Extensions\CardListFilteringExtensions.cs" />
     <Compile Include="Extensions\CardListRetrievalExtensions.cs" />
     <Compile Include="Extensions\CardListContainsExtensions.cs" />
@@ -59,6 +62,7 @@
     <Compile Include="Extensions\PlayedCardExtensions.cs" />
     <Compile Include="Extensions\PlayedTrickExtensions.cs" />
     <Compile Include="Extensions\CardListExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="GameEventHandlers\ShowHandHandler.cs" />
     <Compile Include="GameEventHandlers\HandsChangedHandler.cs" />
     <Compile Include="GameEventHandlers\HandFinishedHandler.cs" />
@@ -72,6 +76,7 @@
     <Compile Include="Logging\DefaultLogOptions.cs" />
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Model\Bot.cs" />
+    <Compile Include="Model\CardHand.cs" />
     <Compile Include="Model\Cards.cs" />
     <Compile Include="Model\GameEventType.cs" />
     <Compile Include="Model\Card.cs" />
@@ -103,6 +108,7 @@
     <Compile Include="Randomisation\StaticRandomAccessor.cs" />
     <Compile Include="Randomisation\ControlledRandom.cs" />
     <Compile Include="Randomisation\IRandom.cs" />
+    <Compile Include="Reflection\AppDomainExtensions.cs" />
     <Compile Include="Rules\GameRulesEngine.cs" />
     <Compile Include="Rules\MustLeadLowestClubOnFirstPlayRule.cs" />
     <Compile Include="Rules\MustFollowSuitIfPossibleRule.cs" />

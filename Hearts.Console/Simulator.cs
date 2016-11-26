@@ -3,6 +3,7 @@ using System.Linq;
 using Hearts.Model;
 using Hearts.Logging;
 using Hearts.Scoring;
+using Hearts.Events;
 
 namespace Hearts.Console
 {
@@ -10,23 +11,35 @@ namespace Hearts.Console
     {
         private const int MoonshotPoints = 26;
         private const int GameLosingPoints = 100;
+        private readonly EventNotifier notifier;
+
+        public Simulator(EventNotifier notifier)
+        {
+            this.notifier = notifier;
+        }
 
         public void SimulateGames(IEnumerable<Bot> bots, int simulationCount)
         {
             var simulationResult = new SimulationResult(bots);
 
+            this.notifier.CallSimulationStarted();
+
             for (int i = 0; i < simulationCount; i++)
             {
+                this.notifier.CallGameStarted();
                 var gameResult = this.SimulateGame(bots, i + 1, simulationResult.PassTimings, simulationResult.PlayTimings);
                 simulationResult.GameResults.Add(gameResult);
+                this.notifier.CallGameEnded();
             }
+
+            this.notifier.CallSimulationEnded();
 
             Log.LogSimulationSummary(simulationResult);
         }
 
         private GameResult SimulateGame(IEnumerable<Bot> bots, int gameNumber, Dictionary<Player, List<int>> passTimings, Dictionary<Player, List<int>> playTimings)
         {
-            var gameManager = new GameManager(bots);
+            var gameManager = new GameManager(bots, this.notifier);
             var gameResult = new GameResult(bots.Select(i => i.Player), gameNumber);
             int roundNumber = 1;
             bool gameHasEnded;

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Hearts.Randomisation
+﻿namespace Hearts.Randomisation
 {
     public static class StaticRandomAccessor
     {

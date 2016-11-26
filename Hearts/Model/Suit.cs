@@ -1,4 +1,6 @@
 ﻿
+using Hearts.Attributes;
+
 namespace Hearts.Model
 {
     public enum Suit
