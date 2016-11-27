@@ -11,7 +11,7 @@ namespace Hearts.Console
     public class Settings
     {
         // Controlled Randomisation
-        public static bool UseFixedSeed = true;
+        public static bool UseFixedSeed = false;
         public static int FixedSeed = 4174562; //4174562
         public static EventNotifier Notifier = new EventNotifier();
 

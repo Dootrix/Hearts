@@ -18,6 +18,19 @@ namespace Hearts.Model
 
         public Player Owner { get; private set; }
 
+        public void AddRange(IEnumerable<Card> cardsToAdd)
+        {
+            this.cards.AddRange(cardsToAdd);
+        }
+
+        public void RemoveRange(IEnumerable<Card> cardsToRemove)
+        {
+            foreach (var cardToRemove in cardsToRemove)
+            {
+                cards.Remove(cardToRemove);
+            }            
+        }
+
         public IEnumerator<Card> GetEnumerator()
         {
             return this.cards.GetEnumerator();

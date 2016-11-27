@@ -188,7 +188,11 @@ namespace Hearts
         {
             int roundNumber = this.round.RoundNumber;
 
-            var passService = new PassService(this.playerAgentLookup, this.timing);
+            var passService = new PassService(
+                this.playerStateManager, 
+                this.playerAgentLookup, 
+                this.timing);
+
             var pass = passService.GetPass(roundNumber, this.round.NumberOfPlayers);
 
             Log.PassDirection(pass);
@@ -197,10 +201,7 @@ namespace Hearts
 
             if (pass != Pass.NoPass)
             {
-                postPassHands = passService.OrchestratePassing(
-                    this.playerStateManager.GetPlayerStateLookup(),
-                    this.playerCircle.FirstPlayer,
-                    this.round);
+                postPassHands = passService.OrchestratePassing(startingHands, this.round);
 
                 Log.HandsAfterPass(postPassHands);
             }

@@ -46,15 +46,6 @@ namespace Hearts
                 .ToArray();
         }
 
-        /// <summary>
-        /// Obsolete - a temporary workaround until more refactoring has been done.
-        /// </summary>
-        /// <returns></returns>
-        public Dictionary<Player, PlayerState> GetPlayerStateLookup()
-        {
-            return this.playerStateLookup;
-        }
-
         public int GetRemainingCardCount()
         {
             return this.GetCurrentHands()
