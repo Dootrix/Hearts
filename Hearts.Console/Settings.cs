@@ -5,6 +5,7 @@ using Hearts.Model;
 using HeartsCrusher;
 using QueenCatcherAI;
 using Hearts.Events;
+using HeartsCrusher.Agents;
 
 namespace Hearts.Console
 {
