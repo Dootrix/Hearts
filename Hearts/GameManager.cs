@@ -12,33 +12,34 @@ using Hearts.Extensions;
 using Hearts.Logging;
 using Hearts.AI;
 using Hearts.Events;
+using Hearts.Performance;
 
 namespace Hearts
 {
     public class GameManager
     {
-        private readonly Dictionary<Player, IAgent> playerAgentLookup = new Dictionary<Player, IAgent>();
+        private readonly AgentLookup agentLookup;
         private readonly HandWinEvaluator handEvaluator;
         private readonly GameRulesEngine rulesEngine;
         private readonly EventNotifier notifier;
         private readonly PlayerCircle playerCircle;
         private readonly PlayerStateManager playerStateManager;
-        //private Dictionary<Player, PlayerState> playerCards;
         private Round round;
         private Dealer dealer;
-        private Timing timing;
+        private TimerService timerService;
 
         public GameManager(
-            IEnumerable<Bot> bots, 
-            Timing timing, 
+            IEnumerable<Bot> bots,
+            TimerService timerService, 
             EventNotifier notifier)
         {
             this.playerCircle = new PlayerCircle();
             this.handEvaluator = new HandWinEvaluator();
             this.rulesEngine = new GameRulesEngine();
             this.playerStateManager = new PlayerStateManager();
+            this.agentLookup = new AgentLookup();
             this.notifier = notifier;
-            this.timing = timing;
+            this.timerService = timerService;
             this.AddBots(bots);
             this.Reset();
         }
@@ -162,14 +163,12 @@ namespace Hearts
                 new Game { Rounds = new List<Round> { this.round } }, 
                 playerState);
 
-            var stopwatch = Stopwatch.StartNew();
+            var timer = this.timerService.StartNewPlayTimer(player);
 
-            var agent = this.playerAgentLookup[player];
+            var agent = this.agentLookup.GetAgent(player);
             var card = agent.ChooseCardToPlay(gameState);
-            
-            stopwatch.Stop();
 
-            this.timing.PlayTimings[player].Add(Convert.ToInt32(stopwatch.ElapsedMilliseconds));
+            timer.Stop();
 
             if (!playerState.Legal.Contains(card))
             {
@@ -190,8 +189,8 @@ namespace Hearts
 
             var passService = new PassService(
                 this.playerStateManager, 
-                this.playerAgentLookup, 
-                this.timing);
+                this.agentLookup, 
+                this.timerService);
 
             var pass = passService.GetPass(roundNumber, this.round.NumberOfPlayers);
 
@@ -224,7 +223,7 @@ namespace Hearts
         {
             foreach (var bot in bots)
             {
-                this.playerAgentLookup[bot.Player] = bot.Agent;
+                this.agentLookup.AssociateAgentWithPlayer(bot.Agent, bot.Player);
                 this.playerCircle.AddPlayer(bot.Player);
             }
         }

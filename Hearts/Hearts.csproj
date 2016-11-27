@@ -75,6 +75,7 @@
     <Compile Include="Logging\ILogDisplayOptions.cs" />
     <Compile Include="Logging\DefaultLogOptions.cs" />
     <Compile Include="Logging\Log.cs" />
+    <Compile Include="Model\AgentLookup.cs" />
     <Compile Include="Model\Bot.cs" />
     <Compile Include="Model\CardHand.cs" />
     <Compile Include="Model\Cards.cs" />
@@ -101,8 +102,11 @@
     <Compile Include="Model\Kind.cs" />
     <Compile Include="Model\Player.cs" />
     <Compile Include="Model\Pass.cs" />
-    <Compile Include="Model\Timing.cs" />
-    <Compile Include="Passing\PassingEngine.cs" />
+    <Compile Include="Performance\ITimer.cs" />
+    <Compile Include="Performance\PassTimer.cs" />
+    <Compile Include="Performance\PlayTimer.cs" />
+    <Compile Include="Performance\TimerService.cs" />
+    <Compile Include="Passing\PassService.cs" />
     <Compile Include="PlayerStateManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Factories\StandardDeckFactory.cs" />

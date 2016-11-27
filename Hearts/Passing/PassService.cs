@@ -1,6 +1,6 @@
-﻿using Hearts.AI;
-using Hearts.Logging;
+﻿using Hearts.Logging;
 using Hearts.Model;
+using Hearts.Performance;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,10 +11,10 @@ namespace Hearts.Passing
     public class PassService
     {
         private readonly PlayerStateManager playerStateManager;
-        private readonly IDictionary<Player, IAgent> playerAgentLookup;
-        private readonly Timing timing;
+        private readonly AgentLookup agentLookup;
+        private readonly TimerService timerService;
 
-        private List<List<Pass>> PassSchedule = new List<List<Pass>>
+        private List<List<Pass>> passSchedule = new List<List<Pass>>
         {
             new List<Pass> { Pass.NoPass },
             new List<Pass> { Pass.OneToLeft, Pass.OneToRight },
@@ -24,7 +24,7 @@ namespace Hearts.Passing
             new List<Pass> { Pass.NoPass },
         };
 
-        private Dictionary<Pass, Func<Player, Player>> PassFunctions = new Dictionary<Pass, Func<Player, Player>>
+        private Dictionary<Pass, Func<Player, Player>> passFunctions = new Dictionary<Pass, Func<Player, Player>>
         {
             { Pass.OneToLeft, (i) => { return i.NextPlayer; } },
             { Pass.OneToRight, (i) => { return i.PreviousPlayer; } },
@@ -35,30 +35,28 @@ namespace Hearts.Passing
 
         public PassService(
             PlayerStateManager playerStateManager,
-            IDictionary<Player, IAgent> playerAgentLookup,
-            Timing timing)
+            AgentLookup agentLookup,
+            TimerService timerService)
         {
             this.playerStateManager = playerStateManager;
-            this.playerAgentLookup = playerAgentLookup;
-            this.timing = timing;
+            this.agentLookup = agentLookup;
+            this.timerService = timerService;
         }
 
         public Pass GetPass(int roundNumber, int playerCount)
         {
-            return this.PassSchedule[playerCount - 1][(roundNumber - 1) % playerCount];
+            return this.passSchedule[playerCount - 1][(roundNumber - 1) % playerCount];
         }
 
         public IEnumerable<CardHand> OrchestratePassing(
             IEnumerable<CardHand> cardHands,
             Round round)
         {
-            int playerCount = cardHands.Count();
-
-            round.Pass = this.GetPass(round.RoundNumber, playerCount);
+            round.Pass = this.GetPass(round.RoundNumber, cardHands.Count());
 
             var cardHandsToPass = this.GetCardHandsToPass(round, cardHands);
 
-            var cardHandsAfterPass = PassCards(round, cardHands, cardHandsToPass);
+            var cardHandsAfterPass = this.PassCards(round, cardHands, cardHandsToPass);
 
             return cardHandsAfterPass;
         }
@@ -72,16 +70,15 @@ namespace Hearts.Passing
                 var playerFrom = cardHand.Owner;
 
                 var gameState = this.CreateGameState(playerFrom, round);
-                var agent = this.playerAgentLookup[playerFrom];
+                var agent = this.agentLookup.GetAgent(playerFrom);
 
-                var stopwatch = Stopwatch.StartNew();
+                var timer = this.timerService.StartNewPassTimer(playerFrom);
 
                 var cardsToPass = new CardHand(
                     playerFrom,
                     agent.ChooseCardsToPass(gameState));
 
-                stopwatch.Stop();
-                this.timing.RecordPassTime(playerFrom, stopwatch.ElapsedMilliseconds);
+                timer.Stop();
 
                 if (!IsPassLegal(cardHand, cardsToPass))
                 {
@@ -121,7 +118,7 @@ namespace Hearts.Passing
 
         private Player GetPassRecipient(int roundNumber, int playerCount, Player fromPlayer)
         {
-            var passFunction = this.PassFunctions[this.GetPass(roundNumber, playerCount)];
+            var passFunction = this.passFunctions[this.GetPass(roundNumber, playerCount)];
 
             return passFunction(fromPlayer);
         }
