@@ -35,7 +35,9 @@ namespace Hearts.Console
         private static IEnumerable<Bot> GetGameBots()
         {
             var chosenBots = Settings.Bots;
-            var availableBots = Agent.GetAvailableAgents().ToList();
+            var availableBots = Agent.GetAvailableAgents()
+                .OrderBy(x => x.AgentName)
+                .ToList();
 
             while (chosenBots.Count < 4)
             {
