@@ -21,17 +21,22 @@ namespace Hearts
         private readonly HandWinEvaluator handEvaluator;
         private readonly GameRulesEngine rulesEngine;
         private readonly EventNotifier notifier;
-        private PlayerCircle playerCircle;
-        private Dictionary<Player, PlayerState> playerCards;
+        private readonly PlayerCircle playerCircle;
+        private readonly PlayerStateManager playerStateManager;
+        //private Dictionary<Player, PlayerState> playerCards;
         private Round round;
         private Dealer dealer;
         private Timing timing;
 
-        public GameManager(IEnumerable<Bot> bots, Timing timing, EventNotifier notifier)
+        public GameManager(
+            IEnumerable<Bot> bots, 
+            Timing timing, 
+            EventNotifier notifier)
         {
             this.playerCircle = new PlayerCircle();
             this.handEvaluator = new HandWinEvaluator();
             this.rulesEngine = new GameRulesEngine();
+            this.playerStateManager = new PlayerStateManager();
             this.notifier = notifier;
             this.timing = timing;
             this.AddBots(bots);
@@ -44,29 +49,36 @@ namespace Hearts
             this.Reset();
             var players = this.playerCircle.AllPlayers;
 
-            var roundResult = new RoundResult(players, roundNumber);
-
             this.round = new Round(players.Count, roundNumber);
             var startingHands = this.dealer.DealStartingHands(players);
 
-            foreach (var startingHand in startingHands)
-            {
-                var playerState = this.playerCards[startingHand.Owner];
-                playerState.Starting = startingHand.ToList();
-                playerState.Current = startingHand.ToList();
-            }
+            this.playerStateManager.SetStartingHands(startingHands);
 
             Log.StartingHands(startingHands);
 
-            var postPassHands = this.GetPostPassHands(startingHands, this.timing.PassTimings);
+            var postPassHands = this.GetPostPassHands(startingHands);
             
             var startingPlayer = this.playerCircle.GetStartingPlayer(postPassHands);
 
-            while (this.playerCards.Select(i => i.Value.Current.Count()).Sum() > 0)
+            while (this.playerStateManager.GetRemainingCardCount() > 0)
             {
                 startingPlayer = OrchestrateRound(startingPlayer);
             }
 
+            var roundResult = CreateRoundResult(players, roundNumber);
+
+            // TODO: Raise event OnRoundComplete
+
+            Log.PointsForRound(roundResult);
+
+            this.notifier.CallRoundEnded();
+
+            return roundResult;
+        }
+
+        private RoundResult CreateRoundResult(IEnumerable<Player> players, int roundNumber)
+        {
+            var roundResult = new RoundResult(players, roundNumber);
             var scores = players.ToDictionary(i => i, i => this.round.PlayedTricks.Where(j => j.Winner == i).SelectCards().Score());
             var tricks = players.ToDictionary(i => i, i => this.round.PlayedTricks.Where(j => j.Winner == i).ToList()); // TODO: I think we can probably remove Tricks from roundResult
             roundResult.Scores = scores;
@@ -88,7 +100,7 @@ namespace Hearts
                 {
                     roundResult.Winners.Add(player);
                 }
-                
+
             }
 
             foreach (var player in scores.Where(i => i.Value == roundResult.Scores.Max(j => j.Value)).Select(i => i.Key))
@@ -104,19 +116,12 @@ namespace Hearts
                 }
             }
 
-            // TODO: Raise event OnRoundComplete
-
-            Log.PointsForRound(roundResult);
-
-            this.notifier.CallRoundEnded();
-
             return roundResult;
         }
 
         private void Reset()
         {
             this.dealer = new Dealer(new StandardDeckFactory(), new EvenHandDealAlgorithm());
-            this.playerCards = this.playerCircle.AllPlayers.ToDictionary(i => i, i => new PlayerState());
 
             if (this.round != null)
             {
@@ -130,7 +135,8 @@ namespace Hearts
 
             foreach (var player in this.playerCircle.GetOrderedPlayersStartingWith(startingPlayer))
             {
-                this.OrchestratePlayForPlayer(player);
+                var playerState = this.playerStateManager.GetPlayerState(player);
+                this.OrchestratePlayForPlayer(player, playerState);
             }
 
             this.round.EndTrick();
@@ -145,16 +151,12 @@ namespace Hearts
             return startingPlayer;
         }
 
-        private void OrchestratePlayForPlayer(Player player)
+        private void OrchestratePlayForPlayer(Player player, PlayerState playerState)
         {
-            var playerState = this.playerCards[player];
-
             var currentHand = playerState.Current;
 
             playerState.Legal = this.rulesEngine.GetPlayableCards(currentHand, this.round);
 
-            var agent = this.playerAgentLookup[player];
-            
             var gameState = new GameState(
                 player, 
                 new Game { Rounds = new List<Round> { this.round } }, 
@@ -162,9 +164,11 @@ namespace Hearts
 
             var stopwatch = Stopwatch.StartNew();
 
+            var agent = this.playerAgentLookup[player];
             var card = agent.ChooseCardToPlay(gameState);
             
             stopwatch.Stop();
+
             this.timing.PlayTimings[player].Add(Convert.ToInt32(stopwatch.ElapsedMilliseconds));
 
             if (!playerState.Legal.Contains(card))
@@ -180,13 +184,11 @@ namespace Hearts
             this.round.Play(player, card);
         }
 
-        private IEnumerable<CardHand> GetPostPassHands(
-            IEnumerable<CardHand> startingHands, 
-            Dictionary<Player, List<int>> passTimings)
+        private IEnumerable<CardHand> GetPostPassHands(IEnumerable<CardHand> startingHands)
         {
             int roundNumber = this.round.RoundNumber;
 
-            var passService = new PassService(this.playerAgentLookup);
+            var passService = new PassService(this.playerAgentLookup, this.timing);
             var pass = passService.GetPass(roundNumber, this.round.NumberOfPlayers);
 
             Log.PassDirection(pass);
@@ -196,10 +198,9 @@ namespace Hearts
             if (pass != Pass.NoPass)
             {
                 postPassHands = passService.OrchestratePassing(
-                    this.playerCards,
+                    this.playerStateManager.GetPlayerStateLookup(),
                     this.playerCircle.FirstPlayer,
-                    this.round,
-                    passTimings);
+                    this.round);
 
                 Log.HandsAfterPass(postPassHands);
             }
@@ -208,12 +209,7 @@ namespace Hearts
                 postPassHands = startingHands;
             }
 
-            foreach (var postPassHand in postPassHands)
-            {
-                var playerState = this.playerCards[postPassHand.Owner];
-                playerState.PostPass = postPassHand.ToList();
-                playerState.Current = postPassHand.ToList();
-            }
+            this.playerStateManager.SetPostPassHands(postPassHands);
 
             if (pass == Pass.NoPass)
             {
