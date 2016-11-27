@@ -38,12 +38,12 @@ namespace Hearts.Console
         //    • Deathstar (James Robinson)
         //    • QueenCatcher (Dan White)
 
-        public static List<Bot> Bots = new HeartsPlayerList
+        public static HeartsPlayerList Bots = new HeartsPlayerList
             {
-                NoobCrusher.Create(NoobCrusherVersion.v3),
-                new Deathstar(),
-                new QueenCatcher(),
-                new Craghoul()
+                //NoobCrusher.Create(NoobCrusherVersion.v3),
+                //new Deathstar(),
+                //new QueenCatcher(),
+                //new Craghoul()
             };
 
         public static List<Bot> VersusNoob1(IAgent bot)
@@ -88,40 +88,6 @@ namespace Hearts.Console
                 new Noob3AiExampleAgent(),
                 bot
             };
-        }
-
-        internal class HeartsPlayerList : List<Bot>
-        {
-            private char playerNamePrefix = 'A';
-
-            public HeartsPlayerList()
-            {
-            }
-
-            public HeartsPlayerList(IEnumerable<IAgent> agents)
-            {
-                this.AddRange(agents);
-            }
-
-            public new void Add(Bot bot)
-            {
-                base.Add(bot);
-                this.playerNamePrefix++;
-            }
-
-            public void Add(IAgent agent)
-            {
-                base.Add(Bot.Create(new Player((playerNamePrefix + " : " + agent.AgentName).PadRight(25, ' ')), agent));
-                playerNamePrefix++;
-            }
-
-            public void AddRange(IEnumerable<IAgent> agents)
-            {
-                foreach (var agent in agents)
-                {
-                    this.Add(agent);
-                }
-            }
         }
     }
 }

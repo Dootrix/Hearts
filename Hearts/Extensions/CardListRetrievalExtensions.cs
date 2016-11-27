@@ -21,6 +21,16 @@ namespace Hearts.Extensions
             return self.OrderByDescending(i => i.Kind).Skip(1).Take(1).SingleOrDefault();
         }
 
+        public static Card HighestUnderCard(this IEnumerable<Card> self, Card card)
+        {
+            return self.Where(i => i.Suit == card.Suit && i.Kind < card.Kind).Highest();
+        }
+
+        public static bool HasCardUnder(this IEnumerable<Card> self, Card card)
+        {
+            return self.Any(i => i.Suit == card.Suit && i.Kind < card.Kind);
+        }
+
         public static Card Lowest(this IEnumerable<Card> self)
         {
             return self.OrderBy(i => i.Kind).FirstOrDefault();

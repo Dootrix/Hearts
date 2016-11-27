@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Hearts
+namespace Hearts.Attributes
 {
     [AttributeUsage(AttributeTargets.Field)]
     public class AbbreviationAttribute : Attribute

@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AI\Agent.cs" />
     <Compile Include="AI\Noob3AiExampleAgent.cs" />
     <Compile Include="AI\IllegalMoveAgent.cs" />
     <Compile Include="AI\RandomPlayAiExampleAgent.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="Extensions\PlayedCardExtensions.cs" />
     <Compile Include="Extensions\PlayedTrickExtensions.cs" />
     <Compile Include="Extensions\CardListExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="GameEventHandlers\ShowHandHandler.cs" />
     <Compile Include="GameEventHandlers\HandsChangedHandler.cs" />
     <Compile Include="GameEventHandlers\HandFinishedHandler.cs" />
@@ -107,6 +109,7 @@
     <Compile Include="Randomisation\StaticRandomAccessor.cs" />
     <Compile Include="Randomisation\ControlledRandom.cs" />
     <Compile Include="Randomisation\IRandom.cs" />
+    <Compile Include="Reflection\AppDomainExtensions.cs" />
     <Compile Include="Rules\GameRulesEngine.cs" />
     <Compile Include="Rules\MustLeadLowestClubOnFirstPlayRule.cs" />
     <Compile Include="Rules\MustFollowSuitIfPossibleRule.cs" />

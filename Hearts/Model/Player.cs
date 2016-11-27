@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using Hearts.Extensions;
-using Hearts.AI;
 
 namespace Hearts.Model
 {

@@ -1,4 +1,6 @@
-﻿namespace Hearts.Model
+﻿using Hearts.Attributes;
+
+namespace Hearts.Model
 {
     public enum Pass
     {
