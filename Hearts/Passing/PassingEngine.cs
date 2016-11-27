@@ -11,6 +11,7 @@ namespace Hearts.Passing
     public class PassService
     {
         private readonly IDictionary<Player, IAgent> playerAgentLookup;
+        private readonly Timing timing;
 
         public List<List<Pass>> PassSchedule = new List<List<Pass>>
         {
@@ -31,9 +32,12 @@ namespace Hearts.Passing
             { Pass.TwoToRight, (i) => { return i.PreviousPlayer.PreviousPlayer; }}
         };
 
-        public PassService(IDictionary<Player, IAgent> playerAgentLookup)
+        public PassService(
+            IDictionary<Player, IAgent> playerAgentLookup,
+            Timing timing)
         {
             this.playerAgentLookup = playerAgentLookup;
+            this.timing = timing;
         }
 
         public Player GetPassRecipient(int roundNumber, int playerCount, Player fromPlayer)
@@ -51,8 +55,7 @@ namespace Hearts.Passing
         public IEnumerable<CardHand> OrchestratePassing(
             Dictionary<Player, PlayerState> playerCards, 
             Player playerFrom, 
-            Round round, 
-            Dictionary<Player, List<int>> passTimings)
+            Round round)
         {
             var players = playerCards.Select(i => i.Key).ToList();
             var result = playerCards.ToDictionary(i => i.Key, i => playerCards[i.Key].Starting);
@@ -64,21 +67,22 @@ namespace Hearts.Passing
                 round.Pass = this.GetPass(round.RoundNumber, players.Count);
                 var agent = this.playerAgentLookup[playerFrom];
                 var stopwatch = Stopwatch.StartNew();
-                var pass = agent.ChooseCardsToPass(new GameState(playerFrom, new Game { Rounds = new List<Round> { round } }, playerCards[playerFrom]));
+                var playerState = playerCards[playerFrom];
+                var cardsToPass = agent.ChooseCardsToPass(new GameState(playerFrom, new Game { Rounds = new List<Round> { round } }, playerState));
                 stopwatch.Stop();
-                passTimings[playerFrom].Add(Convert.ToInt32(stopwatch.ElapsedMilliseconds));
+                timing.RecordPassTime(playerFrom, stopwatch.ElapsedMilliseconds);
 
-                if (!pass.All(j => playerCards[playerFrom].Starting.Contains(j)) || pass.Count() != 3 || pass.Distinct().Count() != 3)
+                if (!cardsToPass.All(j => playerCards[playerFrom].Starting.Contains(j)) || cardsToPass.Count() != 3 || cardsToPass.Distinct().Count() != 3)
                 {
                     // TODO: Handle illegal move
-                    Log.IllegalPass(playerFrom, pass);
+                    Log.IllegalPass(playerFrom, cardsToPass);
                     playerFrom.AgentHasMadeIllegalMove = true;
                 }
 
-                Log.Pass(playerFrom, pass);
+                Log.Pass(playerFrom, cardsToPass);
 
-                passedCards.Add(pass);
-                result[playerFrom] = result[playerFrom].Except(pass).ToList();
+                passedCards.Add(cardsToPass);
+                result[playerFrom] = result[playerFrom].Except(cardsToPass).ToList();
 
 
                 if (i < players.Count - 1)

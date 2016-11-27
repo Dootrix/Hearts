@@ -16,5 +16,10 @@ namespace Hearts.Model
 
         public Dictionary<Player, List<int>> PassTimings;
         public Dictionary<Player, List<int>> PlayTimings;
+
+        public void RecordPassTime(Player player, long milliseconds)
+        {
+            this.PassTimings[player].Add(Convert.ToInt32(milliseconds));
+        }
     }
 }
