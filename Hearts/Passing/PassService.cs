@@ -1,4 +1,5 @@
-﻿using Hearts.Logging;
+﻿using Hearts.Events;
+using Hearts.Logging;
 using Hearts.Model;
 using Hearts.Performance;
 using System;
@@ -13,6 +14,7 @@ namespace Hearts.Passing
         private readonly PlayerStateManager playerStateManager;
         private readonly AgentLookup agentLookup;
         private readonly TimerService timerService;
+        private EventNotifier notifier;
 
         private List<List<Pass>> passSchedule = new List<List<Pass>>
         {
@@ -36,11 +38,13 @@ namespace Hearts.Passing
         public PassService(
             PlayerStateManager playerStateManager,
             AgentLookup agentLookup,
-            TimerService timerService)
+            TimerService timerService,
+            EventNotifier notifier)
         {
             this.playerStateManager = playerStateManager;
             this.agentLookup = agentLookup;
             this.timerService = timerService;
+            this.notifier = notifier;
         }
 
         public Pass GetPass(int roundNumber, int playerCount)
@@ -52,11 +56,27 @@ namespace Hearts.Passing
             IEnumerable<CardHand> cardHands,
             Round round)
         {
-            round.Pass = this.GetPass(round.RoundNumber, cardHands.Count());
+            var pass = round.Pass = this.GetPass(round.RoundNumber, cardHands.Count());
 
-            var cardHandsToPass = this.GetCardHandsToPass(round, cardHands);
+            Log.PassDirection(pass);
 
-            var cardHandsAfterPass = this.PassCards(round, cardHands, cardHandsToPass);
+            IEnumerable<CardHand> cardHandsAfterPass;
+
+            if (pass == Pass.NoPass)
+            {
+                cardHandsAfterPass = cardHands;
+
+                this.notifier.CallNoPass();
+            }
+            else
+            {
+                var cardHandsToPass = this.GetCardHandsToPass(round, cardHands);
+                cardHandsAfterPass = this.PassCards(round, cardHands, cardHandsToPass);
+
+                Log.HandsAfterPass(cardHandsAfterPass);
+            }
+
+            this.playerStateManager.SetPostPassHands(cardHandsAfterPass);
 
             return cardHandsAfterPass;
         }

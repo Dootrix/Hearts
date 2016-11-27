@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using Hearts.Deal;
+﻿using Hearts.Deal;
+using Hearts.Events;
+using Hearts.Extensions;
 using Hearts.Factories;
+using Hearts.Logging;
 using Hearts.Model;
 using Hearts.Passing;
+using Hearts.Performance;
 using Hearts.Rules;
 using Hearts.Scoring;
-using Hearts.Extensions;
-using Hearts.Logging;
-using Hearts.AI;
-using Hearts.Events;
-using Hearts.Performance;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Hearts
 {
@@ -190,33 +187,10 @@ namespace Hearts
             var passService = new PassService(
                 this.playerStateManager, 
                 this.agentLookup, 
-                this.timerService);
+                this.timerService,
+                this.notifier);
 
-            var pass = passService.GetPass(roundNumber, this.round.NumberOfPlayers);
-
-            Log.PassDirection(pass);
-
-            IEnumerable<CardHand> postPassHands;
-
-            if (pass != Pass.NoPass)
-            {
-                postPassHands = passService.OrchestratePassing(startingHands, this.round);
-
-                Log.HandsAfterPass(postPassHands);
-            }
-            else
-            {
-                postPassHands = startingHands;
-            }
-
-            this.playerStateManager.SetPostPassHands(postPassHands);
-
-            if (pass == Pass.NoPass)
-            {
-                this.notifier.CallNoPass();
-            }
-
-            return postPassHands;
+            return passService.OrchestratePassing(startingHands, this.round);
         }
 
         private void AddBots(IEnumerable<Bot> bots)
