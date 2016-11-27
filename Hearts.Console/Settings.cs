@@ -5,6 +5,7 @@ using Hearts.Model;
 using HeartsCrusher;
 using QueenCatcherAI;
 using Hearts.Events;
+using HeartsCrusher.Agents;
 
 namespace Hearts.Console
 {
@@ -30,7 +31,7 @@ namespace Hearts.Console
         //    • Noob1AiExampleAgent
         //    • Noob2AiExampleAgent
         //    • Noob3AiExampleAgent
-        //    • SavageBeast (Adam Hill) - Note: 11ms per pass
+        //    • SavageBeast(Notifier, true) (Adam Hill) - Note: 3ms per pass
         //    • NoobCrusher.Create(NoobCrusherVersion.v1) (Tony Beasley)
         //    • NoobCrusher.Create(NoobCrusherVersion.v2) (Tony Beasley)
         //    • NoobCrusher.Create(NoobCrusherVersion.v3) (Tony Beasley)
@@ -40,10 +41,10 @@ namespace Hearts.Console
 
         public static HeartsPlayerList Bots = new HeartsPlayerList
             {
-                //NoobCrusher.Create(NoobCrusherVersion.v3),
-                //new Deathstar(),
-                //new QueenCatcher(),
-                //new Craghoul()
+                new Craghoul(),
+                new Deathstar(),
+                new QueenCatcher(),
+                new SavageBeast(Notifier, true)
             };
 
         public static List<Bot> VersusNoob1(IAgent bot)
