@@ -25,18 +25,20 @@ namespace Hearts
         private Dictionary<Player, PlayerState> playerCards;
         private Round round;
         private Dealer dealer;
+        private Timing timing;
 
-        public GameManager(IEnumerable<Bot> bots, EventNotifier notifier)
+        public GameManager(IEnumerable<Bot> bots, Timing timing, EventNotifier notifier)
         {
             this.playerCircle = new PlayerCircle();
             this.handEvaluator = new HandWinEvaluator();
             this.rulesEngine = new GameRulesEngine();
             this.notifier = notifier;
+            this.timing = timing;
             this.AddBots(bots);
             this.Reset();
         }
 
-        public RoundResult Play(int roundNumber, Dictionary<Player, List<int>> passTimings, Dictionary<Player, List<int>> playTimings)
+        public RoundResult Play(int roundNumber)
         {
             this.notifier.CallRoundStarted();
             this.Reset();
@@ -56,44 +58,13 @@ namespace Hearts
 
             Log.StartingHands(startingHands);
 
-            var postPassHands = this.GetPostPassHands(startingHands, passTimings);
+            var postPassHands = this.GetPostPassHands(startingHands, this.timing.PassTimings);
             
             var startingPlayer = this.playerCircle.GetStartingPlayer(postPassHands);
 
             while (this.playerCards.Select(i => i.Value.Current.Count()).Sum() > 0)
             {
-                this.round.BeginTrick();
-
-                foreach (var player in this.playerCircle.GetOrderedPlayersStartingWith(startingPlayer))
-                {
-                    var playerRemaining = this.playerCards[player].Current;
-                    this.playerCards[player].Legal = this.rulesEngine.GetPlayableCards(playerRemaining, this.round);
-                    var agent = this.playerAgentLookup[player];
-                    var stopwatch = Stopwatch.StartNew();
-                    var card = agent.ChooseCardToPlay(new GameState(player, new Game { Rounds = new List<Round> { this.round } }, this.playerCards[player]));
-                    stopwatch.Stop();
-                    playTimings[player].Add(Convert.ToInt32(stopwatch.ElapsedMilliseconds));
-
-                    if (!this.playerCards[player].Legal.Contains(card))
-                    {
-                        // TODO: Handle illegal move
-                        Log.IllegalPlay(player, card);
-                        player.AgentHasMadeIllegalMove = true;
-                        card = this.playerCards[player].Legal.First();
-                    }
-
-                    this.playerCards[player].Current = playerRemaining.ExceptCards(card);
-
-                    this.round.Play(player, card);
-                }
-
-                this.round.EndTrick();
-                var trick = this.round.PlayedTricks.Last();
-                var trickWinner = this.handEvaluator.EvaluateWinner(trick);
-                trick.Winner = trickWinner;
-                startingPlayer = trick.Winner;
-
-                Log.TrickSummary(trick);
+                startingPlayer = OrchestrateRound(startingPlayer);
             }
 
             var scores = players.ToDictionary(i => i, i => this.round.PlayedTricks.Where(j => j.Winner == i).SelectCards().Score());
@@ -153,6 +124,62 @@ namespace Hearts
             }
         }
 
+        private Player OrchestrateRound(Player startingPlayer)
+        {
+            this.round.BeginTrick();
+
+            foreach (var player in this.playerCircle.GetOrderedPlayersStartingWith(startingPlayer))
+            {
+                this.OrchestratePlayForPlayer(player);
+            }
+
+            this.round.EndTrick();
+
+            var trick = this.round.PlayedTricks.Last();
+            var trickWinner = this.handEvaluator.EvaluateWinner(trick);
+            trick.Winner = trickWinner;
+            startingPlayer = trick.Winner;
+
+            Log.TrickSummary(trick);
+
+            return startingPlayer;
+        }
+
+        private void OrchestratePlayForPlayer(Player player)
+        {
+            var playerState = this.playerCards[player];
+
+            var currentHand = playerState.Current;
+
+            playerState.Legal = this.rulesEngine.GetPlayableCards(currentHand, this.round);
+
+            var agent = this.playerAgentLookup[player];
+            
+            var gameState = new GameState(
+                player, 
+                new Game { Rounds = new List<Round> { this.round } }, 
+                playerState);
+
+            var stopwatch = Stopwatch.StartNew();
+
+            var card = agent.ChooseCardToPlay(gameState);
+            
+            stopwatch.Stop();
+            this.timing.PlayTimings[player].Add(Convert.ToInt32(stopwatch.ElapsedMilliseconds));
+
+            if (!playerState.Legal.Contains(card))
+            {
+                // TODO: Handle illegal move
+                Log.IllegalPlay(player, card);
+                player.AgentHasMadeIllegalMove = true;
+                card = playerState.Legal.First();
+            }
+
+            playerState.Current = currentHand.ExceptCards(card);
+
+            this.round.Play(player, card);
+        }
+
         private IEnumerable<CardHand> GetPostPassHands(
             IEnumerable<CardHand> startingHands, 
             Dictionary<Player, List<int>> passTimings)
@@ -169,7 +196,6 @@ namespace Hearts
             if (pass != Pass.NoPass)
             {
                 postPassHands = passService.OrchestratePassing(
-                    roundNumber,
                     this.playerCards,
                     this.playerCircle.FirstPlayer,
                     this.round,
@@ -184,8 +210,9 @@ namespace Hearts
 
             foreach (var postPassHand in postPassHands)
             {
-                this.playerCards[postPassHand.Owner].PostPass = postPassHand.ToList();
-                this.playerCards[postPassHand.Owner].Current = postPassHand.ToList();
+                var playerState = this.playerCards[postPassHand.Owner];
+                playerState.PostPass = postPassHand.ToList();
+                playerState.Current = postPassHand.ToList();
             }
 
             if (pass == Pass.NoPass)

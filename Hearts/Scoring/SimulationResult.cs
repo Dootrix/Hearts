@@ -9,17 +9,14 @@ namespace Hearts.Scoring
 {
     public class SimulationResult
     {
-        public SimulationResult(IEnumerable<Bot> bots)
+        public SimulationResult(List<GameResult> gameResults, Timing timing)
         {
-            this.GameResults = new List<GameResult>();
-            this.PassTimings = bots.ToDictionary(i => i.Player, i => new List<int>());
-            this.PlayTimings = bots.ToDictionary(i => i.Player, i => new List<int>());
+            this.GameResults = gameResults;
+            this.Timing = timing;
         }
 
-        public List<GameResult> GameResults { get; set; }
+        public List<GameResult> GameResults { get; private set; }
 
-        public Dictionary<Player, List<int>> PassTimings { get; set; }
-
-        public Dictionary<Player, List<int>> PlayTimings { get; set; }
+        public Timing Timing { get; private set; }
     }
 }

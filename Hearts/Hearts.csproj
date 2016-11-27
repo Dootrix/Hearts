@@ -99,6 +99,7 @@
     <Compile Include="Model\Kind.cs" />
     <Compile Include="Model\Player.cs" />
     <Compile Include="Model\Pass.cs" />
+    <Compile Include="Model\Timing.cs" />
     <Compile Include="Passing\PassingEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Factories\StandardDeckFactory.cs" />

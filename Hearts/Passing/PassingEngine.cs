@@ -51,7 +51,6 @@ namespace Hearts.Passing
         }
 
         public IEnumerable<CardHand> OrchestratePassing(
-            int roundNumber, 
             Dictionary<Player, PlayerState> playerCards, 
             Player playerFrom, 
             Round round, 
@@ -64,7 +63,7 @@ namespace Hearts.Passing
             
             for (int i = 0; i < players.Count; i++)
             {
-                round.Pass = this.GetPass(roundNumber, players.Count);
+                round.Pass = this.GetPass(round.RoundNumber, players.Count);
                 var agent = this.playerAgentLookup[playerFrom];
                 var stopwatch = Stopwatch.StartNew();
                 var pass = agent.ChooseCardsToPass(new GameState(playerFrom, new Game { Rounds = new List<Round> { round } }, playerCards[playerFrom]));
@@ -93,7 +92,7 @@ namespace Hearts.Passing
             for (int i = 0; i < players.Count; i++)
             {
                 var receivingCards = passedCards[i];
-                var playerTo = this.GetPassRecipient(roundNumber, players.Count, players[i]);
+                var playerTo = this.GetPassRecipient(round.RoundNumber, players.Count, players[i]);
                 result[playerTo] = result[playerTo].Union(receivingCards);
             }
 

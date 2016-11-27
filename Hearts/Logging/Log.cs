@@ -227,7 +227,8 @@ namespace Hearts.Logging
             foreach (var player in players)
             {
                 int moonshots = result.GameResults.SelectMany(i => i.Moonshots).Where(i => i.Key == player).Select(i => i.Value).Sum();
-                Console.WriteLine("{0} : {1:0}ms / {2:0}ms", player.Name, result.PassTimings[player].Average(), result.PlayTimings[player].Average());
+                var timing = result.Timing;
+                Console.WriteLine("{0} : {1:0}ms / {2:0}ms", player.Name, timing.PassTimings[player].Average(), timing.PlayTimings[player].Average());
             }
             Console.WriteLine(string.Empty);
             Console.WriteLine("Moonshots:");

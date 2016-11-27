@@ -20,33 +20,35 @@ namespace Hearts.Console
 
         public void SimulateGames(IEnumerable<Bot> bots, int simulationCount)
         {
-            var simulationResult = new SimulationResult(bots);
-
             this.notifier.CallSimulationStarted();
+
+            var gameResults = new List<GameResult>();
+            var timing = new Timing(bots);
 
             for (int i = 0; i < simulationCount; i++)
             {
                 this.notifier.CallGameStarted();
-                var gameResult = this.SimulateGame(bots, i + 1, simulationResult.PassTimings, simulationResult.PlayTimings);
-                simulationResult.GameResults.Add(gameResult);
+                var gameResult = this.SimulateGame(bots, i + 1, timing);
+                gameResults.Add(gameResult);
                 this.notifier.CallGameEnded();
             }
 
             this.notifier.CallSimulationEnded();
 
+            var simulationResult = new SimulationResult(gameResults, timing);
             Log.LogSimulationSummary(simulationResult);
         }
 
-        private GameResult SimulateGame(IEnumerable<Bot> bots, int gameNumber, Dictionary<Player, List<int>> passTimings, Dictionary<Player, List<int>> playTimings)
+        private GameResult SimulateGame(IEnumerable<Bot> bots, int gameNumber, Timing timing)
         {
-            var gameManager = new GameManager(bots, this.notifier);
+            var gameManager = new GameManager(bots, timing, this.notifier);
             var gameResult = new GameResult(bots.Select(i => i.Player), gameNumber);
             int roundNumber = 1;
             bool gameHasEnded;
 
             do
             {
-                var roundResult = gameManager.Play(roundNumber, passTimings, playTimings);
+                var roundResult = gameManager.Play(roundNumber);
 
                 foreach (var player in bots.Select(i => i.Player))
                 {
