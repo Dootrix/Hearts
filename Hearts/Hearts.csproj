@@ -64,6 +64,7 @@
     <Compile Include="Extensions\PlayedCardExtensions.cs" />
     <Compile Include="Extensions\PlayedTrickExtensions.cs" />
     <Compile Include="Extensions\CardListExtensions.cs" />
+    <Compile Include="Extensions\CharExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="GameEventHandlers\ShowHandHandler.cs" />
     <Compile Include="GameEventHandlers\HandsChangedHandler.cs" />
