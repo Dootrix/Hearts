@@ -1,5 +1,6 @@
 ﻿using Hearts.Factories;
 using Hearts.Model;
+using Hearts.Randomisation;
 using System.Collections.Generic;
 
 namespace Hearts.Deal
@@ -9,7 +10,7 @@ namespace Hearts.Deal
         private readonly IFactory<Deck> factory;
         private readonly IDealAlgorithm dealAlgorithm;
 
-        public Dealer(IFactory<Deck> factory, IDealAlgorithm dealAlgorithm)
+        public Dealer(IFactory<Deck> factory, IDealAlgorithm dealAlgorithm, IControlledRandom random)
         {
             this.factory = factory;
             this.dealAlgorithm = dealAlgorithm;
@@ -18,10 +19,10 @@ namespace Hearts.Deal
 
         public Deck Deck { get; private set; }
 
-        public IEnumerable<CardHand> DealStartingHands(IEnumerable<Player> players)
+        public IEnumerable<CardHand> DealStartingHands(IEnumerable<Player> players, IControlledRandom random)
         {
             this.NewDeck();
-            this.Deck.Shuffle();
+            this.Deck.Shuffle(random);
             return this.dealAlgorithm.DealStartingHands(this.Deck, players);
         }
 

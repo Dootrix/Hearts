@@ -5,6 +5,7 @@ using Hearts.Logging;
 using Hearts.Scoring;
 using Hearts.Events;
 using Hearts.Performance;
+using Hearts.Randomisation;
 
 namespace Hearts.Console
 {
@@ -19,7 +20,7 @@ namespace Hearts.Console
             this.notifier = notifier;
         }
 
-        public void SimulateGames(IEnumerable<Bot> bots, int simulationCount)
+        public SimulationResult SimulateGames(IEnumerable<Bot> bots, int simulationCount, bool logOutput = true, int randomIndex = 0)
         {
             this.notifier.CallSimulationStarted();
 
@@ -29,7 +30,7 @@ namespace Hearts.Console
             for (int i = 0; i < simulationCount; i++)
             {
                 this.notifier.CallGameStarted();
-                var gameResult = this.SimulateGame(bots, i + 1, timerService);
+                var gameResult = this.SimulateGame(bots, i + 1, timerService, StaticRandomAccessor.ControlledRandoms[randomIndex]);
                 gameResults.Add(gameResult);
                 this.notifier.CallGameEnded();
             }
@@ -37,12 +38,18 @@ namespace Hearts.Console
             this.notifier.CallSimulationEnded();
 
             var simulationResult = new SimulationResult(gameResults, timerService);
-            Log.LogSimulationSummary(simulationResult);
+
+            if (logOutput)
+            { 
+                Log.LogSimulationSummary(simulationResult);
+            }
+
+            return simulationResult;
         }
 
-        private GameResult SimulateGame(IEnumerable<Bot> bots, int gameNumber, TimerService timerService)
+        private GameResult SimulateGame(IEnumerable<Bot> bots, int gameNumber, TimerService timerService, IControlledRandom random)
         {
-            var gameManager = new GameManager(bots, timerService, this.notifier);
+            var gameManager = new GameManager(bots, timerService, this.notifier, random);
             var gameResult = new GameResult(bots.Select(i => i.Player), gameNumber);
             int roundNumber = 1;
             bool gameHasEnded;

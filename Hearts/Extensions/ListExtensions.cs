@@ -16,12 +16,12 @@ namespace Hearts.Extensions
             }
         }
 
-        public static T Random<T>(this IEnumerable<T> self)
+        /*public static T Random<T>(this IEnumerable<T> self)
         {
             return self.ElementAt(StaticRandomAccessor.ControlledRandom.Next(0, self.Count()));
-        }
+        }*/
 
-        public static IEnumerable<T> RandomSelection<T>(this IEnumerable<T> values, int nRandomElements)
+        /*public static IEnumerable<T> RandomSelection<T>(this IEnumerable<T> values, int nRandomElements)
         {
             var valueList = values.ToList();
 
@@ -46,7 +46,7 @@ namespace Hearts.Extensions
             }
             
             return results;
-        }
+        }*/
 
         public static void Shuffle<T>(this IList<T> self)
         {
@@ -55,14 +55,28 @@ namespace Hearts.Extensions
 
             for (var i = 0; i < last; ++i)
             {
-                var r = StaticRandomAccessor.ControlledRandom.Next(i, count); // TODO: check Next functions same as Range
+                var r = StaticRandomAccessor.ControlledRandoms[0].Next(i, count); // TODO: check Next functions same as Range
                 var tmp = self[i];
                 self[i] = self[r];
                 self[r] = tmp;
             }
         }
 
-        public static List<T> RandomOrder<T>(this IEnumerable<T> self)
+        public static void Shuffle<T>(this IList<T> self, IControlledRandom random)
+        {
+            var count = self.Count;
+            var last = count - 1;
+
+            for (var i = 0; i < last; ++i)
+            {
+                var r = random.Next(i, count); // TODO: check Next functions same as Range
+                var tmp = self[i];
+                self[i] = self[r];
+                self[r] = tmp;
+            }
+        }
+
+        /*public static List<T> RandomOrder<T>(this IEnumerable<T> self)
         {
             var list = self.ToList();
 
@@ -78,6 +92,6 @@ namespace Hearts.Extensions
             }
 
             return list;
-        }
+        }*/
     }
 }
