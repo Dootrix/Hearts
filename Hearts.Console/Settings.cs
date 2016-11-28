@@ -13,7 +13,7 @@ namespace Hearts.Console
     {
         // Controlled Randomisation
         public static bool UseFixedSeed = false;
-        public static int FixedSeed = 4174562; //4174562
+        public static int FixedSeed = 4174562;
         public static EventNotifier Notifier = new EventNotifier();
 
         // Note: This simulates at about 300 games per second, without console outputs, depending on the efficiency of the bots used
@@ -23,72 +23,31 @@ namespace Hearts.Console
         // 10,000 games - 30s
         public static int GameSimulationCount = 10;
 
+        // True:    Shows full game breakdown
+        // True:    Shows summary
         public static bool ShowFullOutput = GameSimulationCount == 1;
 
         // Available bots: (* = Doesn't currently build against current IAgent signature)
         // 
-        //    • TerribleRandomAiAgent
-        //    • Noob1AiExampleAgent
-        //    • Noob2AiExampleAgent
-        //    • Noob3AiExampleAgent
-        //    • SavageBeast(Notifier, true) (Adam Hill) - Note: 3ms per pass
-        //    • NoobCrusher.Create(NoobCrusherVersion.v1) (Tony Beasley)
-        //    • NoobCrusher.Create(NoobCrusherVersion.v2) (Tony Beasley)
-        //    • NoobCrusher.Create(NoobCrusherVersion.v3) (Tony Beasley)
-        //    • Craghoul (Craig Rowe)
-        //    • Deathstar (James Robinson)
-        //    • QueenCatcher (Dan White)
-
+        //    • TerribleRandomAiAgent                                       0ms
+        //    • Noob1AiExampleAgent                                         0ms
+        //    • Noob2AiExampleAgent                                         0ms
+        //    • Noob3AiExampleAgent                                         0ms
+        //    • SavageBeast(Notifier, allowShoot: false)    Adam Hill       ?ms
+        //    • SavageBeast(Notifier, allowShoot: true)     Adam Hill       3ms
+        //    • NoobCrusher.Create(NoobCrusherVersion.v1)   Tony Beasley    0ms
+        //    • NoobCrusher.Create(NoobCrusherVersion.v2)   Tony Beasley    0ms
+        //    • NoobCrusher.Create(NoobCrusherVersion.v3)   Tony Beasley    0ms
+        //    • Craghoul                                    Craig Rowe      0ms
+        //    • Deathstar                                   James Robinson  0ms
+        //    • QueenCatcher                                Dan White       0ms
+        //
         public static HeartsPlayerList Bots = new HeartsPlayerList
             {
                 new Craghoul(),
                 new Deathstar(),
                 new QueenCatcher(),
-                new SavageBeast(Notifier, true)
+                new SavageBeast(Notifier, allowShoot: true)
             };
-
-        public static List<Bot> VersusNoob1(IAgent bot)
-        {
-            return new HeartsPlayerList
-            {
-                new Noob1AiExampleAgent(),
-                new Noob1AiExampleAgent(),
-                new Noob1AiExampleAgent(),
-                bot
-            };
-        }
-
-        public static List<Bot> VersusNoob2(IAgent bot)
-        {
-            return new HeartsPlayerList
-            {
-                new Noob2AiExampleAgent(),
-                new Noob2AiExampleAgent(),
-                new Noob2AiExampleAgent(),
-                bot
-            };
-        } 
-
-        public static List<Bot> VersusNoob3(IAgent bot)
-        {
-            return new HeartsPlayerList
-            {
-                new Noob3AiExampleAgent(),
-                new Noob3AiExampleAgent(),
-                new Noob3AiExampleAgent(),
-                bot
-            };
-        }
-
-        public static List<Bot> VersusNoob123(IAgent bot)
-        {
-            return new HeartsPlayerList
-            {
-                new Noob1AiExampleAgent(),
-                new Noob2AiExampleAgent(),
-                new Noob3AiExampleAgent(),
-                bot
-            };
-        }
     }
 }
