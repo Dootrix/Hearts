@@ -24,7 +24,8 @@ namespace Hearts.Console
 
             if (Settings.GameSimulationCount == 1)
             {
-                results.Add(new Simulator(Settings.Notifier).SimulateGames(gameBots, Settings.GameSimulationCount, new ControlledRandom(Settings.UseFixedSeed ? Settings.FixedSeed : Environment.TickCount)));
+                StaticRandomAccessor.ControlledRandoms = new List<IControlledRandom> { new ControlledRandom(Settings.UseFixedSeed ? Settings.FixedSeed : Environment.TickCount) };
+                results.Add(new Simulator(Settings.Notifier).SimulateGames(gameBots, Settings.GameSimulationCount, StaticRandomAccessor.ControlledRandoms[0]));
             }
             else
             {
