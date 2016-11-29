@@ -45,7 +45,7 @@ namespace Hearts.Console
                 var timer = Stopwatch.StartNew();
                 for (int i = 0; i < seatingCombinations.Count; i++)
                 {
-                    results.Add(new Simulator(Settings.Notifier).SimulateGames(gameBots, Settings.GameSimulationCount, logOutput: false, randomIndex: i));
+                    results.Add(new Simulator(Settings.Notifier).SimulateGames(seatingCombinations[i], Settings.GameSimulationCount, logOutput: false, randomIndex: i));
                 };
                 timer.Stop();
 
