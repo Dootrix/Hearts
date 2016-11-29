@@ -12,7 +12,7 @@ namespace Hearts.Console
     public class Settings
     {
         // Controlled Randomisation
-        public static bool UseFixedSeed = false;
+        public static bool UseFixedSeed = true;
         public static int FixedSeed = 4174562;
         public static EventNotifier Notifier = new EventNotifier();
 
@@ -21,7 +21,7 @@ namespace Hearts.Console
         //      1 game  - 0s
         //  1,000 games - 3s
         // 10,000 games - 30s
-        public static int GameSimulationCount = 2;
+        public static int GameSimulationCount = 1;
 
         // True:    Shows full game breakdown
         // True:    Shows summary
