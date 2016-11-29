@@ -22,8 +22,6 @@ namespace Hearts.Console
 
         public SimulationResult SimulateGames(IEnumerable<Bot> bots, int simulationCount, bool logOutput = true, int randomIndex = 0)
         {
-            this.notifier.CallSimulationStarted();
-
             var gameResults = new List<GameResult>();
             var timerService = new TimerService(bots);
 
@@ -34,8 +32,6 @@ namespace Hearts.Console
                 gameResults.Add(gameResult);
                 this.notifier.CallGameEnded();
             }
-
-            this.notifier.CallSimulationEnded();
 
             var simulationResult = new SimulationResult(gameResults, timerService);
 

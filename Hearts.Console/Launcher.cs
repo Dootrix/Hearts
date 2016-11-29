@@ -23,9 +23,12 @@ namespace Hearts.Console
 
             var gameBots = Launcher.GetGameBots();
 
+            Settings.Notifier.CallSimulationStarted();
+
             if (Settings.GameSimulationCount == 1)
             {
                 StaticRandomAccessor.ControlledRandoms = new List<IControlledRandom> { new ControlledRandom(Settings.UseFixedSeed ? Settings.FixedSeed : Environment.TickCount) };
+                Log.LogRandomSeed(StaticRandomAccessor.ControlledRandoms[0].GetSeed());
                 var timer = Stopwatch.StartNew();
                 new Simulator(Settings.Notifier).SimulateGames(gameBots, Settings.GameSimulationCount);
                 timer.Stop();
@@ -37,6 +40,7 @@ namespace Hearts.Console
                 var orderedBots = new List<IEnumerable<Bot>>();
                 var seatingCombinations = GetEveryBotSeatingCombination(gameBots).ToList();
                 StaticRandomAccessor.ControlledRandoms = GetControlledRandoms(seatingCombinations);
+                Log.LogRandomSeed(StaticRandomAccessor.ControlledRandoms[0].GetSeed());
                 var results = new List<SimulationResult>();
                 var timer = Stopwatch.StartNew();
                 for (int i = 0; i < seatingCombinations.Count; i++)
@@ -50,6 +54,8 @@ namespace Hearts.Console
 
                 Log.TotalSimulationTime(timer.ElapsedMilliseconds);
             }
+
+            Settings.Notifier.CallSimulationEnded();
 
             System.Console.ReadLine();
         }
