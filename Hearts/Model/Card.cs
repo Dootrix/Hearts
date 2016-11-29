@@ -24,6 +24,38 @@ namespace Hearts.Model
             return obj is Card && this == (Card)obj;
         }
 
+        public static Card operator +(Card a, int b)
+        {
+            if (ReferenceEquals(null, a))
+            {
+                return null;
+            }
+
+            var kind = a.Kind.Increment(b);
+            if (!kind.HasValue)
+            {
+                return null;
+            }
+
+            return new Card(kind.Value, a.Suit);
+        }
+
+        public static Card operator -(Card a, int b)
+        {
+            if (ReferenceEquals(null, a))
+            {
+                return null;
+            }
+
+            var kind = a.Kind.Decrement(b);
+            if (!kind.HasValue)
+            {
+                return null;
+            }
+
+            return new Card(kind.Value, a.Suit);
+        }
+
         public static bool operator ==(Card a, Suit b)
         {
             bool isANull = ReferenceEquals(null, a);

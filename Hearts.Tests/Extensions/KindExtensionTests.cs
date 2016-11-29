@@ -26,5 +26,41 @@ namespace Hearts.Tests.Extensions
                 Assert.AreEqual("J", abbr);
             }
         }
+
+        [TestFixture]
+        public class Increment
+        {
+            [Test]
+            public void KingIncrementsToAce()
+            {
+                var result = Kind.King.Increment();
+                Assert.AreEqual(Kind.Ace, result);
+            }
+
+            [Test]
+            public void AceIncrementsToNull()
+            {
+                var result = Kind.Ace.Increment();
+                Assert.AreEqual(null, result);
+            }
+        }
+
+        [TestFixture]
+        public class Decrement
+        {
+            [Test]
+            public void KingDecrementsToQueen()
+            {
+                var result = Kind.King.Decrement();
+                Assert.AreEqual(Kind.Queen, result);
+            }
+
+            [Test]
+            public void TwoDecrementsToNull()
+            {
+                var result = Kind.Two.Decrement();
+                Assert.AreEqual(null, result);
+            }
+        }
     }
 }
