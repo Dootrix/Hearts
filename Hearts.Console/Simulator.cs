@@ -20,7 +20,7 @@ namespace Hearts.Console
             this.notifier = notifier;
         }
 
-        public SimulationResult SimulateGames(IEnumerable<Bot> bots, int simulationCount, bool logOutput = true, int randomIndex = 0)
+        public SimulationResult SimulateGames(IEnumerable<Bot> bots, int simulationCount, IControlledRandom random, bool logOutput = true)
         {
             var gameResults = new List<GameResult>();
             var timerService = new TimerService(bots);
@@ -28,7 +28,7 @@ namespace Hearts.Console
             for (int i = 0; i < simulationCount; i++)
             {
                 this.notifier.CallGameStarted();
-                var gameResult = this.SimulateGame(bots, i + 1, timerService, StaticRandomAccessor.ControlledRandoms[randomIndex]);
+                var gameResult = this.SimulateGame(bots, i + 1, timerService, random);
                 gameResults.Add(gameResult);
                 this.notifier.CallGameEnded();
             }

@@ -18,31 +18,31 @@ namespace Hearts.Console
         {
             var gameBots = this.GetGameBots();
             Settings.Notifier.CallSimulationStarted();
-            StaticRandomAccessor.ControlledRandoms = new List<IControlledRandom> { new ControlledRandom(Settings.UseFixedSeed ? Settings.FixedSeed : Environment.TickCount) };
-            Log.LogRandomSeed(StaticRandomAccessor.ControlledRandoms[0].GetSeed());
+
             var timer = Stopwatch.StartNew();
             var results = new List<SimulationResult>();
 
             if (Settings.GameSimulationCount == 1)
             {
-                results.Add(new Simulator(Settings.Notifier).SimulateGames(gameBots, Settings.GameSimulationCount));
+                results.Add(new Simulator(Settings.Notifier).SimulateGames(gameBots, Settings.GameSimulationCount, new ControlledRandom(Settings.UseFixedSeed ? Settings.FixedSeed : Environment.TickCount)));
             }
             else
             {
                 // We run one simulation for every possible seating combination, each with the same starting seed, to eliminate the advantage of any cardset
-                var roundRobinSeatingArrangements = GetEveryBotSeatingCombination(gameBots).ToList();
-                StaticRandomAccessor.ControlledRandoms = this.GetControlledRandoms(roundRobinSeatingArrangements);
+                var roundRobinSeatingArrangements = this.PermutateOrdering(gameBots).ToList();
+                StaticRandomAccessor.ControlledRandoms = this.GetControlledRandoms(roundRobinSeatingArrangements.Count);
 
                 for (int i = 0; i < roundRobinSeatingArrangements.Count; i++)
                 {
-                    results.Add(new Simulator(Settings.Notifier).SimulateGames(roundRobinSeatingArrangements[i], Settings.GameSimulationCount, logOutput: false, randomIndex: i));
-                };                
+                    results.Add(new Simulator(Settings.Notifier).SimulateGames(roundRobinSeatingArrangements[i], Settings.GameSimulationCount, StaticRandomAccessor.ControlledRandoms[i], logOutput: false));
+                };
             }
 
             timer.Stop();
             Log.TotalSimulationTime(timer.ElapsedMilliseconds);
             var combinedResult = CombineSimulations(results);
             Log.LogSimulationSummary(combinedResult);
+            Log.LogRandomSeed(StaticRandomAccessor.ControlledRandoms[0].GetSeed());
             Settings.Notifier.CallSimulationEnded();
         }
 
@@ -53,9 +53,9 @@ namespace Hearts.Console
         }
 
         // Assumes 4 players
-        private IEnumerable<IEnumerable<Bot>> GetEveryBotSeatingCombination(IEnumerable<Bot> bots)
+        private IEnumerable<IEnumerable<T>> PermutateOrdering<T>(IEnumerable<T> elements)
         {
-            var ordered = bots.ToList();
+            var ordered = elements.ToList();
 
             foreach (var a in ordered)
             {
@@ -72,11 +72,11 @@ namespace Hearts.Console
             }
         }
 
-        private List<IControlledRandom> GetControlledRandoms(IEnumerable<IEnumerable<Bot>> seatingCombinations)
+        private List<IControlledRandom> GetControlledRandoms(int seatArrangementCount)
         {
             int tickCount = Environment.TickCount;
 
-            return seatingCombinations.Select(i => new ControlledRandom(Settings.UseFixedSeed ? Settings.FixedSeed : tickCount)).Cast<IControlledRandom>().ToList();
+            return Enumerable.Range(0, seatArrangementCount).Select(i => new ControlledRandom(Settings.UseFixedSeed ? Settings.FixedSeed : tickCount)).Cast<IControlledRandom>().ToList();
         }
 
         private IEnumerable<Bot> GetGameBots()
