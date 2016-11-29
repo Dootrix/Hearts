@@ -6,6 +6,7 @@ using Hearts.Logging;
 using Hearts.Model;
 using Hearts.Passing;
 using Hearts.Performance;
+using Hearts.Randomisation;
 using Hearts.Rules;
 using Hearts.Scoring;
 using System.Collections.Generic;
@@ -24,11 +25,13 @@ namespace Hearts
         private Round round;
         private Dealer dealer;
         private TimerService timerService;
+        private IControlledRandom random;
 
         public GameManager(
             IEnumerable<Bot> bots,
-            TimerService timerService, 
-            EventNotifier notifier)
+            TimerService timerService,
+            EventNotifier notifier, 
+            IControlledRandom random)
         {
             this.playerCircle = new PlayerCircle();
             this.handEvaluator = new HandWinEvaluator();
@@ -36,6 +39,7 @@ namespace Hearts
             this.playerStateManager = new PlayerStateManager();
             this.agentLookup = new AgentLookup();
             this.notifier = notifier;
+            this.random = random;
             this.timerService = timerService;
             this.AddBots(bots);
             this.Reset();
@@ -48,7 +52,7 @@ namespace Hearts
             var players = this.playerCircle.AllPlayers;
 
             this.round = new Round(players.Count, roundNumber);
-            var startingHands = this.dealer.DealStartingHands(players);
+            var startingHands = this.dealer.DealStartingHands(players, this.random);
 
             this.playerStateManager.SetStartingHands(startingHands);
 
@@ -119,7 +123,7 @@ namespace Hearts
 
         private void Reset()
         {
-            this.dealer = new Dealer(new StandardDeckFactory(), new EvenHandDealAlgorithm());
+            this.dealer = new Dealer(new StandardDeckFactory(), new EvenHandDealAlgorithm(), this.random);
 
             if (this.round != null)
             {

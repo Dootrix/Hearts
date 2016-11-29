@@ -27,14 +27,12 @@ namespace Hearts.Randomisation
         {
             this.seed = value;
             this.privateRandom = new Random(value);
-            Log.LogRandomSeed(this.seed);
         }
 
         public void ResetSeedToTime()
         {
             this.seed = Environment.TickCount;
             this.privateRandom = new Random(this.seed);
-            Log.LogRandomSeed(this.seed);
         }
 
         public void ResetRandomWithCurrentSeed()

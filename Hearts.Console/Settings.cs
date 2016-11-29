@@ -21,7 +21,7 @@ namespace Hearts.Console
         //      1 game  - 0s
         //  1,000 games - 3s
         // 10,000 games - 30s
-        public static int GameSimulationCount = 10;
+        public static int GameSimulationCount = 2;
 
         // True:    Shows full game breakdown
         // True:    Shows summary
