@@ -24,6 +24,48 @@ namespace Hearts.Model
             return obj is Card && this == (Card)obj;
         }
 
+        public static bool operator ==(Card a, Suit b)
+        {
+            bool isANull = ReferenceEquals(null, a);
+
+            return !isANull && a.Suit == b;
+        }
+
+        public static bool operator !=(Card a, Suit b)
+        {
+            bool isANull = ReferenceEquals(null, a);
+
+            return !isANull && a.Suit != b;
+        }
+
+        public static bool operator ==(Card a, Kind b)
+        {
+            bool isANull = ReferenceEquals(null, a);
+
+            return !isANull && a.Kind == b;
+        }
+
+        public static bool operator !=(Card a, Kind b)
+        {
+            bool isANull = ReferenceEquals(null, a);
+
+            return !isANull && a.Kind != b;
+        }
+
+        public static bool operator > (Card a, Kind b)
+        {
+            bool isANull = ReferenceEquals(null, a);
+
+            return !isANull && a.Kind > b;
+        }
+
+        public static bool operator < (Card a, Kind b)
+        {
+            bool isANull = ReferenceEquals(null, a);
+
+            return !isANull && a.Kind < b;
+        }
+
         public static bool operator ==(Card a, Card b)
         {
             bool isANull = ReferenceEquals(null, a);
