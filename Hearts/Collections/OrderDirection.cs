@@ -1,5 +1,4 @@
-﻿
-namespace Hearts.Collections
+﻿namespace Hearts.Collections
 {
     public enum OrderDirection
     {

@@ -1,25 +1,20 @@
-﻿using System;
+﻿using Hearts.Performance;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Hearts.Model;
 
 namespace Hearts.Scoring
 {
     public class SimulationResult
     {
-        public SimulationResult(IEnumerable<Bot> bots)
+        public SimulationResult(
+            List<GameResult> gameResults,
+            TimerService timerService)
         {
-            this.GameResults = new List<GameResult>();
-            this.PassTimings = bots.ToDictionary(i => i.Player, i => new List<int>());
-            this.PlayTimings = bots.ToDictionary(i => i.Player, i => new List<int>());
+            this.GameResults = gameResults;
+            this.TimerService = timerService;          
         }
 
-        public List<GameResult> GameResults { get; set; }
+        public List<GameResult> GameResults { get; private set; }
 
-        public Dictionary<Player, List<int>> PassTimings { get; set; }
-
-        public Dictionary<Player, List<int>> PlayTimings { get; set; }
+        public TimerService TimerService { get; private set; }
     }
 }

@@ -1,9 +1,9 @@
-﻿using System;
+﻿using System.Collections.Generic;
 
 namespace Hearts.Randomisation
 {
     public static class StaticRandomAccessor
     {
-        public static IControlledRandom ControlledRandom;
+        public static List<IControlledRandom> ControlledRandoms;
     }
 }

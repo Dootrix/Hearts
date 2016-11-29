@@ -2,25 +2,38 @@
 using Hearts.Model;
 using Hearts.Rules;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hearts.Tests.Rules
 {
     [TestFixture]
     public class GameRulesEngineTests
     {
-        [Test]
-        public void ExpectOnlyTwoOfClubsPlayableInitially()
+        /// <summary>
+        /// The lowest club should be playable.
+        /// </summary>
+        [TestFixture]
+        public class InitialPlay
         {
-            var playableCards = new TestEnclosure()
-                .WithCardsInHand(Cards.Deck)
-                .GetPlayableCards();
+            [Test]
+            public void WhenTwoOfClubsInHandExpectOnlyTwoOfClubsPlayable()
+            {
+                var playableCards = new TestEnclosure()
+                    .WithCardsInHand(Cards.Deck)
+                    .GetPlayableCards();
 
-            Assert.AreEqual("2♣", playableCards);
+                Assert.AreEqual("2♣", playableCards);
+            }
+
+            [Test]
+            public void WhenNoTwoOfClubsInHandExpectOnlyThreeOfClubsPlayable()
+            {
+                var playableCards = new TestEnclosure()
+                    .WithCardsInHand(Cards.Deck.ExceptCard(Cards.TwoOfClubs))
+                    .GetPlayableCards();
+
+                Assert.AreEqual("3♣", playableCards);
+            }
         }
 
         [TestFixture]
@@ -30,21 +43,22 @@ namespace Hearts.Tests.Rules
             public void ExpectOnlyClubsPlayableIfHasClubsInHand()
             {
                 var playableCards = new TestEnclosure()
-                    .Play(new Player("A"), Cards.TwoOfClubs)
+                    .Play(Cards.TwoOfClubs)
                     .WithCardInHand(Cards.EightOfClubs)
+                    .WithCardInHand(Cards.TenOfClubs)
                     .WithCardInHand(Cards.TenOfDiamonds)
                     .WithCardInHand(Cards.QueenOfSpades)
                     .WithCardInHand(Cards.SevenOfHearts)
                     .GetPlayableCards();
 
-                Assert.AreEqual("8♣", playableCards);
+                Assert.AreEqual("8♣,T♣", playableCards);
             }
 
             [Test]
-            public void ExpectHeartsNotPlayableUnlessNoChoice()
+            public void ExpectHeartsNotUsuallyPlayable()
             {
                 var playableCards = new TestEnclosure()
-                    .Play(new Player("A"), Cards.TwoOfClubs)
+                    .Play(Cards.TwoOfClubs)
                     .WithCardInHand(Cards.TenOfDiamonds)
                     .WithCardInHand(Cards.FiveOfSpades)
                     .WithCardsInHand(Cards.Hearts)
@@ -54,10 +68,10 @@ namespace Hearts.Tests.Rules
             }
 
             [Test]
-            public void ExpectQueenOfSpadesNotPlayableUnlessNoChoice()
+            public void ExpectQueenOfSpadesNotUsuallyPlayable()
             {
                 var playableCards = new TestEnclosure()
-                    .Play(new Player("A"), Cards.TwoOfClubs)
+                    .Play(Cards.TwoOfClubs)
                     .WithCardInHand(Cards.NineOfDiamonds)
                     .WithCardInHand(Cards.SixOfSpades)
                     .WithCardInHand(Cards.QueenOfSpades)
@@ -65,15 +79,46 @@ namespace Hearts.Tests.Rules
 
                 Assert.AreEqual("9♦,6♠", playableCards);
             }
+
+            /// <summary>
+            /// Extreme edge case
+            /// </summary>
+            [Test]
+            public void OnlyQueenOfSpadesPlayableWhenOnlyQueenOfSpadesAndHearts()
+            {
+                var playableCards = new TestEnclosure()
+                    .Play(Cards.TwoOfClubs)
+                    .WithCardInHand(Cards.QueenOfSpades)
+                    .WithCardsInHand(Cards.Hearts.ExceptCard(Cards.AceOfHearts))
+                    .GetPlayableCards();
+
+                Assert.AreEqual("Q♠", playableCards);
+            }
+
+            /// <summary>
+            /// Extreme edge case
+            /// </summary>
+            [Test]
+            public void HeartsPlayableWhenOnlyHearts()
+            {
+                var playableCards = new TestEnclosure()
+                    .Play(Cards.TwoOfClubs)                    
+                    .WithCardsInHand(Cards.Hearts)
+                    .GetPlayableCards();
+
+                Assert.AreEqual("2♥,3♥,4♥,5♥,6♥,7♥,8♥,9♥,T♥,J♥,Q♥,K♥,A♥", playableCards);
+            }
         }
 
         private class TestEnclosure
         {
             private readonly List<Card> cardsInHand = new List<Card>();
+            private readonly Player player;
             private readonly Round round;
 
             public TestEnclosure()
             {
+                this.player = new Player("A"); // the player shouldn't matter
                 this.round = new Round(numberOfPlayers: 4, roundNumber: 1);
             }
 
@@ -89,9 +134,9 @@ namespace Hearts.Tests.Rules
                 return this;
             }
 
-            public TestEnclosure Play(Player player, Card card)
+            public TestEnclosure Play(Card card)
             {
-                this.round.Play(player, card);
+                this.round.Play(this.player, card);
                 return this;
             }
 

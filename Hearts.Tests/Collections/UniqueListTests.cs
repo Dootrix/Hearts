@@ -1,5 +1,4 @@
-﻿
-using Hearts.Collections;
+﻿using Hearts.Collections;
 using Hearts.Model;
 using NUnit.Framework;
 

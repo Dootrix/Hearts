@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Hearts.Extensions;
+using Hearts.Randomisation;
 
 namespace Hearts.Model
 {
@@ -28,6 +29,11 @@ namespace Hearts.Model
             this.Cards.Remove(lastCard);
 
             return lastCard;
+        }
+
+        public void Shuffle(IControlledRandom random)
+        {
+            this.Cards.Shuffle(random);
         }
 
         public void Shuffle()

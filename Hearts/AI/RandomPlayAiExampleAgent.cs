@@ -1,7 +1,6 @@
-﻿using Hearts.Factories;
-using Hearts.Model;
+﻿using System.Linq;
 using System.Collections.Generic;
-using System.Linq;
+using Hearts.Model;
 using Hearts.Extensions;
 
 namespace Hearts.AI
@@ -14,12 +13,12 @@ namespace Hearts.AI
 
         public IEnumerable<Card> ChooseCardsToPass(GameState gameState)
         {
-            return gameState.StartingCards.RandomSelection(3);
+            return gameState.StartingCards.Take(3);
         }
 
         public Card ChooseCardToPlay(GameState gameState)
         {
-            return gameState.LegalCards.Random();
+            return gameState.LegalCards.First();
         }
     }
 }

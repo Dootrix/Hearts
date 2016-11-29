@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Hearts.Extensions;
-using Hearts.Factories;
 using Hearts.Model;
 
 namespace Hearts.AI
 {
     public class Noob3AiExampleAgent : IAgent
     {
-        public string AgentName { get { return "Noob 2 AI"; } }
+        public string AgentName { get { return "Noob 3 AI"; } }
 
         public Player Player { get; set; }
 
