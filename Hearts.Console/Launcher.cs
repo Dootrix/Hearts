@@ -1,73 +1,59 @@
-﻿using Hearts.Logging;
-using Hearts.Randomisation;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using Hearts.AI;
 using Hearts.Extensions;
+using Hearts.Logging;
 using Hearts.Model;
+using Hearts.Randomisation;
 using Hearts.Scoring;
-using System.Threading.Tasks;
 
 namespace Hearts.Console
 {
     public class Launcher
     {
-        public static void Main()
+        public void ExecuteSimulations()
         {
-            if (!Settings.ShowFullOutput)
-            {
-                Log.Options = new SummaryOnlyLogOptions();
-            }
-
-            var gameBots = Launcher.GetGameBots();
-
+            var gameBots = this.GetGameBots();
             Settings.Notifier.CallSimulationStarted();
+            StaticRandomAccessor.ControlledRandoms = new List<IControlledRandom> { new ControlledRandom(Settings.UseFixedSeed ? Settings.FixedSeed : Environment.TickCount) };
+            Log.LogRandomSeed(StaticRandomAccessor.ControlledRandoms[0].GetSeed());
+            var timer = Stopwatch.StartNew();
+            var results = new List<SimulationResult>();
 
             if (Settings.GameSimulationCount == 1)
             {
-                StaticRandomAccessor.ControlledRandoms = new List<IControlledRandom> { new ControlledRandom(Settings.UseFixedSeed ? Settings.FixedSeed : Environment.TickCount) };
-                Log.LogRandomSeed(StaticRandomAccessor.ControlledRandoms[0].GetSeed());
-                var timer = Stopwatch.StartNew();
-                new Simulator(Settings.Notifier).SimulateGames(gameBots, Settings.GameSimulationCount);
-                timer.Stop();
-
-                Log.TotalSimulationTime(timer.ElapsedMilliseconds);
+                results.Add(new Simulator(Settings.Notifier).SimulateGames(gameBots, Settings.GameSimulationCount));
             }
             else
             {
-                var orderedBots = new List<IEnumerable<Bot>>();
-                var seatingCombinations = GetEveryBotSeatingCombination(gameBots).ToList();
-                StaticRandomAccessor.ControlledRandoms = GetControlledRandoms(seatingCombinations);
-                Log.LogRandomSeed(StaticRandomAccessor.ControlledRandoms[0].GetSeed());
-                var results = new List<SimulationResult>();
-                var timer = Stopwatch.StartNew();
-                for (int i = 0; i < seatingCombinations.Count; i++)
+                // We run one simulation for every possible seating combination, each with the same starting seed, to eliminate the advantage of any cardset
+                var roundRobinSeatingArrangements = GetEveryBotSeatingCombination(gameBots).ToList();
+                StaticRandomAccessor.ControlledRandoms = this.GetControlledRandoms(roundRobinSeatingArrangements);
+
+                for (int i = 0; i < roundRobinSeatingArrangements.Count; i++)
                 {
-                    results.Add(new Simulator(Settings.Notifier).SimulateGames(seatingCombinations[i], Settings.GameSimulationCount, logOutput: false, randomIndex: i));
-                };
-                timer.Stop();
-
-                var combinedResult = CombineSimulations(results);
-                Log.LogSimulationSummary(combinedResult);
-
-                Log.TotalSimulationTime(timer.ElapsedMilliseconds);
+                    results.Add(new Simulator(Settings.Notifier).SimulateGames(roundRobinSeatingArrangements[i], Settings.GameSimulationCount, logOutput: false, randomIndex: i));
+                };                
             }
 
+            timer.Stop();
+            Log.TotalSimulationTime(timer.ElapsedMilliseconds);
+            var combinedResult = CombineSimulations(results);
+            Log.LogSimulationSummary(combinedResult);
             Settings.Notifier.CallSimulationEnded();
-
-            System.Console.ReadLine();
         }
 
-        private static SimulationResult CombineSimulations(List<SimulationResult> results)
+        private SimulationResult CombineSimulations(List<SimulationResult> results)
         {
             // Note: Timings are just based on the last game
             return new SimulationResult(results.SelectMany(i => i.GameResults).ToList(), results.Last().TimerService);
         }
 
         // Assumes 4 players
-        private static IEnumerable<IEnumerable<Bot>> GetEveryBotSeatingCombination(IEnumerable<Bot> bots)
+        private IEnumerable<IEnumerable<Bot>> GetEveryBotSeatingCombination(IEnumerable<Bot> bots)
         {
             var ordered = bots.ToList();
 
@@ -86,13 +72,14 @@ namespace Hearts.Console
             }
         }
 
-        private static List<IControlledRandom> GetControlledRandoms(IEnumerable<IEnumerable<Bot>> seatingCombinations)
+        private List<IControlledRandom> GetControlledRandoms(IEnumerable<IEnumerable<Bot>> seatingCombinations)
         {
-            int j = Environment.TickCount;
-            return seatingCombinations.Select(i => new ControlledRandom(Settings.UseFixedSeed ? Settings.FixedSeed : j)).Cast<IControlledRandom>().ToList();
+            int tickCount = Environment.TickCount;
+
+            return seatingCombinations.Select(i => new ControlledRandom(Settings.UseFixedSeed ? Settings.FixedSeed : tickCount)).Cast<IControlledRandom>().ToList();
         }
 
-        private static IEnumerable<Bot> GetGameBots()
+        private IEnumerable<Bot> GetGameBots()
         {
             var chosenBots = Settings.Bots;
             var availableBots = Agent.GetAvailableAgents()
