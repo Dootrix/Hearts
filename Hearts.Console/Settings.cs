@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Hearts.AI;
 using Hearts.Model;
-using HeartsCrusher;
 using QueenCatcherAI;
 using Hearts.Events;
 using HeartsCrusher.Agents;
@@ -12,7 +11,7 @@ namespace Hearts.Console
     public class Settings
     {
         // Controlled Randomisation
-        public static bool UseFixedSeed = true;
+        public static bool UseFixedSeed = false;
         public static int FixedSeed = 4174562;
         public static EventNotifier Notifier = new EventNotifier();
 
@@ -38,13 +37,14 @@ namespace Hearts.Console
         //    • NoobCrusher.Create(NoobCrusherVersion.v1)   Tony Beasley    0ms
         //    • NoobCrusher.Create(NoobCrusherVersion.v2)   Tony Beasley    0ms
         //    • NoobCrusher.Create(NoobCrusherVersion.v3)   Tony Beasley    0ms
+        //    • ShootCrusher                                Tony Beasley    0ms
         //    • Craghoul                                    Craig Rowe      0ms
         //    • Deathstar                                   James Robinson  0ms
         //    • QueenCatcher                                Dan White       0ms
         //
         public static HeartsPlayerList Bots = new HeartsPlayerList
             {
-                new Craghoul(),
+                new ShootCrusher(),
                 new Deathstar(),
                 new QueenCatcher(),
                 new SavageBeast(Notifier, allowShoot: true)
