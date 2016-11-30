@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Hearts.AI;
 using Hearts.Model;
-using QueenCatcherAI;
+using QueenCatcherBot;
 using Hearts.Events;
 using HeartsCrusher.Agents;
 
