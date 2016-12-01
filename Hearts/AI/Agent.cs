@@ -9,18 +9,10 @@ namespace Hearts.AI
         public static IEnumerable<IAgent> GetAvailableAgents()
         {
             var availableAgents = new List<IAgent>();
-            var agentTypes = AppDomain.CurrentDomain.ResolveInterfaceImplementations<IAgent>(true);
 
-            foreach (var agentType in agentTypes)
+            foreach (var agentType in GetAvailableAgentTypes())
             {
-                IAgent agent = null;
-                try
-                {
-                    agent = Activator.CreateInstance(agentType) as IAgent;
-                }
-                catch (MemberAccessException)
-                {
-                }
+                var agent = CreateAgent(agentType);
 
                 if (agent != null)
                 {
@@ -29,6 +21,25 @@ namespace Hearts.AI
             }
 
             return availableAgents;
+        }
+
+        public static IEnumerable<Type> GetAvailableAgentTypes()
+        {
+            return AppDomain.CurrentDomain.ResolveInterfaceImplementations<IAgent>(true);
+        }
+
+        public static IAgent CreateAgent(Type agentType)
+        {
+            IAgent agent = null;
+            try
+            {
+                agent = Activator.CreateInstance(agentType) as IAgent;
+            }
+            catch (MemberAccessException)
+            {
+            }
+
+            return agent;
         }
     }
 }

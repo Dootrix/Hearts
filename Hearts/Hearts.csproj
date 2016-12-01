@@ -54,6 +54,7 @@
     <Compile Include="Collections\OrderDirection.cs" />
     <Compile Include="Collections\UniqueList.cs" />
     <Compile Include="Collections\SelectiveList.cs" />
+    <Compile Include="Events\EventArg.cs" />
     <Compile Include="Events\EventNotifier.cs" />
     <Compile Include="Events\INotifier.cs" />
     <Compile Include="Extensions\CardListFilteringExtensions.cs" />

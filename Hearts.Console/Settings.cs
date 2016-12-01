@@ -5,13 +5,14 @@ using Hearts.Model;
 using QueenCatcherBot;
 using Hearts.Events;
 using HeartsCrusher.Agents;
+using Hearts.Console.Simulations;
 
 namespace Hearts.Console
 {
     public class Settings
     {
         // Controlled Randomisation
-        public static bool UseFixedSeed = true;
+        public static bool UseFixedSeed = false;
         public static int FixedSeed = 8048609;
         public static EventNotifier Notifier = new EventNotifier();
 
@@ -20,14 +21,14 @@ namespace Hearts.Console
         //      1 game  - 0s
         //  1,000 games - 3s
         // 10,000 games - 30s
-        public static int GameSimulationCount = 1;
+        public static int GameSimulationCount = 100;
 
-        // For 4 players there will be 24 combinations per simulation.
-        public static bool SimulateAllSeatCombinations = true;
+        public static SimulationType SimulationType = SimulationType.PerformanceTest;
 
         // True:    Shows full game breakdown
         // True:    Shows summary
-        public static bool ShowFullOutput = GameSimulationCount == 1 && !SimulateAllSeatCombinations;
+        public static bool ShowFullOutput = GameSimulationCount == 1 
+            && SimulationType == SimulationType.Standard;
 
         // Available bots: (* = Doesn't currently build against current IAgent signature)
         // 
