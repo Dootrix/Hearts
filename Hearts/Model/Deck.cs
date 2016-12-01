@@ -35,10 +35,5 @@ namespace Hearts.Model
         {
             this.Cards.Shuffle(random);
         }
-
-        public void Shuffle()
-        {
-            this.Cards.Shuffle();
-        }
     }
 }

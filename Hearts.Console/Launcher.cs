@@ -22,55 +22,50 @@ namespace Hearts.Console
             var timer = Stopwatch.StartNew();
             var results = new List<SimulationResult>();
 
-            if (Settings.GameSimulationCount == 1)
-            {
-                StaticRandomAccessor.ControlledRandoms = new List<IControlledRandom> { new ControlledRandom(Settings.UseFixedSeed ? Settings.FixedSeed : Environment.TickCount) };
-                results.Add(new Simulator(Settings.Notifier).SimulateGames(gameBots, Settings.GameSimulationCount, StaticRandomAccessor.ControlledRandoms[0]));
-            }
-            else
-            {
-                // We run one simulation for every possible seating combination, each with the same starting seed, to eliminate the advantage of any cardset
-                var roundRobinSeatingArrangements = this.PermutateOrdering(gameBots).ToList();
-                StaticRandomAccessor.ControlledRandoms = this.GetControlledRandoms(roundRobinSeatingArrangements.Count);
+            int randomSeed = Settings.UseFixedSeed 
+                ? Settings.FixedSeed 
+                : Environment.TickCount;
 
-                for (int i = 0; i < roundRobinSeatingArrangements.Count; i++)
-                {
-                    results.Add(new Simulator(Settings.Notifier).SimulateGames(roundRobinSeatingArrangements[i], Settings.GameSimulationCount, StaticRandomAccessor.ControlledRandoms[i], logOutput: false));
-                };
+            // Simulating every possible seating combination, 
+            // each with the same starting seed eliminates the advantage of any card set.
+            var seatingCombinations = Settings.SimulateAllSeatCombinations
+                ? gameBots.Permute() : new[] { gameBots };          
+
+            foreach (var seatingArrangement in seatingCombinations)
+            {
+                var simulator = new Simulator(Settings.Notifier);
+
+                var result = simulator.SimulateGames(
+                    seatingArrangement,
+                    Settings.GameSimulationCount,
+                    new ControlledRandom(randomSeed),
+                    logOutput: !Settings.SimulateAllSeatCombinations);
+
+                results.Add(result);
             }
 
             timer.Stop();
             Log.TotalSimulationTime(timer.ElapsedMilliseconds);
-            var combinedResult = CombineSimulations(results);
-            Log.LogSimulationSummary(combinedResult);
-            Log.LogRandomSeed(StaticRandomAccessor.ControlledRandoms[0].GetSeed());
+
+            if (Settings.SimulateAllSeatCombinations)
+            {
+                var combinedResult = CombineSimulations(results);
+                Log.LogSimulationSummary(combinedResult);
+            }
+
+            Log.LogRandomSeed(randomSeed);
             Settings.Notifier.CallSimulationEnded();
+        }
+
+        private static IControlledRandom CreateControlledRandom(int tickCount)
+        {
+            return new ControlledRandom(Settings.UseFixedSeed ? Settings.FixedSeed : tickCount);
         }
 
         private SimulationResult CombineSimulations(List<SimulationResult> results)
         {
             // Note: Timings are just based on the last game
             return new SimulationResult(results.SelectMany(i => i.GameResults).ToList(), results.Last().TimerService);
-        }
-
-        // Assumes 4 players
-        private IEnumerable<IEnumerable<T>> PermutateOrdering<T>(IEnumerable<T> elements)
-        {
-            var ordered = elements.ToList();
-
-            foreach (var a in ordered)
-            {
-                foreach (var b in ordered.Except(new[] { a }))
-                {
-                    foreach (var c in ordered.Except(new[] { a, b }))
-                    {
-                        foreach (var d in ordered.Except(new[] { a, b, c }))
-                        {
-                            yield return new[] { a, b, c, d };
-                        }
-                    }
-                }
-            }
         }
 
         private List<IControlledRandom> GetControlledRandoms(int seatArrangementCount)
