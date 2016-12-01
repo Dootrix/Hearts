@@ -44,7 +44,7 @@ namespace Hearts.Console
         //
         public static HeartsPlayerList Bots = new HeartsPlayerList
             {
-                new ShootCrusher(),
+                new ShootCrusher(allowShoot: true, allowAntiShoot: true),
 				new Deathstar(allowShoot: true, allowAntiShoot: true),
                 new QueenCatcher(),
                 new SavageBeast(Notifier, allowShoot: true)
