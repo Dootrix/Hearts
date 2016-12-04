@@ -178,8 +178,8 @@ namespace Hearts
                 player.AgentHasMadeIllegalMove = true;
                 card = playerState.Legal.First();
             }
-
-            playerState.Current = currentHand.ExceptCards(card);
+          
+            currentHand.Remove(card);
 
             this.round.Play(player, card);
         }
