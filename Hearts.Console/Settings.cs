@@ -50,7 +50,7 @@ namespace Hearts.Console
             {
                 new ShootCrusher(allowShoot: true, allowAntiShoot: true),
 				new Deathstar(allowShoot: true, allowAntiShoot: true),
-                new QueenCatcher(),
+                new Craghoul(),
                 new SavageBeast(Notifier, allowShoot: true)
             };
     }
