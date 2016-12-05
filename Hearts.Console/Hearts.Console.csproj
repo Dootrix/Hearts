@@ -59,8 +59,8 @@
     <Reference Include="Deathstar">
       <HintPath>AIs\Deathstar.dll</HintPath>
     </Reference>
-    <Reference Include="DefensiveAfter90">
-      <HintPath>AIs\DefensiveAfter90.dll</HintPath>
+    <Reference Include="heartsbot">
+      <HintPath>..\..\heartsbot\heartsbot\bin\Debug\heartsbot.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -92,7 +92,9 @@
     <Content Include="AIs\Deathstar.dll" />
     <Content Include="AIs\HeartsCrusher.dll" />
     <Content Include="AIs\QueenCatcherBot.dll" />
-    <Content Include="AIs\DefensiveAfter90.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AIs\heartsbot.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
