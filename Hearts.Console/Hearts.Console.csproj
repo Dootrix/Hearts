@@ -44,9 +44,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>AIs\HeartsCrusher.dll</HintPath>
     </Reference>
-    <Reference Include="QueenCatcherAI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="QueenCatcherBot, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>AIs\QueenCatcherAI.dll</HintPath>
+      <HintPath>AIs\QueenCatcherBot.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -61,12 +61,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BotHelper.cs" />
     <Compile Include="HeartsPlayerList.cs" />
     <Compile Include="Launcher.cs" />
+    <Compile Include="Simulations\AllSeatCombinationsSimulation.cs" />
+    <Compile Include="Simulations\ISimulation.cs" />
+    <Compile Include="Simulations\PerformanceTestSimulation.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="Simulations\SimulationFactory.cs" />
+    <Compile Include="Simulations\SimulationType.cs" />
     <Compile Include="Simulator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Simulations\StandardSimulation.cs" />
     <Compile Include="TODOs.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -81,7 +88,7 @@
     <Content Include="AIs\Cargowire.Hearts.dll" />
     <Content Include="AIs\Deathstar.dll" />
     <Content Include="AIs\HeartsCrusher.dll" />
-    <Content Include="AIs\QueenCatcherAI.dll" />
+    <Content Include="AIs\QueenCatcherBot.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

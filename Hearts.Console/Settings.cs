@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using Hearts.AI;
 using Hearts.Model;
-using HeartsCrusher;
-using QueenCatcherAI;
+using QueenCatcherBot;
 using Hearts.Events;
 using HeartsCrusher.Agents;
+using Hearts.Console.Simulations;
 
 namespace Hearts.Console
 {
     public class Settings
     {
         // Controlled Randomisation
-        public static bool UseFixedSeed = true;
-        public static int FixedSeed = 4174562;
+        public static bool UseFixedSeed = false;
+        public static int FixedSeed = 8048609;
         public static EventNotifier Notifier = new EventNotifier();
 
         // Note: This simulates at about 300 games per second, without console outputs, depending on the efficiency of the bots used
@@ -21,11 +21,14 @@ namespace Hearts.Console
         //      1 game  - 0s
         //  1,000 games - 3s
         // 10,000 games - 30s
-        public static int GameSimulationCount = 1;
+        public static int GameSimulationCount = 100;
+
+        public static SimulationType SimulationType = SimulationType.PerformanceTest;
 
         // True:    Shows full game breakdown
         // True:    Shows summary
-        public static bool ShowFullOutput = GameSimulationCount == 1;
+        public static bool ShowFullOutput = GameSimulationCount == 1 
+            && SimulationType == SimulationType.Standard;
 
         // Available bots: (* = Doesn't currently build against current IAgent signature)
         // 
@@ -35,17 +38,18 @@ namespace Hearts.Console
         //    • Noob3AiExampleAgent                                         0ms
         //    • SavageBeast(Notifier, allowShoot: false)    Adam Hill       ?ms
         //    • SavageBeast(Notifier, allowShoot: true)     Adam Hill       3ms
-        //    • NoobCrusher.Create(NoobCrusherVersion.v1)   Tony Beasley    0ms
-        //    • NoobCrusher.Create(NoobCrusherVersion.v2)   Tony Beasley    0ms
-        //    • NoobCrusher.Create(NoobCrusherVersion.v3)   Tony Beasley    0ms
+        //    • NoobCrusherV1                               Tony Beasley    0ms
+        //    • NoobCrusherV2                               Tony Beasley    0ms
+        //    • NoobCrusherV3                               Tony Beasley    0ms
+        //    • ShootCrusher                                Tony Beasley    0ms
         //    • Craghoul                                    Craig Rowe      0ms
         //    • Deathstar                                   James Robinson  0ms
         //    • QueenCatcher                                Dan White       0ms
         //
         public static HeartsPlayerList Bots = new HeartsPlayerList
             {
-                new Craghoul(),
-                new Deathstar(),
+                new ShootCrusher(allowShoot: true, allowAntiShoot: true),
+				new Deathstar(allowShoot: true, allowAntiShoot: true),
                 new QueenCatcher(),
                 new SavageBeast(Notifier, allowShoot: true)
             };

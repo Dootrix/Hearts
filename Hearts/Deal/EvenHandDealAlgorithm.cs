@@ -12,28 +12,22 @@ namespace Hearts.Deal
     {
         public IEnumerable<CardHand> DealStartingHands(Deck deck, IEnumerable<Player> players)
         {
-            // TODO: Check this still works since I made it return the result
-            var hands = new Dictionary<Player, IEnumerable<Card>>();
-
-            foreach (var player in players)
-            {
-                hands.Add(player, new List<Card>());
-            }
+            var hands = players
+                .Select(x => new CardHand(x, new Card[] { }))
+                .ToArray();
 
             int playerCount = players.Count();
             int cardsPerPlayer = (int)Math.Floor(deck.Cards.Count() / (double)playerCount);
 
             for (int i = 0; i < cardsPerPlayer; i++)
             {
-                foreach (var player in players)
+                foreach (var hand in hands)
                 {
-                    hands[player] = hands[player].Union(new List<Card> { deck.DealNextCard() });
+                    hand.Add(deck.DealNextCard());
                 }
             }
 
-            return hands
-                .Select(x => new CardHand(x.Key, x.Value))
-                .ToArray();
+            return hands;                
         }
     }
 }

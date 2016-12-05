@@ -1,4 +1,11 @@
-﻿using Hearts.Logging;
+﻿using Hearts.AI;
+using Hearts.Logging;
+using Hearts.Model;
+using System.Collections.Generic;
+using System.Linq;
+using Hearts.Extensions;
+using System;
+using Hearts.Console.Simulations;
 
 namespace Hearts.Console
 {
@@ -11,7 +18,9 @@ namespace Hearts.Console
                 Log.Options = new SummaryOnlyLogOptions();
             }
 
-            new Launcher().ExecuteSimulations();
+            SimulationFactory
+                .CreateSimulation()
+                .Execute();    
 
             System.Console.ReadLine();
         }
