@@ -21,12 +21,12 @@ namespace Hearts.Console
         //      1 game  - 0s
         //  1,000 games - 3s
         // 10,000 games - 30s
-        public static int GameSimulationCount = 100 / 24;
+        public static int GameSimulationCount = 100;
 
-        public static SimulationType SimulationType = SimulationType.AllSeatCombinations;
+        public static SimulationType SimulationType = SimulationType.PerformanceTest;
 
         // True:    Shows full game breakdown
-        // False:   Shows only summary
+        // True:    Shows summary
         public static bool ShowFullOutput = GameSimulationCount == 1 
             && SimulationType == SimulationType.Standard;
 
@@ -50,7 +50,7 @@ namespace Hearts.Console
             {
                 new ShootCrusher(allowShoot: true, allowAntiShoot: true),
 				new Deathstar(allowShoot: true, allowAntiShoot: true),
-                new Craghoul(),
+                new QueenCatcher(),
                 new SavageBeast(Notifier, allowShoot: true)
             };
     }
