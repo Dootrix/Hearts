@@ -36,7 +36,7 @@ namespace Hearts.Console
         //    • Noob1AiExampleAgent                                         0ms
         //    • Noob2AiExampleAgent                                         0ms
         //    • Noob3AiExampleAgent                                         0ms
-        //    • SavageBeast(Notifier, allowShoot: false)    Adam Hill       ?ms
+        //    • SavageBeast(Notifier, allowShoot: false)    Adam Hill       0ms
         //    • SavageBeast(Notifier, allowShoot: true)     Adam Hill       3ms
         //    • NoobCrusherV1                               Tony Beasley    0ms
         //    • NoobCrusherV2                               Tony Beasley    0ms
