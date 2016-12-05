@@ -30,6 +30,14 @@ namespace Hearts.Model
             }
         }
 
+        public bool IsQueenBroken
+        {
+            get
+            {
+                return this.PlayedTricks.Any(i => i.Cards.Any(j => j.Value == Cards.QueenOfSpades));
+            }
+        }
+
         public bool IsLeadTurn
         {
             get

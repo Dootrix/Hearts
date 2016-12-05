@@ -1,4 +1,5 @@
-﻿using Hearts.Model;
+﻿using System;
+using Hearts.Model;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -40,6 +41,11 @@ namespace Hearts.Extensions
         public static IEnumerable<Card> ExceptCards(this IEnumerable<Card> self, params Card[] cards)
         {
             return self.Except(cards);
+        }
+
+        public static IEnumerable<Card> ExceptSuits(this IEnumerable<Card> self, params Suit[] suits)
+        {
+            return self.Where(_ => !suits.Any(s => s == _.Suit));
         }
 
         public static IEnumerable<Card> ExceptHearts(this IEnumerable<Card> self)
@@ -87,6 +93,71 @@ namespace Hearts.Extensions
         public static IEnumerable<Card> ClubsExceptTwoOfClubs(this IEnumerable<Card> self)
         {
             return self.Where(i => i.Suit == Suit.Clubs && i.Kind != Kind.Two);
+        }
+
+        public static IEnumerable<Card> ShootCards(this IEnumerable<Card> self)
+        {
+            return self.Where(i => i.Suit == Suit.Hearts || i == Cards.QueenOfSpades);
+        }
+
+        public static IEnumerable<Card> ContiguousLowest(this IEnumerable<Card> self)
+        {
+            if (!self.Any())
+            {
+                return Enumerable.Empty<Card>();
+            }
+
+            var cardsInOrder = self.GroupBySuitAscending();
+
+            var permittedCards = new List<Card>();
+            Card previousCard = null;
+            Card currentCard = null;
+
+            foreach (var card in cardsInOrder)
+            {
+                if(previousCard != null 
+                    && card.Suit == previousCard.Suit // We've not changed suit
+                    && Math.Abs(card.Kind - previousCard.Kind) != 1) // We've more than one card gap
+                {
+                    continue;
+                }
+
+                permittedCards.Add(card);
+
+                previousCard = card;
+            }
+
+            return self.Intersect(permittedCards);
+        }
+
+        public static IEnumerable<Card> ContiguousHighest(this IEnumerable<Card> self)
+        {
+            if (!self.Any())
+            {
+                return Enumerable.Empty<Card>();
+            }
+
+            var cardsInOrder = self.GroupBySuitDescending();
+
+            var permittedCards = new List<Card>();
+            Card previousCard = null;
+            Card currentCard = null;
+
+            foreach (var card in cardsInOrder)
+            {
+                if (previousCard != null
+                    && card.Suit == previousCard.Suit // We've not changed suit
+                    && Math.Abs(card.Kind - previousCard.Kind) != 1) // We've more than one card gap
+                {
+                    continue;
+                }
+
+                permittedCards.Add(card);
+
+                previousCard = card;
+            }
+
+            return self.Intersect(permittedCards);
         }
     }
 }

@@ -6,6 +6,11 @@ namespace Hearts.Extensions
 {
     public static class PlayedTrickExtensions
     {
+        public static IEnumerable<Card> SelectCards(this PlayedTrick self)
+        {
+            return self.Cards.Values;
+        }
+
         public static IEnumerable<Card> SelectCards(this IEnumerable<PlayedTrick> self)
         {
             return self.SelectMany(i => i.Cards).Select(i => i.Value);
