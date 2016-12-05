@@ -52,6 +52,7 @@
     <Compile Include="Attributes\Abbreviation.cs" />
     <Compile Include="Attributes\AbbreviationAttribute.cs" />
     <Compile Include="Collections\OrderDirection.cs" />
+    <Compile Include="Collections\NonNullList.cs" />
     <Compile Include="Collections\UniqueList.cs" />
     <Compile Include="Collections\SelectiveList.cs" />
     <Compile Include="Events\EventArg.cs" />
