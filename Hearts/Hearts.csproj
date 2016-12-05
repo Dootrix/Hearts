@@ -43,6 +43,7 @@
     <Compile Include="AI\Agent.cs" />
     <Compile Include="AI\IPassStrategy.cs" />
     <Compile Include="AI\IPlayStrategy.cs" />
+    <Compile Include="AI\SuicideNoob1AiExampleAgent.cs" />
     <Compile Include="AI\Noob3AiExampleAgent.cs" />
     <Compile Include="AI\IllegalMoveAgent.cs" />
     <Compile Include="AI\RandomPlayAiExampleAgent.cs" />

@@ -12,7 +12,7 @@ namespace Hearts.Console
     public class Settings
     {
         // Controlled Randomisation
-        public static bool UseFixedSeed = false;
+        public static bool UseFixedSeed = true;
         public static int FixedSeed = 8048609;
         public static EventNotifier Notifier = new EventNotifier();
 
@@ -21,9 +21,9 @@ namespace Hearts.Console
         //      1 game  - 0s
         //  1,000 games - 3s
         // 10,000 games - 30s
-        public static int GameSimulationCount = 100;
+        public static int GameSimulationCount = 1;
 
-        public static SimulationType SimulationType = SimulationType.PerformanceTest;
+        public static SimulationType SimulationType = SimulationType.Standard;
 
         // True:    Shows full game breakdown
         // True:    Shows summary
@@ -50,8 +50,8 @@ namespace Hearts.Console
             {
                 new ShootCrusher(allowShoot: true, allowAntiShoot: true),
 				new Deathstar(allowShoot: true, allowAntiShoot: true),
-                new QueenCatcher(),
-                new SavageBeast(Notifier, allowShoot: true)
+                new SuicideNoob1AiExampleAgent(),
+                new SavageBeast(Notifier, allowShoot: true, allowAntiShoot: true)
             };
     }
 }
