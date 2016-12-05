@@ -18,9 +18,19 @@ namespace Hearts.Model
 
         public Player Owner { get; private set; }
 
+        public void Add(Card cardToAdd)
+        {
+            this.cards.Add(cardToAdd);
+        }
+
         public void AddRange(IEnumerable<Card> cardsToAdd)
         {
             this.cards.AddRange(cardsToAdd);
+        }
+
+        public void Remove(Card card)
+        {
+            this.cards.Remove(card);
         }
 
         public void RemoveRange(IEnumerable<Card> cardsToRemove)

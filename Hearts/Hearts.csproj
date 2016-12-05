@@ -54,12 +54,14 @@
     <Compile Include="Collections\OrderDirection.cs" />
     <Compile Include="Collections\UniqueList.cs" />
     <Compile Include="Collections\SelectiveList.cs" />
+    <Compile Include="Events\EventArg.cs" />
     <Compile Include="Events\EventNotifier.cs" />
     <Compile Include="Events\INotifier.cs" />
     <Compile Include="Extensions\CardListFilteringExtensions.cs" />
     <Compile Include="Extensions\CardListRetrievalExtensions.cs" />
     <Compile Include="Extensions\CardListContainsExtensions.cs" />
     <Compile Include="Extensions\CardListOrderingExtensions.cs" />
+    <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\RoundExtensions.cs" />
     <Compile Include="Extensions\PlayedCardExtensions.cs" />
     <Compile Include="Extensions\PlayedTrickExtensions.cs" />
@@ -114,7 +116,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Factories\StandardDeckFactory.cs" />
     <Compile Include="Model\Suit.cs" />
-    <Compile Include="Randomisation\StaticRandomAccessor.cs" />
     <Compile Include="Randomisation\ControlledRandom.cs" />
     <Compile Include="Randomisation\IRandom.cs" />
     <Compile Include="Reflection\AppDomainExtensions.cs" />

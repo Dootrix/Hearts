@@ -16,8 +16,8 @@ namespace Hearts
             {
                 var playerState = new PlayerState
                 {
-                    Starting = startingHand.ToList(),
-                    Current = startingHand.ToList()
+                    Starting = startingHand.ToArray(),
+                    Current = startingHand
                 };
 
                 this.playerStateLookup[startingHand.Owner] = playerState;
@@ -30,7 +30,7 @@ namespace Hearts
             {
                 var playerState = this.playerStateLookup[postPassHand.Owner];
                 playerState.PostPass = postPassHand.ToList();
-                playerState.Current = postPassHand.ToList();
+                playerState.Current = postPassHand;
             }
         }
 
