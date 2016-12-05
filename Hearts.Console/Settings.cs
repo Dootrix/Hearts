@@ -6,6 +6,7 @@ using HeartsCrusher;
 using QueenCatcherAI;
 using Hearts.Events;
 using HeartsCrusher.Agents;
+using con.mhyde.Hearts;
 
 namespace Hearts.Console
 {
