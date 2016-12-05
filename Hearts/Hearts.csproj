@@ -56,6 +56,10 @@
     <Compile Include="Collections\NonNullList.cs" />
     <Compile Include="Collections\UniqueList.cs" />
     <Compile Include="Collections\SelectiveList.cs" />
+    <Compile Include="Events\GameEndedEventArgs.cs" />
+    <Compile Include="Events\SimulationEndedEventArgs.cs" />
+    <Compile Include="Events\GameStartedEventArgs.cs" />
+    <Compile Include="Events\SimulationStartedEventArgs.cs" />
     <Compile Include="Events\EventArg.cs" />
     <Compile Include="Events\EventNotifier.cs" />
     <Compile Include="Events\INotifier.cs" />

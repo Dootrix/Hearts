@@ -27,10 +27,10 @@ namespace Hearts.Console
 
             for (int i = 0; i < simulationCount; i++)
             {
-                this.notifier.CallGameStarted();
+                this.notifier.CallGameStarted(random.GetSeed());
                 var gameResult = this.SimulateGame(bots, i + 1, timerService, random);
                 gameResults.Add(gameResult);
-                this.notifier.CallGameEnded();
+                this.notifier.CallGameEnded(gameResult);
             }
 
             var simulationResult = new SimulationResult(gameResults, timerService);
