@@ -4,6 +4,7 @@ using Hearts.AI;
 using Hearts.Model;
 using QueenCatcherBot;
 using Hearts.Events;
+using BenRead.Hearts;
 using HeartsCrusher.Agents;
 using Hearts.Console.Simulations;
 
@@ -45,12 +46,13 @@ namespace Hearts.Console
         //    • Craghoul                                    Craig Rowe      0ms
         //    • Deathstar                                   James Robinson  0ms
         //    • QueenCatcher                                Dan White       0ms
+		//    • DefensiveAfter90							Ben Read		0ms  
         //
         public static HeartsPlayerList Bots = new HeartsPlayerList
             {
-                new ShootCrusher(allowShoot: true, allowAntiShoot: true),
+				new ShootCrusher(allowShoot: true, allowAntiShoot: true),
 				new Deathstar(allowShoot: true, allowAntiShoot: true),
-                new SuicideNoob1AiExampleAgent(),
+				new Craghoul(),
                 new SavageBeast(Notifier, allowShoot: true, allowAntiShoot: true)
             };
     }

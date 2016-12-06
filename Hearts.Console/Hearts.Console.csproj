@@ -62,6 +62,9 @@
     <Reference Include="heartsbot">
       <HintPath>..\..\heartsbot\heartsbot\bin\Debug\heartsbot.dll</HintPath>
     </Reference>
+    <Reference Include="DefensiveAfter90">
+      <HintPath>AIs\DefensiveAfter90.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BotHelper.cs" />
@@ -95,6 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="AIs\heartsbot.dll" />
+    <None Include="AIs\DefensiveAfter90.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
