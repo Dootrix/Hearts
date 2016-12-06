@@ -4,6 +4,7 @@ using Hearts.AI;
 using Hearts.Model;
 using QueenCatcherBot;
 using Hearts.Events;
+using BenRead.Hearts;
 using HeartsCrusher.Agents;
 using Hearts.Console.Simulations;
 
@@ -12,7 +13,7 @@ namespace Hearts.Console
     public class Settings
     {
         // Controlled Randomisation
-        public static bool UseFixedSeed = false;
+        public static bool UseFixedSeed = true;
         public static int FixedSeed = 8048609;
         public static EventNotifier Notifier = new EventNotifier();
 
@@ -21,12 +22,12 @@ namespace Hearts.Console
         //      1 game  - 0s
         //  1,000 games - 3s
         // 10,000 games - 30s
-        public static int GameSimulationCount = 100 / 24;
+        public static int GameSimulationCount = 1;
 
-        public static SimulationType SimulationType = SimulationType.AllSeatCombinations;
+        public static SimulationType SimulationType = SimulationType.Standard;
 
         // True:    Shows full game breakdown
-        // False:   Shows only summary
+        // True:    Shows summary
         public static bool ShowFullOutput = GameSimulationCount == 1 
             && SimulationType == SimulationType.Standard;
 
@@ -36,7 +37,7 @@ namespace Hearts.Console
         //    • Noob1AiExampleAgent                                         0ms
         //    • Noob2AiExampleAgent                                         0ms
         //    • Noob3AiExampleAgent                                         0ms
-        //    • SavageBeast(Notifier, allowShoot: false)    Adam Hill       ?ms
+        //    • SavageBeast(Notifier, allowShoot: false)    Adam Hill       0ms
         //    • SavageBeast(Notifier, allowShoot: true)     Adam Hill       3ms
         //    • NoobCrusherV1                               Tony Beasley    0ms
         //    • NoobCrusherV2                               Tony Beasley    0ms
@@ -45,13 +46,14 @@ namespace Hearts.Console
         //    • Craghoul                                    Craig Rowe      0ms
         //    • Deathstar                                   James Robinson  0ms
         //    • QueenCatcher                                Dan White       0ms
+		//    • DefensiveAfter90							Ben Read		0ms  
         //
         public static HeartsPlayerList Bots = new HeartsPlayerList
             {
-                new ShootCrusher(allowShoot: true, allowAntiShoot: true),
+				new ShootCrusher(allowShoot: true, allowAntiShoot: true),
 				new Deathstar(allowShoot: true, allowAntiShoot: true),
-                new Craghoul(),
-                new SavageBeast(Notifier, allowShoot: true)
+				new Craghoul(),
+                new SavageBeast(Notifier, allowShoot: true, allowAntiShoot: true)
             };
     }
 }

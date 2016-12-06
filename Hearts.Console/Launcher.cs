@@ -15,15 +15,17 @@ namespace Hearts.Console
     public class Launcher
     {
         public void ExecuteSimulations(IEnumerable<IEnumerable<Bot>> seatingCombinations)
-        {           
-            Settings.Notifier.CallSimulationStarted();
+        {
+            int randomSeed = Settings.UseFixedSeed
+                ? Settings.FixedSeed
+                : Environment.TickCount;
+
+            Log.LogRandomSeed(randomSeed);
+
+            Settings.Notifier.CallSimulationStarted(randomSeed);
 
             var timer = Stopwatch.StartNew();
             var results = new List<SimulationResult>();
-
-            int randomSeed = Settings.UseFixedSeed 
-                ? Settings.FixedSeed 
-                : Environment.TickCount;        
 
             foreach (var seatingArrangement in seatingCombinations)
             {
@@ -49,10 +51,12 @@ namespace Hearts.Console
             {
                 var combinedResult = CombineSimulations(results);
                 Log.LogSimulationSummary(combinedResult);
+                Settings.Notifier.CallSimulationEnded(combinedResult);
             }
-
-            Log.LogRandomSeed(randomSeed);
-            Settings.Notifier.CallSimulationEnded();
+            else
+            {
+                Settings.Notifier.CallSimulationEnded(results.First());
+            }
         }
 
         private SimulationResult CombineSimulations(List<SimulationResult> results)

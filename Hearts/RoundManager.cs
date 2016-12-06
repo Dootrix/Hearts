@@ -14,7 +14,7 @@ using System.Linq;
 
 namespace Hearts
 {
-    public class GameManager
+    public class RoundManager
     {
         private readonly AgentLookup agentLookup;
         private readonly HandWinEvaluator handEvaluator;
@@ -27,7 +27,7 @@ namespace Hearts
         private TimerService timerService;
         private IControlledRandom random;
 
-        public GameManager(
+        public RoundManager(
             IEnumerable<Bot> bots,
             TimerService timerService,
             EventNotifier notifier, 
