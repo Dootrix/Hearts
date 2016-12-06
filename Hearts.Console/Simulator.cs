@@ -45,14 +45,14 @@ namespace Hearts.Console
 
         private GameResult SimulateGame(IEnumerable<Bot> bots, int gameNumber, TimerService timerService, IControlledRandom random)
         {
-            var gameManager = new GameManager(bots, timerService, this.notifier, random);
+            var roundManager = new RoundManager(bots, timerService, this.notifier, random);
             var gameResult = new GameResult(bots.Select(i => i.Player), gameNumber);
             int roundNumber = 1;
             bool gameHasEnded;
 
             do
             {
-                var roundResult = gameManager.Play(roundNumber);
+                var roundResult = roundManager.Play(roundNumber);
 
                 foreach (var player in bots.Select(i => i.Player))
                 {
