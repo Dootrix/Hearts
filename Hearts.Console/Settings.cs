@@ -37,8 +37,7 @@ namespace Hearts.Console
         //    • Noob1AiExampleAgent                                         0ms
         //    • Noob2AiExampleAgent                                         0ms
         //    • Noob3AiExampleAgent                                         0ms
-        //    • SavageBeast(Notifier, allowShoot: false)    Adam Hill       0ms
-        //    • SavageBeast(Notifier, allowShoot: true)     Adam Hill       3ms
+        //    • SavageBeast                                 Adam Hill       3ms
         //    • NoobCrusherV1                               Tony Beasley    0ms
         //    • NoobCrusherV2                               Tony Beasley    0ms
         //    • NoobCrusherV3                               Tony Beasley    0ms
@@ -52,8 +51,8 @@ namespace Hearts.Console
             {
 				new ShootCrusher(allowShoot: true, allowAntiShoot: true),
 				new Deathstar(allowShoot: true, allowAntiShoot: true),
-				new Craghoul(),
-                new SavageBeast(Notifier, allowShoot: true, allowAntiShoot: true)
+				new DefensiveAfter90(),
+                new SavageBeast(Notifier, allowShoot: true, allowAntiShoot: true, allowParallel: false, useNewShootAlgorithm: true)
             };
     }
 }
