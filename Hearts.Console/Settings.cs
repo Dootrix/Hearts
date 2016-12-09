@@ -22,7 +22,7 @@ namespace Hearts.Console
         //      1 game  - 0s
         //  1,000 games - 3s
         // 10,000 games - 30s
-        public static int GameSimulationCount = 1;
+        public static int GameSimulationCount = 100;
 
         public static SimulationType SimulationType = SimulationType.Standard;
 
@@ -45,8 +45,9 @@ namespace Hearts.Console
         //    • Craghoul                                    Craig Rowe      0ms
         //    • Deathstar                                   James Robinson  0ms
         //    • QueenCatcher                                Dan White       0ms
-		//    • DefensiveAfter90							Ben Read		0ms  
-        //
+        //    • DefensiveAfter90							Ben Read		0ms  
+        //    • TrashBot                                    Mary Hyde       0ms
+
         public static HeartsPlayerList Bots = new HeartsPlayerList
             {
 				new ShootCrusher(allowShoot: true, allowAntiShoot: true),
