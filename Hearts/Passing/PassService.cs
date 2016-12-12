@@ -1,4 +1,5 @@
-﻿using Hearts.Events;
+﻿using Hearts.AI;
+using Hearts.Events;
 using Hearts.Logging;
 using Hearts.Model;
 using Hearts.Performance;
@@ -67,6 +68,18 @@ namespace Hearts.Passing
                 cardHandsAfterPass = cardHands;
 
                 this.notifier.CallNoPass();
+
+                foreach (var cardHand in cardHands)
+                {
+                    var playerFrom = cardHand.Owner;
+                    var gameState = this.CreateGameState(playerFrom, round);
+                    var agent = this.agentLookup.GetAgent(playerFrom);
+
+                    if (agent is IRequiresNoPassNotification)
+                    {
+                        ((IRequiresNoPassNotification)agent).OnNoPass(gameState);
+                    }
+                }
             }
             else
             {

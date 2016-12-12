@@ -53,7 +53,7 @@ namespace Hearts.Console
 				new ShootCrusher(allowShoot: true, allowAntiShoot: true),
 				new Deathstar(allowShoot: true, allowAntiShoot: true),
 				new DefensiveAfter90(),
-                new SavageBeast(Notifier, allowShoot: true, allowAntiShoot: true, allowParallel: false, useNewShootAlgorithm: true)
+                new SavageBeast(allowShoot: true, allowAntiShoot: true, allowParallel: false, useNewShootAlgorithm: true)
             };
     }
 }

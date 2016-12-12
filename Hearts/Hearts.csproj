@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AI\Agent.cs" />
+    <Compile Include="AI\IReportsShootAttempts.cs" />
+    <Compile Include="AI\IRequiresNoPassNotification.cs" />
     <Compile Include="AI\IPassStrategy.cs" />
     <Compile Include="AI\IPlayStrategy.cs" />
     <Compile Include="AI\SuicideNoob1AiExampleAgent.cs" />
