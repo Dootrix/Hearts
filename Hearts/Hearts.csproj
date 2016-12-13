@@ -90,6 +90,7 @@
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Model\AgentLookup.cs" />
     <Compile Include="Model\Bot.cs" />
+    <Compile Include="Model\MoonshotAttempt.cs" />
     <Compile Include="Model\CardHand.cs" />
     <Compile Include="Model\Cards.cs" />
     <Compile Include="Model\GameEventType.cs" />

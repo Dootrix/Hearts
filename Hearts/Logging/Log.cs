@@ -237,7 +237,9 @@ namespace Hearts.Logging
             foreach (var player in players)
             {
                 int moonshots = result.GameResults.SelectMany(i => i.Moonshots).Where(i => i.Key == player).Select(i => i.Value).Sum();
-                Console.WriteLine("{0} : {1}", player.Name, moonshots);
+                var botPlayer = result.MoonshotAttempts.SingleOrDefault(i => i.Bot.Player == player);
+                int attempts = botPlayer != null ? botPlayer.MoonshotAttempts : 0;
+                Console.WriteLine("{0} : {1} / {2}", player.Name, moonshots, attempts);
             }
 
             Console.WriteLine(string.Empty);

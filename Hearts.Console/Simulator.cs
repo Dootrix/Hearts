@@ -6,6 +6,7 @@ using Hearts.Scoring;
 using Hearts.Events;
 using Hearts.Performance;
 using Hearts.Randomisation;
+using Hearts.AI;
 
 namespace Hearts.Console
 {
@@ -33,7 +34,7 @@ namespace Hearts.Console
                 this.notifier.CallGameEnded(gameResult);
             }
 
-            var simulationResult = new SimulationResult(gameResults, timerService);
+            var simulationResult = new SimulationResult(gameResults, bots, timerService);
 
             if (logOutput)
             { 

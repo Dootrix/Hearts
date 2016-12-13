@@ -22,7 +22,7 @@ namespace Hearts.Console
         //      1 game  - 0s
         //  1,000 games - 3s
         // 10,000 games - 30s
-        public static int GameSimulationCount = 100;
+        public static int GameSimulationCount = 1;
 
         public static SimulationType SimulationType = SimulationType.Standard;
 
@@ -37,6 +37,7 @@ namespace Hearts.Console
         //    • Noob1AiExampleAgent                                         0ms
         //    • Noob2AiExampleAgent                                         0ms
         //    • Noob3AiExampleAgent                                         0ms
+        //    • SuicideNoob1AiExampleAgent                                  0ms
         //    • SavageBeast                                 Adam Hill       3ms
         //    • NoobCrusherV1                               Tony Beasley    0ms
         //    • NoobCrusherV2                               Tony Beasley    0ms

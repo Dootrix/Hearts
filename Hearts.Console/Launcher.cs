@@ -49,7 +49,7 @@ namespace Hearts.Console
 
             if (Settings.SimulationType == SimulationType.AllSeatCombinations)
             {
-                var combinedResult = CombineSimulations(results);
+                var combinedResult = this.CombineSimulations(results, seatingCombinations.First());
                 Log.LogSimulationSummary(combinedResult);
                 Settings.Notifier.CallSimulationEnded(combinedResult);
             }
@@ -59,10 +59,10 @@ namespace Hearts.Console
             }
         }
 
-        private SimulationResult CombineSimulations(List<SimulationResult> results)
+        private SimulationResult CombineSimulations(List<SimulationResult> results, IEnumerable<Bot> bots)
         {
             // Note: Timings are just based on the last game
-            return new SimulationResult(results.SelectMany(i => i.GameResults).ToList(), results.Last().TimerService);
+            return new SimulationResult(results.SelectMany(i => i.GameResults).ToList(), bots, results.Last().TimerService);
         }
     }
 }
