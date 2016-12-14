@@ -15,14 +15,13 @@ namespace Hearts.Console
         // Controlled Randomisation
         public static bool UseFixedSeed = true;
         public static int FixedSeed = 8048609;
-        public static EventNotifier Notifier = new EventNotifier();
 
         // Note: This simulates at about 300 games per second, without console outputs, depending on the efficiency of the bots used
         //
         //      1 game  - 0s
         //  1,000 games - 3s
         // 10,000 games - 30s
-        public static int GameSimulationCount = 1;
+        public static int GameSimulationCount = 10000/24;
 
         public static SimulationType SimulationType = SimulationType.Standard;
 

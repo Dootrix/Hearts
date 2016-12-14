@@ -1,5 +1,6 @@
 ﻿using Hearts.AI;
 using Hearts.Console.Simulations;
+using Hearts.Events;
 using Hearts.Extensions;
 using Hearts.Logging;
 using Hearts.Model;
@@ -14,6 +15,18 @@ namespace Hearts.Console
 {
     public class Launcher
     {
+        private EventNotifier notifier;
+
+        public Launcher() :
+            this(new EventNotifier())
+        {
+        }
+
+        public Launcher(EventNotifier notifier)
+        {
+            this.notifier = notifier;
+        }
+
         public void ExecuteSimulations(IEnumerable<IEnumerable<Bot>> seatingCombinations)
         {
             int randomSeed = Settings.UseFixedSeed
@@ -22,16 +35,16 @@ namespace Hearts.Console
 
             Log.LogRandomSeed(randomSeed);
 
-            Settings.Notifier.CallSimulationStarted(randomSeed);
+            this.notifier.CallSimulationStarted(randomSeed);
 
             var timer = Stopwatch.StartNew();
             var results = new List<SimulationResult>();
 
             foreach (var seatingArrangement in seatingCombinations)
             {
-                Settings.Notifier.CallSimulationStartedForSeatingArrangement(seatingArrangement);
+                this.notifier.CallSimulationStartedForSeatingArrangement(seatingArrangement);
 
-                var simulator = new Simulator(Settings.Notifier);
+                var simulator = new Simulator(this.notifier);
 
                 var result = simulator.SimulateGames(
                     seatingArrangement,
@@ -39,7 +52,7 @@ namespace Hearts.Console
                     new ControlledRandom(randomSeed),
                     logOutput: Settings.SimulationType != SimulationType.AllSeatCombinations);
 
-                Settings.Notifier.CallSimulationEndedForSeatingArrangement(seatingArrangement);
+                this.notifier.CallSimulationEndedForSeatingArrangement(seatingArrangement);
 
                 results.Add(result);
             }
@@ -51,11 +64,11 @@ namespace Hearts.Console
             {
                 var combinedResult = this.CombineSimulations(results, seatingCombinations.First());
                 Log.LogSimulationSummary(combinedResult);
-                Settings.Notifier.CallSimulationEnded(combinedResult);
+                this.notifier.CallSimulationEnded(combinedResult);
             }
             else
             {
-                Settings.Notifier.CallSimulationEnded(results.First());
+                this.notifier.CallSimulationEnded(results.First());
             }
         }
 

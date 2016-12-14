@@ -1,4 +1,6 @@
 ﻿using Hearts.AI;
+using Hearts.Events;
+using Hearts.Logging;
 using Hearts.Model;
 using System;
 using System.Collections.Generic;
@@ -10,28 +12,29 @@ namespace Hearts.Console.Simulations
     public class PerformanceTestSimulation : ISimulation
     {
         private Stopwatch stopwatch;
+        private EventNotifier notifier;
 
         public void Execute()
         {
-            
-            Settings.Notifier.SimulationStartedForSeatingArrangement += OnSimulationStartedForSeatingArrangement;
-            Settings.Notifier.SimulationEndedForSeatingArrangement += OnSimulationEndedForSeatingArrangement;
+            this.notifier = new EventNotifier();
+            this.notifier.SimulationStartedForSeatingArrangement += this.OnSimulationStartedForSeatingArrangement;
+            this.notifier.SimulationEndedForSeatingArrangement += this.OnSimulationEndedForSeatingArrangement;
 
-            new Launcher()
-                .ExecuteSimulations(CreateSeatingArrangement());
+            new Launcher(this.notifier)
+                .ExecuteSimulations(PerformanceTestSimulation.CreateSeatingArrangement());
         }
 
         private void OnSimulationStartedForSeatingArrangement(object sender, Events.EventArg<IEnumerable<Bot>> e)
         {
-            stopwatch = Stopwatch.StartNew();
+            this.stopwatch = Stopwatch.StartNew();
         }
 
         private void OnSimulationEndedForSeatingArrangement(object sender, Events.EventArg<IEnumerable<Bot>> args)
         {
             var seatingArrangement = args.Data;
 
-            stopwatch.Stop();
-            Logging.Log.TotalSimulationTime(stopwatch.ElapsedMilliseconds);
+            this.stopwatch.Stop();
+            Log.TotalSimulationTime(this.stopwatch.ElapsedMilliseconds);
         }
 
         private static IEnumerable<IEnumerable<Bot>> CreateSeatingArrangement()
