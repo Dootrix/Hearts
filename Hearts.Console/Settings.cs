@@ -27,27 +27,27 @@ namespace Hearts.Console
         public static SimulationType SimulationType = SimulationType.Standard;
 
         // True:    Shows full game breakdown
-        // True:    Shows summary
+        // False:   Shows summary
         public static bool ShowFullOutput = GameSimulationCount == 1 
             && SimulationType == SimulationType.Standard;
 
-        // Available bots: (* = Doesn't currently build against current IAgent signature)
-        // 
-        //    • TerribleRandomAiAgent                                       0ms
-        //    • Noob1AiExampleAgent                                         0ms
-        //    • Noob2AiExampleAgent                                         0ms
-        //    • Noob3AiExampleAgent                                         0ms
-        //    • SuicideNoob1AiExampleAgent                                  0ms
-        //    • SavageBeast                                 Adam Hill       3ms
-        //    • NoobCrusherV1                               Tony Beasley    0ms
-        //    • NoobCrusherV2                               Tony Beasley    0ms
-        //    • NoobCrusherV3                               Tony Beasley    0ms
-        //    • ShootCrusher                                Tony Beasley    0ms
-        //    • Craghoul                                    Craig Rowe      0ms
-        //    • Deathstar                                   James Robinson  0ms
-        //    • QueenCatcher                                Dan White       0ms
-        //    • DefensiveAfter90							Ben Read		0ms  
-        //    • TrashBot                                    Mary Hyde       0ms
+        // Available Bots:
+        //      CLASS                                       AUTHOR              TIME PER ROUND
+        //      TerribleRandomAiAgent                                           0ms
+        //      Noob1AiExampleAgent                                             0ms
+        //      Noob2AiExampleAgent                                             0ms
+        //      Noob3AiExampleAgent                                             0ms
+        //      SuicideNoob1AiExampleAgent                                      0ms
+        //      SavageBeast                                 Adam Hill           3ms
+        //      NoobCrusherV1                               Tony Beasley        0ms
+        //      NoobCrusherV2                               Tony Beasley        0ms
+        //      NoobCrusherV3                               Tony Beasley        0ms
+        //      ShootCrusher                                Tony Beasley        0ms
+        //      Craghoul                                    Craig Rowe          0ms
+        //      Deathstar                                   James Robinson      0ms
+        //      QueenCatcher                                Dan White           0ms
+        //      DefensiveAfter90							Ben Read		    0ms  
+        //      TrashBot                                    Mary Hyde           0ms
 
         public static HeartsPlayerList Bots = new HeartsPlayerList
             {
