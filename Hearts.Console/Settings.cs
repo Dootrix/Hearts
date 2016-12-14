@@ -31,13 +31,16 @@ namespace Hearts.Console
         public static bool ShowFullOutput = GameSimulationCount == 1 
             && SimulationType == SimulationType.Standard;
 
-        // Available Bots:
+        // Demo Bots:
         //      CLASS                                       AUTHOR              TIME PER ROUND
-        //      TerribleRandomAiAgent                                           0ms
-        //      Noob1AiExampleAgent                                             0ms
-        //      Noob2AiExampleAgent                                             0ms
-        //      Noob3AiExampleAgent                                             0ms
-        //      SuicideNoob1AiExampleAgent                                      0ms
+        //      TerribleRandomAiAgent                       Adam Hill           0ms
+        //      Noob1AiExampleAgent                         Adam Hill           0ms
+        //      Noob2AiExampleAgent                         Adam Hill           0ms
+        //      Noob3AiExampleAgent                         Adam Hill           0ms
+        //      SuicideNoob1AiExampleAgent                  Adam Hill           0ms
+
+        // Contender Bots:
+        //      CLASS                                       AUTHOR              TIME PER ROUND
         //      SavageBeast                                 Adam Hill           3ms
         //      NoobCrusherV1                               Tony Beasley        0ms
         //      NoobCrusherV2                               Tony Beasley        0ms
