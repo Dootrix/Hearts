@@ -10,7 +10,7 @@ namespace Hearts.Console
     {
         public static IEnumerable<Bot> GetGameBots()
         {
-            var chosenBots = Settings.Bots;
+            var chosenBots = Settings.GameBots();
             var availableBots = Agent.GetAvailableAgents()
                 .OrderBy(x => x.AgentName)
                 .ToList();

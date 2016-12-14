@@ -1,12 +1,8 @@
-﻿
-using System.Collections.Generic;
-using Hearts.AI;
-using Hearts.Model;
+﻿using Hearts.AI;
+using Hearts.Console.Simulations;
 using QueenCatcherBot;
-using Hearts.Events;
 using BenRead.Hearts;
 using HeartsCrusher.Agents;
-using Hearts.Console.Simulations;
 
 namespace Hearts.Console
 {
@@ -51,12 +47,15 @@ namespace Hearts.Console
         //      DefensiveAfter90							Ben Read		    0ms  
         //      TrashBot                                    Mary Hyde           0ms
 
-        public static HeartsPlayerList Bots = new HeartsPlayerList
+        public static HeartsPlayerList GameBots()
+        {
+            return new HeartsPlayerList
             {
-				new ShootCrusher(allowShoot: true, allowAntiShoot: true),
-				new Deathstar(allowShoot: true, allowAntiShoot: true),
-				new DefensiveAfter90(),
-                new SavageBeast(allowShoot: true, allowAntiShoot: true, allowParallel: false, useNewShootAlgorithm: true)
+                new ShootCrusher(allowShoot: true, allowAntiShoot: true),
+                new Deathstar(allowShoot: true, allowAntiShoot: true),
+                new DefensiveAfter90(),
+                new SavageBeast()
             };
+        }
     }
 }

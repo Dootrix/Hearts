@@ -209,7 +209,7 @@ namespace Hearts.Logging
         
         public static void LogSimulationSummary(SimulationResult result)
         {
-            if (!Options.DisplaySimulationSummary) return;
+            if (!Options.DisplaySimulationSummary || !result.GameResults.Any()) return;
 
             var players = result.GameResults.First().Scores.Select(i => i.Key);
 
