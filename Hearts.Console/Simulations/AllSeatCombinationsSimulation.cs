@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Hearts.AI;
 using Hearts.Extensions;
 using Hearts.Model;
 
@@ -24,14 +25,14 @@ namespace Hearts.Console.Simulations
         {
             // Due to the coupling of Player and Agent we need to be careful in ensuring the player instances remain the same, and only bot instances are recreated
             var indiciesList = indicies.ToList();
-            var agents = BotHelper.GetGameBots().Select(i => i.Agent).ToList();
+            var agents = BotHelper.GetGameBots().ToList();
             
             return new List<Bot>
             {
-                new Bot(players[indiciesList[0]], agents[indiciesList[0]]),
-                new Bot(players[indiciesList[1]], agents[indiciesList[1]]),
-                new Bot(players[indiciesList[2]], agents[indiciesList[2]]),
-                new Bot(players[indiciesList[3]], agents[indiciesList[3]])
+                agents[indiciesList[0]].Clone(players[indiciesList[0]]),
+                agents[indiciesList[1]].Clone(players[indiciesList[1]]),
+                agents[indiciesList[2]].Clone(players[indiciesList[2]]),
+                agents[indiciesList[3]].Clone(players[indiciesList[3]]),
             };
         }
     }

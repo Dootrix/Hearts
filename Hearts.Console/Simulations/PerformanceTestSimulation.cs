@@ -52,7 +52,7 @@ namespace Hearts.Console.Simulations
             {
                 var sameAgents = Enumerable
                     .Range(1, 4)
-                    .Select(x => Agent.CreateAgent(agentType));
+                    .Select(x => Agent.CreateAgent(agentType)).ToList();
 
                 if (sameAgents.All(x => x != null))
                 {

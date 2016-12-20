@@ -3,6 +3,8 @@ using Hearts.Console.Simulations;
 using QueenCatcherBot;
 using BenRead.Hearts;
 using HeartsCrusher.Agents;
+using Hearts.Model;
+using System.Collections.Generic;
 
 namespace Hearts.Console
 {
@@ -17,13 +19,13 @@ namespace Hearts.Console
         //      1 game  - 0s
         //  1,000 games - 3s
         // 10,000 games - 30s
-        public static int GameSimulationCount = 10000/24;
+        public static int GameSimulationCount = 1;
 
         public static SimulationType SimulationType = SimulationType.Standard;
 
         // True:    Shows full game breakdown
         // False:   Shows summary
-        public static bool ShowFullOutput = GameSimulationCount == 1 
+        public static bool ShowFullOutput = GameSimulationCount == 1
             && SimulationType == SimulationType.Standard;
 
         // Demo Bots:
@@ -49,13 +51,13 @@ namespace Hearts.Console
 
         public static HeartsPlayerList GameBots()
         {
-            return new HeartsPlayerList
+            return new HeartsPlayerList(new List<AgentFactory>
             {
-                new ShootCrusher(allowShoot: true, allowAntiShoot: true),
-                new Deathstar(allowShoot: true, allowAntiShoot: true),
-                new DefensiveAfter90(),
-                new SavageBeast()
-            };
+                new AgentFactory(() => { return new ShootCrusher(); }, new AgentOptions { IntentionalShootingEnabled = true, ShootingDisruptionEnabled = true }),
+                new AgentFactory(() => { return new Deathstar(); }, new AgentOptions { IntentionalShootingEnabled = true, ShootingDisruptionEnabled = true }),
+                new AgentFactory(() => { return new DefensiveAfter90(); }),
+                new AgentFactory(() => { return new SavageBeast(); })
+            });
         }
     }
 }

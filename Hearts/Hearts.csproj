@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AI\AgentFactory.cs" />
+    <Compile Include="AI\AgentOptions.cs" />
     <Compile Include="AI\Agent.cs" />
     <Compile Include="AI\ISupportsShootingDisruptionOption.cs" />
     <Compile Include="AI\ISupportsIntentionalShootingOption.cs" />

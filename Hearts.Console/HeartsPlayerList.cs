@@ -6,34 +6,40 @@ namespace Hearts.Console
 {
     public class HeartsPlayerList : List<Bot>
     {
+        private const int NamePadLength = 25;
         private char playerNamePrefix = 'A';
 
         public HeartsPlayerList()
         {
         }
 
-        public HeartsPlayerList(IEnumerable<IAgent> agents)
+        public HeartsPlayerList(List<AgentFactory> agents)
         {
-            this.AddRange(agents);
+            foreach (var agent in agents)
+            {
+                this.Add(agent);
+            }
         }
 
         public new void Add(Bot bot)
         {
             base.Add(bot);
+
             this.playerNamePrefix++;
         }
 
-        public void Add(IAgent agent)
+        public void Add(AgentFactory agentFactory)
         {
-            base.Add(Bot.Create(new Player((playerNamePrefix + " : " + agent.AgentName).PadRight(25, ' ')), agent));
-            playerNamePrefix++;
+            base.Add(new Bot(new Player((this.playerNamePrefix + " : " + agentFactory.AgentName).PadRight(NamePadLength, ' ')), agentFactory));
+
+            this.playerNamePrefix++;
         }
 
-        public void AddRange(IEnumerable<IAgent> agents)
+        public void AddRange(List<IAgent> agents)
         {
             foreach (var agent in agents)
             {
-                this.Add(agent);
+                this.Add(new AgentFactory(() => Agent.CreateAgent(agent.GetType())));
             }
         }
     }
