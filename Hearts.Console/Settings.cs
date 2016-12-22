@@ -29,7 +29,7 @@ namespace Hearts.Console
             && SimulationType == SimulationType.Standard;
 
         // Demo Bots:
-        //      CLASS                                       AUTHOR              TIME PER ROUND
+        //      CLASS                                       AUTHOR              TIME PER ROUND      CURRENTLY BROKEN
         //      TerribleRandomAiAgent                       Adam Hill           0ms
         //      Noob1AiExampleAgent                         Adam Hill           0ms
         //      Noob2AiExampleAgent                         Adam Hill           0ms
@@ -44,19 +44,22 @@ namespace Hearts.Console
         //      NoobCrusherV3                               Tony Beasley        0ms
         //      ShootCrusher                                Tony Beasley        0ms
         //      Craghoul                                    Craig Rowe          0ms
-        //      Deathstar                                   James Robinson      0ms
-        //      QueenCatcher                                Dan White           0ms
+        //      Deathstar                                   James Robinson      0ms                 Yes - Needs parameterless constructor
+        //      QueenCatcher                                Dan White           0ms                 Yes - Crashes in certain edge cases due to calling .Lowest() extension method on an empty enumerable
         //      DefensiveAfter90							Ben Read		    0ms  
         //      TrashBot                                    Mary Hyde           0ms
 
         public static HeartsPlayerList GameBots()
         {
+            // Example of using AgentOptions:
+            // ... new AgentFactory(typeof(ShootCrusher), new AgentOptions { IntentionalShootingEnabled = true, ShootingDisruptionEnabled = true }),
             return new HeartsPlayerList(new List<AgentFactory>
             {
-                new AgentFactory(() => { return new ShootCrusher(); }, new AgentOptions { IntentionalShootingEnabled = true, ShootingDisruptionEnabled = true }),
-                new AgentFactory(() => { return new Deathstar(); }, new AgentOptions { IntentionalShootingEnabled = true, ShootingDisruptionEnabled = true }),
-                new AgentFactory(() => { return new DefensiveAfter90(); }),
-                new AgentFactory(() => { return new SavageBeast(); })
+
+                new AgentFactory(typeof(ShootCrusher)),
+                new AgentFactory(typeof(Craghoul)),
+                new AgentFactory(typeof(DefensiveAfter90)),
+                new AgentFactory(typeof(SavageBeast))
             });
         }
     }

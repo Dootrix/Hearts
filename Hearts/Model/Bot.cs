@@ -4,12 +4,12 @@ namespace Hearts.Model
 {
     public class Bot
     {
-        private AgentFactory agentFactory;
+        private readonly AgentFactory agentFactory;
 
         public Bot(Player player, AgentFactory agentFactory)
         {
             this.Player = player;
-            this.Agent = agentFactory.CreateAgentInstance();
+            this.Agent = agentFactory.Create();
             this.agentFactory = agentFactory;
         }
 
@@ -24,7 +24,7 @@ namespace Hearts.Model
 
         public void ReinstantiateAgent()
         {
-            this.Agent = agentFactory.CreateAgentInstance();
+            this.Agent = this.agentFactory.Create();
         }
     }
 }

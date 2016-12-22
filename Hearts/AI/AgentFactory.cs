@@ -5,16 +5,16 @@ namespace Hearts.AI
 {
     public class AgentFactory
     {
-        private readonly Func<IAgent> factoryMethod;
         private readonly AgentOptions options;
+        private readonly Type botType;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AgentFactory"/> class.
         /// </summary>
         /// <param name="factoryMethod">A function that creates an IAgent of your intended bot.</param>
-        public AgentFactory(Func<IAgent> factoryMethod)
+        public AgentFactory(Type botType)
         {
-            this.factoryMethod = factoryMethod;
+            this.botType = botType;
             this.options = new AgentOptions();
         }
 
@@ -23,19 +23,19 @@ namespace Hearts.AI
         /// </summary>
         /// <param name="factoryMethod">A function that creates an IAgent of your intended bot.</param>
         /// <param name="options">The options.</param>
-        public AgentFactory(Func<IAgent> factoryMethod, AgentOptions options)
+        public AgentFactory(Type botType, AgentOptions options)
         {
-            this.factoryMethod = factoryMethod;
+            this.botType = botType;
             this.options = options;
         }
 
         public AgentOptions Options { get { return this.options; } }
 
-        public string AgentName { get { return this.CreateAgentInstance().AgentName; } }
+        public string AgentName { get { return this.Create().AgentName; } }
 
-        public IAgent CreateAgentInstance()
+        public IAgent Create()
         {
-            var agent = this.factoryMethod();
+            var agent = Agent.CreateAgent(this.botType);
             
             var parallelAgent = agent as ISupportsParallelOption;
 

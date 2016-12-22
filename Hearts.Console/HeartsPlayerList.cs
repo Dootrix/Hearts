@@ -39,7 +39,7 @@ namespace Hearts.Console
         {
             foreach (var agent in agents)
             {
-                this.Add(new AgentFactory(() => Agent.CreateAgent(agent.GetType())));
+                this.Add(new AgentFactory(agent.GetType()));
             }
         }
     }

@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Hearts.Console
 {
-    class BotHelper
+    public class BotHelper
     {
         public static IEnumerable<Bot> GetGameBots()
         {
@@ -29,7 +29,7 @@ namespace Hearts.Console
                 
                 if (chosenBot.HasValue && chosenBot.Value <= availableBots.Count)
                 {
-                    chosenBots.Add(new AgentFactory(() => Agent.CreateAgent(availableBots[chosenBot.Value - 1].GetType()), new AgentOptions()));
+                    chosenBots.Add(new AgentFactory(availableBots[chosenBot.Value - 1].GetType(), new AgentOptions()));
                 }
 
                 System.Console.WriteLine();
