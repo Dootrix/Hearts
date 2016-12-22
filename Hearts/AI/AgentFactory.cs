@@ -48,14 +48,14 @@ namespace Hearts.AI
 
             if (shootingAgent != null)
             {
-                shootingAgent.IntentionalShootingEnabled = this.options.ParallelEnabled;
+                shootingAgent.IntentionalShootingEnabled = this.options.IntentionalShootingEnabled;
             }
 
             var shootDisruptingAgent = agent as ISupportsShootingDisruptionOption;
 
             if (shootDisruptingAgent != null)
             {
-                shootDisruptingAgent.ShootingDisruptionEnabled = this.options.ParallelEnabled;
+                shootDisruptingAgent.ShootingDisruptionEnabled = this.options.ShootingDisruptionEnabled;
             }
 
             return agent;
