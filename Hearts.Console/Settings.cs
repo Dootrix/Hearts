@@ -3,7 +3,6 @@ using Hearts.Console.Simulations;
 using QueenCatcherBot;
 using BenRead.Hearts;
 using HeartsCrusher.Agents;
-using Hearts.Model;
 using System.Collections.Generic;
 
 namespace Hearts.Console
@@ -37,14 +36,14 @@ namespace Hearts.Console
         //      SuicideNoob1AiExampleAgent                  Adam Hill           0ms
 
         // Contender Bots:
-        //      CLASS                                       AUTHOR              TIME PER ROUND
+        //      CLASS                                       AUTHOR              TIME PER ROUND      CURRENTLY BROKEN
         //      SavageBeast                                 Adam Hill           3ms
         //      NoobCrusherV1                               Tony Beasley        0ms
         //      NoobCrusherV2                               Tony Beasley        0ms
         //      NoobCrusherV3                               Tony Beasley        0ms
         //      ShootCrusher                                Tony Beasley        0ms
         //      Craghoul                                    Craig Rowe          0ms
-        //      Deathstar                                   James Robinson      0ms                 Yes - Needs parameterless constructor
+        //      Deathstar                                   James Robinson      0ms
         //      QueenCatcher                                Dan White           0ms                 Yes - Crashes in certain edge cases due to calling .Lowest() extension method on an empty enumerable
         //      DefensiveAfter90							Ben Read		    0ms  
         //      TrashBot                                    Mary Hyde           0ms
@@ -55,9 +54,8 @@ namespace Hearts.Console
             // ... new AgentFactory(typeof(ShootCrusher), new AgentOptions { IntentionalShootingEnabled = true, ShootingDisruptionEnabled = true }),
             return new HeartsPlayerList(new List<AgentFactory>
             {
-
                 new AgentFactory(typeof(ShootCrusher)),
-                new AgentFactory(typeof(Craghoul)),
+                new AgentFactory(typeof(Deathstar)),
                 new AgentFactory(typeof(DefensiveAfter90)),
                 new AgentFactory(typeof(SavageBeast))
             });
