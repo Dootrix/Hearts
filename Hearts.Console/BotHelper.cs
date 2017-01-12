@@ -6,11 +6,11 @@ using System.Linq;
 
 namespace Hearts.Console
 {
-    class BotHelper
+    public class BotHelper
     {
         public static IEnumerable<Bot> GetGameBots()
         {
-            var chosenBots = Settings.Bots;
+            var chosenBots = Settings.GameBots();
             var availableBots = Agent.GetAvailableAgents()
                 .OrderBy(x => x.AgentName)
                 .ToList();
@@ -18,16 +18,20 @@ namespace Hearts.Console
             while (chosenBots.Count < 4)
             {
                 System.Console.WriteLine("Please pick a bot for seat {0}", chosenBots.Count + 1);
+                
                 availableBots.ForEach((item, i) =>
                 {
                     System.Console.WriteLine("{0}: {1}", i + 1, item.AgentName);
                 });
+                
                 var request = System.Console.ReadLine();
                 var chosenBot = request.ToNullableInt(null);
+                
                 if (chosenBot.HasValue && chosenBot.Value <= availableBots.Count)
                 {
-                    chosenBots.Add(availableBots[chosenBot.Value - 1]);
+                    chosenBots.Add(new AgentFactory(availableBots[chosenBot.Value - 1].GetType(), new AgentOptions()));
                 }
+
                 System.Console.WriteLine();
             }
 

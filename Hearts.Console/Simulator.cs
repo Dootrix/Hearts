@@ -6,6 +6,7 @@ using Hearts.Scoring;
 using Hearts.Events;
 using Hearts.Performance;
 using Hearts.Randomisation;
+using Hearts.AI;
 
 namespace Hearts.Console
 {
@@ -27,13 +28,13 @@ namespace Hearts.Console
 
             for (int i = 0; i < simulationCount; i++)
             {
-                this.notifier.CallGameStarted();
+                this.notifier.CallGameStarted(random.GetSeed());
                 var gameResult = this.SimulateGame(bots, i + 1, timerService, random);
                 gameResults.Add(gameResult);
-                this.notifier.CallGameEnded();
+                this.notifier.CallGameEnded(gameResult);
             }
 
-            var simulationResult = new SimulationResult(gameResults, timerService);
+            var simulationResult = new SimulationResult(gameResults, bots, timerService);
 
             if (logOutput)
             { 
@@ -45,14 +46,14 @@ namespace Hearts.Console
 
         private GameResult SimulateGame(IEnumerable<Bot> bots, int gameNumber, TimerService timerService, IControlledRandom random)
         {
-            var gameManager = new GameManager(bots, timerService, this.notifier, random);
+            var roundManager = new RoundManager(bots, timerService, this.notifier, random);
             var gameResult = new GameResult(bots.Select(i => i.Player), gameNumber);
             int roundNumber = 1;
             bool gameHasEnded;
 
             do
             {
-                var roundResult = gameManager.Play(roundNumber);
+                var roundResult = roundManager.Play(roundNumber);
 
                 foreach (var player in bots.Select(i => i.Player))
                 {

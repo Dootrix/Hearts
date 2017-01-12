@@ -14,7 +14,7 @@ using System.Linq;
 
 namespace Hearts
 {
-    public class GameManager
+    public class RoundManager
     {
         private readonly AgentLookup agentLookup;
         private readonly HandWinEvaluator handEvaluator;
@@ -27,7 +27,7 @@ namespace Hearts
         private TimerService timerService;
         private IControlledRandom random;
 
-        public GameManager(
+        public RoundManager(
             IEnumerable<Bot> bots,
             TimerService timerService,
             EventNotifier notifier, 
@@ -50,16 +50,11 @@ namespace Hearts
             this.notifier.CallRoundStarted();
             this.Reset();
             var players = this.playerCircle.AllPlayers;
-
             this.round = new Round(players.Count, roundNumber);
             var startingHands = this.dealer.DealStartingHands(players, this.random);
-
             this.playerStateManager.SetStartingHands(startingHands);
-
             Log.StartingHands(startingHands);
-
-            var postPassHands = this.GetPostPassHands(startingHands);
-            
+            var postPassHands = this.GetPostPassHands(startingHands);            
             var startingPlayer = this.playerCircle.GetStartingPlayer(postPassHands);
 
             while (this.playerStateManager.GetRemainingCardCount() > 0)
@@ -68,11 +63,7 @@ namespace Hearts
             }
 
             var roundResult = CreateRoundResult(players, roundNumber);
-
-            // TODO: Raise event OnRoundComplete
-
             Log.PointsForRound(roundResult);
-
             this.notifier.CallRoundEnded();
 
             return roundResult;

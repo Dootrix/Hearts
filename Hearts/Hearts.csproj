@@ -40,9 +40,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AI\AgentFactory.cs" />
+    <Compile Include="AI\AgentOptions.cs" />
     <Compile Include="AI\Agent.cs" />
+    <Compile Include="AI\ISupportsShootingDisruptionOption.cs" />
+    <Compile Include="AI\ISupportsIntentionalShootingOption.cs" />
+    <Compile Include="AI\ISupportsParallelOption.cs" />
+    <Compile Include="AI\IReportsShootAttempts.cs" />
+    <Compile Include="AI\IRequiresNoPassNotification.cs" />
     <Compile Include="AI\IPassStrategy.cs" />
     <Compile Include="AI\IPlayStrategy.cs" />
+    <Compile Include="AI\SuicideNoob1AiExampleAgent.cs" />
     <Compile Include="AI\Noob3AiExampleAgent.cs" />
     <Compile Include="AI\IllegalMoveAgent.cs" />
     <Compile Include="AI\RandomPlayAiExampleAgent.cs" />
@@ -52,8 +60,13 @@
     <Compile Include="Attributes\Abbreviation.cs" />
     <Compile Include="Attributes\AbbreviationAttribute.cs" />
     <Compile Include="Collections\OrderDirection.cs" />
+    <Compile Include="Collections\NonNullList.cs" />
     <Compile Include="Collections\UniqueList.cs" />
     <Compile Include="Collections\SelectiveList.cs" />
+    <Compile Include="Events\GameEndedEventArgs.cs" />
+    <Compile Include="Events\SimulationEndedEventArgs.cs" />
+    <Compile Include="Events\GameStartedEventArgs.cs" />
+    <Compile Include="Events\SimulationStartedEventArgs.cs" />
     <Compile Include="Events\EventArg.cs" />
     <Compile Include="Events\EventNotifier.cs" />
     <Compile Include="Events\INotifier.cs" />
@@ -82,6 +95,7 @@
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Model\AgentLookup.cs" />
     <Compile Include="Model\Bot.cs" />
+    <Compile Include="Model\MoonshotAttempt.cs" />
     <Compile Include="Model\CardHand.cs" />
     <Compile Include="Model\Cards.cs" />
     <Compile Include="Model\GameEventType.cs" />
@@ -102,7 +116,7 @@
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\SuitExtensions.cs" />
     <Compile Include="Factories\IFactory.cs" />
-    <Compile Include="GameManager.cs" />
+    <Compile Include="RoundManager.cs" />
     <Compile Include="Model\Round.cs" />
     <Compile Include="Model\Kind.cs" />
     <Compile Include="Model\Player.cs" />

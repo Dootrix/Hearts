@@ -116,14 +116,7 @@ namespace Hearts.Model
 
         public override int GetHashCode()
         {
-            //http://stackoverflow.com/questions/263400/what-is-the-best-algorithm-for-an-overridden-system-object-gethashcode
-            unchecked // Overflow is fine, just wrap
-            {
-                int hash = 17;
-                hash = hash * 23 + Kind.GetHashCode();
-                hash = hash * 23 + Suit.GetHashCode();
-                return hash;
-            }
+            return (int)Kind + (int)Suit * 100;
         }
     }
 }

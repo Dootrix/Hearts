@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Hearts.Extensions;
+using System;
 
 namespace Hearts.Model
 {
@@ -77,5 +79,9 @@ namespace Hearts.Model
         public static List<Card> DescendingClubs = new List<Card> { AceOfClubs, KingOfClubs, QueenOfClubs, JackOfClubs, TenOfClubs, NineOfClubs, EightOfClubs, SevenOfClubs, SixOfClubs, FiveOfClubs, FourOfClubs, ThreeOfClubs, TwoOfClubs };
         
         public static List<Card> Deck = Hearts.Union(Spades).Union(Diamonds).Union(Clubs).ToList();
+
+        public static List<Card> DeckDescending = Hearts.Union(Spades).Union(Diamonds).Union(Clubs).Descending().ToList();
+
+        public static List<Kind> KindDescending = Enum.GetValues(typeof(Kind)).Cast<Kind>().OrderByDescending(i => i).ToList();
     }
 }
