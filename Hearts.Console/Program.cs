@@ -18,11 +18,14 @@ namespace Hearts.Console
                 Log.Options = new SummaryOnlyLogOptions();
             }
 
-            SimulationFactory
-                .CreateSimulation()
-                .Execute();    
+            if (Settings.ExportAsHtml)
+            {
+                Log.Logger = new HtmlExportLogger();
+            }
 
-            System.Console.ReadLine();
+            Log.BeginLogging();
+            SimulationFactory.CreateSimulation().Execute();
+            Log.StopLogging();
         }
     }
 }

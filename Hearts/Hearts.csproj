@@ -89,6 +89,9 @@
     <Compile Include="GameEventHandlers\PlayerAddedToGameHandler.cs" />
     <Compile Include="GameEventHandlers\CardAddedToDeckHandler.cs" />
     <Compile Include="GameEventHandlers\IGameEventHandler.cs" />
+    <Compile Include="Logging\Html\HtmlExportLogger.cs" />
+    <Compile Include="Logging\ILogger.cs" />
+    <Compile Include="Logging\Console\ConsoleOutputLogger.cs" />
     <Compile Include="Logging\SummaryOnlyLogOptions.cs" />
     <Compile Include="Logging\ILogDisplayOptions.cs" />
     <Compile Include="Logging\DefaultLogOptions.cs" />
@@ -146,6 +149,7 @@
     <Compile Include="Scoring\ScoreEvaluator.cs" />
     <Compile Include="Scoring\HandWinEvaluator.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
