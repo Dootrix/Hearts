@@ -18,6 +18,7 @@ namespace Hearts.Logging
 
         public void StopLogging()
         {
+            System.Console.ReadLine();
         }
 
         public void StartingHands(IEnumerable<CardHand> hands)

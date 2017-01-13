@@ -11,7 +11,17 @@ namespace Hearts.Logging
     public static class Log
     {
         public static ILogDisplayOptions Options = new DefaultLogOptions();
-        public static ILogger Logger = new ConsoleOutputLogger();
+        public static ILogger Logger = new HtmlExportLogger();
+
+        public static void BeginLogging()
+        {
+            Logger.BeginLogging();
+        }
+
+        public static void StopLogging()
+        {
+            Logger.StopLogging();
+        }
 
         internal static void StartingHands(IEnumerable<CardHand> hands)
         {

@@ -18,13 +18,24 @@ namespace Hearts.Logging
         public void BeginLogging()
         {
             this.buffer.Clear();
+            this.buffer.Append(@"
+<!DOCTYPE html>
+<html lang=""en"">
+  <head >
+    <meta charset=""utf-8"">
+    <title>Hearts</title>
+    </script>
+  </head >
+  <body style=""font-family:monospace; color:grey;"">");
         }
 
         public void StopLogging()
         {
+            this.buffer.Append(@"  </body>
+</html>");
             string result = this.buffer.ToString();
             this.buffer.Clear();
-            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDoc‌​uments), "Hearts", "Last Simulation.html");
+            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDoc‌​uments), "Last Simulation.html");
             File.WriteAllText(path, result);
         }
 
@@ -32,7 +43,7 @@ namespace Hearts.Logging
         {
             if (!Options.DisplayStartingHands) return;
 
-            this.buffer.Append(this.OpenH2Tag());
+            this.buffer.Append(this.OpenH2Tag()); 
             this.buffer.Append(@"Starting Hands:");
             this.buffer.Append(this.CloseH2Tag());
 
@@ -40,8 +51,6 @@ namespace Hearts.Logging
             {
                 this.Hand(hand, hand.Owner.Name);
             }
-
-            this.buffer.Append(this.NewLine());
         }
 
         public void TotalSimulationTime(long elapsedMilliseconds)
@@ -49,7 +58,6 @@ namespace Hearts.Logging
             this.buffer.Append(this.OpenPTag());
             this.buffer.Append(string.Format("Total simulation time: {0}s.", elapsedMilliseconds / 1000.0));
             this.buffer.Append(this.ClosePTag());
-            this.buffer.Append(this.NewLine());
         }
 
         public void PassDirection(Pass pass)
@@ -57,27 +65,26 @@ namespace Hearts.Logging
             if (!Options.DisplayPass) return;
 
             this.buffer.Append(this.OpenH2Tag());
-            this.buffer.Append("Pass direction: " + Abbreviation.Get(pass));
+            this.buffer.Append("Pass Direction: " + Abbreviation.Get(pass));
             this.buffer.Append(this.CloseH2Tag());
-            this.buffer.Append(this.NewLine());
         }
 
         public void HandsAfterPass(IEnumerable<CardHand> hands)
         {
             if (!Options.DisplayHandsAfterPass) return;
-
-            this.buffer.Append(this.NewLine());
+            
             this.buffer.Append(this.OpenH2Tag());
             this.buffer.Append("Post-Pass Hands:");
             this.buffer.Append(this.CloseH2Tag());
-            this.buffer.Append(this.NewLine());
 
             foreach (var hand in hands)
             {
                 this.Hand(hand, hand.Owner.Name);
             }
-
-            this.buffer.Append(this.NewLine());
+            
+            this.buffer.Append(this.OpenH2Tag());
+            this.buffer.Append("Plays:");
+            this.buffer.Append(this.CloseH2Tag());
         }
 
         public void Pass(Player player, IEnumerable<Card> cards)
@@ -88,7 +95,7 @@ namespace Hearts.Logging
             this.buffer.Append(this.OpenSpanBlue());
             this.buffer.Append(this.HtmlSpace() + player.Name.PadLeft(Options.NamePad) + this.HtmlSpace()); // TODO: Spacing won't work in HTML, use table?
             this.buffer.Append(this.CloseSpan());
-            this.buffer.Append(" pass ");
+            this.buffer.Append("passes ");
 
             foreach (var card in cards)
             {
@@ -97,20 +104,20 @@ namespace Hearts.Logging
             }
 
             this.buffer.Append(this.ClosePTag());
-            this.buffer.Append(this.NewLine());
         }
 
         public void TrickSummary(PlayedTrick trick)
         {
             if (!Options.DisplayTrickSummary) return;
 
+            this.buffer.Append(this.OpenPTag());
+
             foreach (var playedCard in trick.Cards)
             {
-                this.buffer.Append(this.OpenPTag());
                 this.buffer.Append(this.OpenSpanBlue());
                 this.buffer.Append(this.HtmlSpace() + playedCard.Key.Name.PadLeft(Options.NamePad) + this.HtmlSpace()); // TODO: Spacing won't work in HTML, use table?
                 this.buffer.Append(this.CloseSpan());
-                this.buffer.Append(" play ");
+                this.buffer.Append("plays ");
                 this.Card(playedCard.Value);
 
                 if (trick.Winner == playedCard.Key)
@@ -127,10 +134,10 @@ namespace Hearts.Logging
                     this.buffer.Append(this.CloseSpan());
                 }
 
-                this.buffer.Append(this.ClosePTag());
+                this.buffer.Append(this.NewLine());
             }
 
-            this.buffer.Append(this.NewLine());
+            this.buffer.Append(this.ClosePTag());
         }
 
         public void IllegalPass(Player player, IEnumerable<Card> cards)
@@ -436,7 +443,6 @@ namespace Hearts.Logging
             this.buffer.Append(this.OpenSpanBlue());
             this.buffer.Append(this.HtmlSpace() + name.PadLeft(Logging.Log.Options.NamePad) + this.HtmlSpace());
             this.buffer.Append(this.CloseSpan());
-            this.buffer.Append(this.ClosePTag());
 
             foreach (var suit in new List<Suit> { Suit.Hearts, Suit.Spades, Suit.Diamonds, Suit.Clubs })
             {
@@ -451,13 +457,13 @@ namespace Hearts.Logging
                 this.buffer.Append(new string(' ', padToLength - cardsOfSuit.Count() * 3));
             }
 
-            NewLine();
+            this.buffer.Append(this.ClosePTag());
         }
 
         #region Helpers
         private string OpenSpanBlue()
         {
-            return @"<span class=""color:blue;"">";
+            return @"<span style=""color:blue;"">";
         }
 
         private string OpenPTag()
@@ -467,17 +473,17 @@ namespace Hearts.Logging
 
         private string OpenH2Tag()
         {
-            return @"<h2>";
+            return @"<h2 style=""font-family:sans-serif; color:#dddddd;font-size:14pt;"">";
         }
 
         private string OpenSpanRed()
         {
-            return @"<span class=""color:red;"">";
+            return @"<span style=""color:red;"">";
         }
 
         private string OpenSpanBlack()
         {
-            return @"<span class=""color:black;"">";
+            return @"<span style=""color:black;"">";
         }
 
         private string ClosePTag()
