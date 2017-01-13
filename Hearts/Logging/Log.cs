@@ -11,7 +11,7 @@ namespace Hearts.Logging
     public static class Log
     {
         public static ILogDisplayOptions Options = new DefaultLogOptions();
-        public static ILogger Logger = new HtmlExportLogger();
+        public static ILogger Logger = new ConsoleOutputLogger();
 
         public static void BeginLogging()
         {

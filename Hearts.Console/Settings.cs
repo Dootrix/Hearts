@@ -27,6 +27,8 @@ namespace Hearts.Console
         public static bool ShowFullOutput = GameSimulationCount == 1
             && SimulationType == SimulationType.Standard;
 
+        public static bool ExportAsHtml = true;
+
         // Demo Bots:
         //      CLASS                                       AUTHOR              TIME PER ROUND      CURRENTLY BROKEN
         //      TerribleRandomAiAgent                       Adam Hill           0ms
