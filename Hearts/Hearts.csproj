@@ -89,6 +89,8 @@
     <Compile Include="GameEventHandlers\PlayerAddedToGameHandler.cs" />
     <Compile Include="GameEventHandlers\CardAddedToDeckHandler.cs" />
     <Compile Include="GameEventHandlers\IGameEventHandler.cs" />
+    <Compile Include="Logging\Enums\LoggingOutput.cs" />
+    <Compile Include="Logging\Enums\LoggingLevel.cs" />
     <Compile Include="Logging\Html\HtmlExportLogger.cs" />
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\Console\ConsoleOutputLogger.cs" />

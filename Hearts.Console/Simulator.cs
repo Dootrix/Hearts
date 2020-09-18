@@ -7,6 +7,7 @@ using Hearts.Events;
 using Hearts.Performance;
 using Hearts.Randomisation;
 using Hearts.AI;
+using Hearts.Logging.Enums;
 
 namespace Hearts.Console
 {
@@ -21,7 +22,7 @@ namespace Hearts.Console
             this.notifier = notifier;
         }
 
-        public SimulationResult SimulateGames(IEnumerable<Bot> bots, int simulationCount, IControlledRandom random, bool logOutput = true)
+        public SimulationResult SimulateGames(IEnumerable<Bot> bots, int simulationCount, IControlledRandom random)
         {
             var gameResults = new List<GameResult>();
             var timerService = new TimerService(bots);
@@ -35,11 +36,7 @@ namespace Hearts.Console
             }
 
             var simulationResult = new SimulationResult(gameResults, bots, timerService);
-
-            if (logOutput)
-            { 
                 Log.LogSimulationSummary(simulationResult);
-            }
 
             return simulationResult;
         }

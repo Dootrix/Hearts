@@ -49,8 +49,7 @@ namespace Hearts.Console
                 var result = simulator.SimulateGames(
                     seatingArrangement,
                     Settings.GameSimulationCount,
-                    new ControlledRandom(randomSeed),
-                    logOutput: Settings.SimulationType != SimulationType.AllSeatCombinations);
+                    new ControlledRandom(randomSeed));
 
                 this.notifier.CallSimulationEndedForSeatingArrangement(seatingArrangement);
 
@@ -68,7 +67,9 @@ namespace Hearts.Console
             }
             else
             {
-                this.notifier.CallSimulationEnded(results.First());
+                var result = new SimulationResult(results.SelectMany(i => i.GameResults).ToList(), seatingCombinations.First(), results.Last().TimerService);
+                Log.LogSimulationSummary(result);
+                this.notifier.CallSimulationEnded(result);
             }
         }
 

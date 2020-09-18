@@ -1,21 +1,28 @@
-﻿using Hearts.Attributes;
-using Hearts.Extensions;
+﻿using Hearts.Logging.Enums;
 using Hearts.Model;
 using Hearts.Scoring;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Hearts.Logging
 {
     public static class Log
     {
-        public static ILogDisplayOptions Options = new DefaultLogOptions();
-        public static ILogger Logger = new ConsoleOutputLogger();
+        public static ILogger Logger;
 
-        public static void BeginLogging()
+        public static void BeginLogging(LoggingLevel loggingLevel, LoggingOutput loggingOutput)
         {
+            var options = loggingLevel == LoggingLevel.FullOutput
+                ? new DefaultLogOptions() as ILogDisplayOptions
+                : new SummaryOnlyLogOptions();
+
+            var logger = loggingOutput == LoggingOutput.HtmlExport
+                ? new HtmlExportLogger(options) as ILogger
+                : new ConsoleOutputLogger(options);
+
+            Log.Logger = logger;
             Logger.BeginLogging();
+            Logger.LogAgentMoveNote($"Started on: {DateTime.Now}");
         }
 
         public static void StopLogging()
@@ -58,9 +65,9 @@ namespace Hearts.Logging
             Logger.IllegalPass(player, cards);
         }
 
-        public static void IllegalPlay(Player player, Card card)
+        public static void IllegalPlay(Player player, Card card, IEnumerable<Card> legal)
         {
-            Logger.IllegalPlay(player, card);
+            Logger.IllegalPlay(player, card, legal);
         }
 
         public static void OutOfCardsException()

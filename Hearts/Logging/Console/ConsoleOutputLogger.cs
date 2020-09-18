@@ -10,8 +10,13 @@ namespace Hearts.Logging
 {
     public class ConsoleOutputLogger : ILogger
     {
-        public ILogDisplayOptions Options = new DefaultLogOptions();
-        
+        private readonly ILogDisplayOptions options;
+
+        public ConsoleOutputLogger(ILogDisplayOptions options)
+        {
+            this.options = options;
+        }
+ 
         public void BeginLogging()
         {
         }
@@ -23,7 +28,7 @@ namespace Hearts.Logging
 
         public void StartingHands(IEnumerable<CardHand> hands)
         {
-            if (!Options.DisplayStartingHands) return;
+            if (!options.DisplayStartingHands) return;
 
             ToGrey();
             Console.WriteLine("Starting Hands:");
@@ -43,7 +48,7 @@ namespace Hearts.Logging
 
         public void PassDirection(Pass pass)
         {
-            if (!Options.DisplayPass) return;
+            if (!options.DisplayPass) return;
 
             ToGrey();
             Console.WriteLine("Pass direction: " + Abbreviation.Get(pass));
@@ -51,7 +56,7 @@ namespace Hearts.Logging
 
         public void HandsAfterPass(IEnumerable<CardHand> hands)
         {
-            if (!Options.DisplayHandsAfterPass) return;
+            if (!options.DisplayHandsAfterPass) return;
 
             NewLine();
             ToGrey();
@@ -67,10 +72,10 @@ namespace Hearts.Logging
 
         public void Pass(Player player, IEnumerable<Card> cards)
         {
-            if (!Options.DisplayPass) return;
+            if (!options.DisplayPass) return;
 
             ToBlue();
-            Console.Write(" " + player.Name.PadLeft(Options.NamePad) + " ");
+            Console.Write(" " + player.Name.PadLeft(options.NamePad) + " ");
             ToGrey();
             Console.Write(" pass ");
 
@@ -85,12 +90,12 @@ namespace Hearts.Logging
 
         public void TrickSummary(PlayedTrick trick)
         {
-            if (!Options.DisplayTrickSummary) return;
+            if (!options.DisplayTrickSummary) return;
 
             foreach (var playedCard in trick.Cards)
             {
                 ToBlue();
-                Console.Write(" " + playedCard.Key.Name.PadLeft(Options.NamePad) + " ");
+                Console.Write(" " + playedCard.Key.Name.PadLeft(options.NamePad) + " ");
                 ToGrey();
                 Console.Write(" play ");
                 Card(playedCard.Value);
@@ -115,23 +120,23 @@ namespace Hearts.Logging
 
         public void IllegalPass(Player player, IEnumerable<Card> cards)
         {
-            if (!Options.DisplayExceptions) return;
+            if (!options.DisplayExceptions) return;
 
             ToBlue();
-            Console.WriteLine(player.Name + " made an ILLEGAL PASS! (" + string.Join(", ", cards.Select(i => i.ToString())) + ") - " + player.DebuggerDisplay);
+            Console.WriteLine(player.Name + " made an ILLEGAL PASS! (" + string.Join(", ", cards.Select(i => i.ToString())) + ") - " + player.DebuggerDisplay(cards));
         }
 
-        public void IllegalPlay(Player player, Card card)
+        public void IllegalPlay(Player player, Card card, IEnumerable<Card> legal)
         {
-            if (!Options.DisplayExceptions) return;
+            if (!options.DisplayExceptions) return;
 
             ToBlue();
-            Console.WriteLine(player.Name + " played an ILLEGAL CARD! (" + card + ") - " + player.DebuggerDisplay);
+            Console.WriteLine(player.Name + " played an ILLEGAL CARD! (" + card + ") - " + player.DebuggerDisplay(legal));
         }
 
         public void OutOfCardsException()
         {
-            if (!Options.DisplayExceptions) return;
+            if (!options.DisplayExceptions) return;
 
             ToBlue();
             Console.WriteLine("*** OUT OF CARDS! ***");
@@ -139,14 +144,14 @@ namespace Hearts.Logging
 
         public void PointsForRound(RoundResult roundResult)
         {
-            if (!Options.DisplayPointsForRound) return;
+            if (!options.DisplayPointsForRound) return;
 
             var scores = roundResult.Scores;
 
             foreach (var score in scores)
             {
                 ToBlue();
-                Console.Write(" " + score.Key.Name.PadLeft(Options.NamePad) + " ");
+                Console.Write(" " + score.Key.Name.PadLeft(options.NamePad) + " ");
                 ToGrey();
                 Console.Write(" : ");
                 ToBlue();
@@ -161,7 +166,7 @@ namespace Hearts.Logging
 
         public void LogFinalWinner(GameResult gameResult)
         {
-            if (!Options.DisplayLogFinalWinner) return;
+            if (!options.DisplayLogFinalWinner) return;
 
             ToGrey();
             Console.WriteLine(string.Empty);
@@ -187,7 +192,7 @@ namespace Hearts.Logging
             foreach (var score in gameResult.Scores)
             {
                 ToBlue();
-                Console.Write(" " + score.Key.Name.PadLeft(Options.NamePad) + " ");
+                Console.Write(" " + score.Key.Name.PadLeft(options.NamePad) + " ");
                 ToGrey();
                 Console.Write(" : ");
                 ToBlue();
@@ -213,7 +218,7 @@ namespace Hearts.Logging
         
         public void LogSimulationSummary(SimulationResult result)
         {
-            if (!Options.DisplaySimulationSummary || !result.GameResults.Any()) return;
+            if (!options.DisplaySimulationSummary || !result.GameResults.Any()) return;
 
             var players = result.GameResults.First().Scores.Select(i => i.Key);
 
@@ -280,7 +285,7 @@ namespace Hearts.Logging
             foreach (var player in players)
             {
                 ToBlue();
-                Console.Write(" " + player.Name.PadLeft(Options.NamePad) + " ");
+                Console.Write(" " + player.Name.PadLeft(options.NamePad) + " ");
                 ToGrey();
                 Console.Write(" : ");
                 ToBlue();
@@ -306,7 +311,7 @@ namespace Hearts.Logging
 
         public void LogAgentMoveNote(string note)
         {
-            if (Options.DisplayAgentMoveNotes)
+            if (options.DisplayAgentMoveNotes)
             {
                 ToBlue();
                 Console.WriteLine(note);
@@ -314,7 +319,7 @@ namespace Hearts.Logging
         }
         public void LogAgentSummaryNote(string note)
         {
-            if (Options.DisplayAgentSummaryNotes)
+            if (options.DisplayAgentSummaryNotes)
             {
                 ToBlue();
                 Console.WriteLine(note);
@@ -323,7 +328,7 @@ namespace Hearts.Logging
 
         public void LogRandomSeed(int randomSeed)
         {
-            if (Options.DisplayRandomSeed)
+            if (options.DisplayRandomSeed)
             {
                 Console.WriteLine(string.Empty);
                 Console.WriteLine("Simulation random seed: {0}", randomSeed);
@@ -349,7 +354,7 @@ namespace Hearts.Logging
         {
             int padToLength = 38;
             ToBlue();
-            Console.Write(" " + name.PadLeft(Logging.Log.Options.NamePad) + " ");
+            Console.Write(" " + name.PadLeft(this.options.NamePad) + " ");
 
             foreach (var suit in new List<Suit> { Suit.Hearts, Suit.Spades, Suit.Diamonds, Suit.Clubs })
             {

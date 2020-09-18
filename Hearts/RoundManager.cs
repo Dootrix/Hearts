@@ -165,7 +165,7 @@ namespace Hearts
             if (!playerState.Legal.Contains(card))
             {
                 // TODO: Handle illegal move
-                Log.IllegalPlay(player, card);
+                Log.IllegalPlay(player, card, playerState.Legal);
                 player.AgentHasMadeIllegalMove = true;
                 card = playerState.Legal.First();
             }

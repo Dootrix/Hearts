@@ -4,6 +4,7 @@ using QueenCatcherBot;
 using BenRead.Hearts;
 using HeartsCrusher.Agents;
 using System.Collections.Generic;
+using Hearts.Logging.Enums;
 
 namespace Hearts.Console
 {
@@ -14,20 +15,16 @@ namespace Hearts.Console
         public static int FixedSeed = 8048609;
 
         // Note: This simulates at about 300 games per second, without console outputs, depending on the efficiency of the bots used
+        // Timings based on i7 Desktop
         //
         //      1 game  - 0s
-        //  1,000 games - 3s
+        //  1,000 games - 3s (50s on a slow laptop)
         // 10,000 games - 30s
-        public static int GameSimulationCount = 1;
-
-        public static SimulationType SimulationType = SimulationType.Standard;
-
-        // True:    Shows full game breakdown
-        // False:   Shows summary
-        public static bool ShowFullOutput = GameSimulationCount == 1
-            && SimulationType == SimulationType.Standard;
-
-        public static bool ExportAsHtml = true;
+        // 24,000 games - Slow laptop - 7,000s
+        public static int GameSimulationCount = 100;
+        public static SimulationType SimulationType = SimulationType.AllSeatCombinations;
+        public static LoggingOutput LoggingOutput = LoggingOutput.ConsoleWindow;
+        public static LoggingLevel LoggingLevel = LoggingLevel.SummaryOnly;
 
         // Demo Bots:
         //      CLASS                                       AUTHOR              TIME PER ROUND      CURRENTLY BROKEN

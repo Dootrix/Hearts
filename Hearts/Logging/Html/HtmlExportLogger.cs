@@ -12,8 +12,13 @@ namespace Hearts.Logging
 {
     public class HtmlExportLogger : ILogger
     {
-        public ILogDisplayOptions Options = new DefaultLogOptions();
+        private readonly ILogDisplayOptions options;
         private StringBuilder buffer = new StringBuilder();
+
+        public HtmlExportLogger(ILogDisplayOptions options)
+        {
+            this.options = options;
+        }
 
         public void BeginLogging()
         {
@@ -41,7 +46,7 @@ namespace Hearts.Logging
 
         public void StartingHands(IEnumerable<CardHand> hands)
         {
-            if (!Options.DisplayStartingHands) return;
+            if (!this.options.DisplayStartingHands) return;
 
             this.buffer.Append(this.OpenH2Tag()); 
             this.buffer.Append(@"Starting Hands:");
@@ -62,7 +67,7 @@ namespace Hearts.Logging
 
         public void PassDirection(Pass pass)
         {
-            if (!Options.DisplayPass) return;
+            if (!this.options.DisplayPass) return;
 
             this.buffer.Append(this.OpenH2Tag());
             this.buffer.Append("Pass Direction: " + Abbreviation.Get(pass));
@@ -71,7 +76,7 @@ namespace Hearts.Logging
 
         public void HandsAfterPass(IEnumerable<CardHand> hands)
         {
-            if (!Options.DisplayHandsAfterPass) return;
+            if (!this.options.DisplayHandsAfterPass) return;
             
             this.buffer.Append(this.OpenH2Tag());
             this.buffer.Append("Post-Pass Hands:");
@@ -89,11 +94,11 @@ namespace Hearts.Logging
 
         public void Pass(Player player, IEnumerable<Card> cards)
         {
-            if (!Options.DisplayPass) return;
+            if (!this.options.DisplayPass) return;
 
             this.buffer.Append(this.OpenPTag());
             this.buffer.Append(this.OpenSpanBlue());
-            this.buffer.Append(this.HtmlSpace() + player.Name.PadLeft(Options.NamePad) + this.HtmlSpace()); // TODO: Spacing won't work in HTML, use table?
+            this.buffer.Append(this.HtmlSpace() + player.Name.PadLeft(this.options.NamePad) + this.HtmlSpace()); // TODO: Spacing won't work in HTML, use table?
             this.buffer.Append(this.CloseSpan());
             this.buffer.Append("passes ");
 
@@ -108,14 +113,14 @@ namespace Hearts.Logging
 
         public void TrickSummary(PlayedTrick trick)
         {
-            if (!Options.DisplayTrickSummary) return;
+            if (!this.options.DisplayTrickSummary) return;
 
             this.buffer.Append(this.OpenPTag());
 
             foreach (var playedCard in trick.Cards)
             {
                 this.buffer.Append(this.OpenSpanBlue());
-                this.buffer.Append(this.HtmlSpace() + playedCard.Key.Name.PadLeft(Options.NamePad) + this.HtmlSpace()); // TODO: Spacing won't work in HTML, use table?
+                this.buffer.Append(this.HtmlSpace() + playedCard.Key.Name.PadLeft(this.options.NamePad) + this.HtmlSpace()); // TODO: Spacing won't work in HTML, use table?
                 this.buffer.Append(this.CloseSpan());
                 this.buffer.Append("plays ");
                 this.Card(playedCard.Value);
@@ -142,7 +147,7 @@ namespace Hearts.Logging
 
         public void IllegalPass(Player player, IEnumerable<Card> cards)
         {
-            if (!Options.DisplayExceptions) return;
+            if (!this.options.DisplayExceptions) return;
 
             this.buffer.Append(this.OpenPTag());
             this.buffer.Append(this.OpenSpanBlue());
@@ -150,14 +155,14 @@ namespace Hearts.Logging
             this.buffer.Append(" made an ILLEGAL PASS! (");
             this.buffer.Append(string.Join(", ", cards.Select(i => i.ToString())));
             this.buffer.Append(") - ");
-            this.buffer.Append(player.DebuggerDisplay);
+            this.buffer.Append(player.DebuggerDisplay(cards));
             this.buffer.Append(this.CloseSpan());
             this.buffer.Append(this.ClosePTag());
         }
 
-        public void IllegalPlay(Player player, Card card)
+        public void IllegalPlay(Player player, Card card, IEnumerable<Card> legal)
         {
-            if (!Options.DisplayExceptions) return;
+            if (!this.options.DisplayExceptions) return;
 
             this.buffer.Append(this.OpenPTag());
             this.buffer.Append(this.OpenSpanBlue());
@@ -165,14 +170,14 @@ namespace Hearts.Logging
             this.buffer.Append(" played an ILLEGAL CARD! (");
             this.buffer.Append(card);
             this.buffer.Append(") - ");
-            this.buffer.Append(player.DebuggerDisplay);
+            this.buffer.Append(player.DebuggerDisplay(legal));
             this.buffer.Append(this.CloseSpan());
             this.buffer.Append(this.ClosePTag());
         }
 
         public void OutOfCardsException()
         {
-            if (!Options.DisplayExceptions) return;
+            if (!this.options.DisplayExceptions) return;
 
             this.buffer.Append(this.OpenPTag());
             this.buffer.Append(this.OpenSpanBlue());
@@ -183,7 +188,7 @@ namespace Hearts.Logging
 
         public void PointsForRound(RoundResult roundResult)
         {
-            if (!Options.DisplayPointsForRound) return;
+            if (!this.options.DisplayPointsForRound) return;
 
             var scores = roundResult.Scores;
 
@@ -191,7 +196,7 @@ namespace Hearts.Logging
             {
                 this.buffer.Append(this.OpenPTag());
                 this.buffer.Append(this.OpenSpanBlue());
-                this.buffer.Append(this.HtmlSpace() + score.Key.Name.PadLeft(Options.NamePad) + this.HtmlSpace());
+                this.buffer.Append(this.HtmlSpace() + score.Key.Name.PadLeft(this.options.NamePad) + this.HtmlSpace());
                 this.buffer.Append(this.CloseSpan());
                 this.buffer.Append(" : ");
                 this.buffer.Append(this.OpenSpanBlue());
@@ -206,7 +211,7 @@ namespace Hearts.Logging
 
         public void LogFinalWinner(GameResult gameResult)
         {
-            if (!Options.DisplayLogFinalWinner) return;
+            if (!this.options.DisplayLogFinalWinner) return;
 
             this.buffer.Append(this.NewLine());
             this.buffer.Append(this.HorizontalRule());
@@ -242,7 +247,7 @@ namespace Hearts.Logging
             {
                 this.buffer.Append(this.OpenPTag());
                 this.buffer.Append(this.OpenSpanBlue());
-                this.buffer.Append(this.HtmlSpace() + score.Key.Name.PadLeft(Options.NamePad) + this.HtmlSpace());
+                this.buffer.Append(this.HtmlSpace() + score.Key.Name.PadLeft(this.options.NamePad) + this.HtmlSpace());
                 this.buffer.Append(this.CloseSpan());
                 this.buffer.Append(" : ");
                 this.buffer.Append(this.OpenSpanBlue());
@@ -268,7 +273,7 @@ namespace Hearts.Logging
         
         public void LogSimulationSummary(SimulationResult result)
         {
-            if (!Options.DisplaySimulationSummary || !result.GameResults.Any()) return;
+            if (!this.options.DisplaySimulationSummary || !result.GameResults.Any()) return;
 
             var players = result.GameResults.First().Scores.Select(i => i.Key);
 
@@ -363,7 +368,7 @@ namespace Hearts.Logging
             {
                 this.buffer.Append(this.OpenPTag());
                 this.buffer.Append(this.OpenSpanBlue());
-                this.buffer.Append(this.HtmlSpace() + player.Name.PadLeft(Options.NamePad) + this.HtmlSpace());
+                this.buffer.Append(this.HtmlSpace() + player.Name.PadLeft(this.options.NamePad) + this.HtmlSpace());
                 this.buffer.Append(this.CloseSpan());
                 this.buffer.Append(" : ");
                 this.buffer.Append(this.OpenSpanBlue());
@@ -388,7 +393,7 @@ namespace Hearts.Logging
 
         public void LogAgentMoveNote(string note)
         {
-            if (Options.DisplayAgentMoveNotes)
+            if (this.options.DisplayAgentMoveNotes)
             {
                 this.buffer.Append(this.OpenPTag());
                 this.buffer.Append(this.OpenSpanBlue());
@@ -399,7 +404,7 @@ namespace Hearts.Logging
         }
         public void LogAgentSummaryNote(string note)
         {
-            if (Options.DisplayAgentSummaryNotes)
+            if (this.options.DisplayAgentSummaryNotes)
             {
                 this.buffer.Append(this.OpenPTag());
                 this.buffer.Append(this.OpenSpanBlue());
@@ -411,7 +416,7 @@ namespace Hearts.Logging
 
         public void LogRandomSeed(int randomSeed)
         {
-            if (Options.DisplayRandomSeed)
+            if (this.options.DisplayRandomSeed)
             {
                 this.buffer.Append(this.NewLine());
                 this.buffer.Append(this.OpenPTag());
@@ -441,7 +446,7 @@ namespace Hearts.Logging
             int padToLength = 38;
             this.buffer.Append(this.OpenPTag());
             this.buffer.Append(this.OpenSpanBlue());
-            this.buffer.Append(this.HtmlSpace() + name.PadLeft(Logging.Log.Options.NamePad) + this.HtmlSpace());
+            this.buffer.Append(this.HtmlSpace() + name.PadLeft(this.options.NamePad) + this.HtmlSpace());
             this.buffer.Append(this.CloseSpan());
 
             foreach (var suit in new List<Suit> { Suit.Hearts, Suit.Spades, Suit.Diamonds, Suit.Clubs })

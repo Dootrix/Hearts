@@ -1,11 +1,5 @@
-﻿using Hearts.AI;
+﻿using Hearts.Console.Simulations;
 using Hearts.Logging;
-using Hearts.Model;
-using System.Collections.Generic;
-using System.Linq;
-using Hearts.Extensions;
-using System;
-using Hearts.Console.Simulations;
 
 namespace Hearts.Console
 {
@@ -13,19 +7,11 @@ namespace Hearts.Console
     {
         public static void Main()
         {
-            if (!Settings.ShowFullOutput)
-            {
-                Log.Options = new SummaryOnlyLogOptions();
-            }
-
-            if (Settings.ExportAsHtml)
-            {
-                Log.Logger = new HtmlExportLogger();
-            }
-
-            Log.BeginLogging();
+            Log.BeginLogging(Settings.LoggingLevel, Settings.LoggingOutput);
             SimulationFactory.CreateSimulation().Execute();
             Log.StopLogging();
+            System.Console.WriteLine("Done.");
+            System.Console.ReadLine();
         }
     }
 }

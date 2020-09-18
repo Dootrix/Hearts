@@ -8,7 +8,7 @@
         Standard,
 
         /// <summary>
-        /// All seating combinations of the Bots will be used.
+        /// All seating combinations of the Bots will be used. 24x as many games.
         /// </summary>
         AllSeatCombinations,
 

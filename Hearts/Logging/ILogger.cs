@@ -10,7 +10,7 @@ namespace Hearts.Logging
         void Card(Card card);
         void HandsAfterPass(IEnumerable<CardHand> hands);
         void IllegalPass(Player player, IEnumerable<Card> cards);
-        void IllegalPlay(Player player, Card card);
+        void IllegalPlay(Player player, Card card, IEnumerable<Card> legal);
         void LogAgentMoveNote(string note);
         void LogAgentSummaryNote(string note);
         void LogFinalWinner(GameResult gameResult);

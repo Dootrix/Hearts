@@ -111,7 +111,6 @@ namespace Hearts.Extensions
 
             var permittedCards = new List<Card>();
             Card previousCard = null;
-            Card currentCard = null;
 
             foreach (var card in cardsInOrder)
             {
@@ -141,7 +140,6 @@ namespace Hearts.Extensions
 
             var permittedCards = new List<Card>();
             Card previousCard = null;
-            Card currentCard = null;
 
             foreach (var card in cardsInOrder)
             {
