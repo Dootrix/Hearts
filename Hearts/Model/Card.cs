@@ -1,4 +1,5 @@
 ﻿using Hearts.Extensions;
+using System;
 
 namespace Hearts.Model
 {
@@ -8,6 +9,18 @@ namespace Hearts.Model
         {
             this.Suit = suit;
             this.Kind = kind;
+        }
+
+        /// <summary>
+        /// Creates a card from a number/hash (0–51)
+        /// </summary>
+        /// <param name="hash">An integer from 0–51</param>
+        public Card(int hash)
+        {
+            int sVal = (int)Math.Floor(hash / 13.0);
+            int kVal = hash % 13;
+            this.Kind = (Kind)(kVal + 2);
+            this.Suit = (Suit)sVal;
         }
 
         public Suit Suit { get; private set; }
@@ -114,9 +127,18 @@ namespace Hearts.Model
             return !(a == b);
         }
 
+        /// <summary>
+        /// Turns a card into a unique integer hash (from 0–51)
+        /// </summary>
+        /// <param name="card">The card</param>
+        /// <returns>An integer from 0–51 unique to that card</returns>
         public override int GetHashCode()
         {
-            return (int)Kind + (int)Suit * 100;
+            int kVal = (int)this.Kind - 2;
+            int sVal = (int)this.Suit;
+            int hash = kVal + sVal * 13;
+
+            return hash;
         }
     }
 }

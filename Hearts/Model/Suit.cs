@@ -6,15 +6,15 @@ namespace Hearts.Model
     public enum Suit
     {
         [Abbreviation("♣")]
-        Clubs,
+        Clubs = 0,
 
         [Abbreviation("♦")]
-        Diamonds,
+        Diamonds = 1,
 
         [Abbreviation("♠")]
-        Spades,
+        Spades = 2,
 
         [Abbreviation("♥")]
-        Hearts
+        Hearts = 3
     }
 }

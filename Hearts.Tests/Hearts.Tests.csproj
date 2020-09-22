@@ -49,6 +49,7 @@
     <Compile Include="Extensions\CardListFilteringExtensionTests.cs" />
     <Compile Include="Extensions\CardListOrderingExtensionTests.cs" />
     <Compile Include="Extensions\IEnumerableExtensionTests.cs" />
+    <Compile Include="Extensions\CardTests.cs" />
     <Compile Include="Extensions\PlayedTrickTests.cs" />
     <Compile Include="Extensions\SuitExtensionTests.cs" />
     <Compile Include="Extensions\KindExtensionTests.cs" />
