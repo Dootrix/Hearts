@@ -4,11 +4,16 @@ using System;
 namespace Hearts.Model
 {
     public class Card
-    {   
+    {
+        private int cachedHashCode;
+        private Kind kind;
+        private Suit suit;
+
         public Card(Kind kind, Suit suit)
         {
             this.Suit = suit;
             this.Kind = kind;
+            this.cachedHashCode = this.RecalculateHashCode();
         }
 
         /// <summary>
@@ -21,11 +26,26 @@ namespace Hearts.Model
             int kVal = hash % 13;
             this.Kind = (Kind)(kVal + 2);
             this.Suit = (Suit)sVal;
+            this.RecalculateHashCode();
         }
 
-        public Suit Suit { get; private set; }
+        public Suit Suit
+        {
+            get { return this.suit; }
+            set
+            {
+                this.suit = value; this.RecalculateHashCode();
+            }
+        }
 
-        public Kind Kind { get; private set; }
+        public Kind Kind
+        {
+            get { return this.kind; }
+            set
+            {
+                this.kind = value; this.RecalculateHashCode();
+            }
+        }
 
         public override string ToString()
         {
@@ -97,14 +117,14 @@ namespace Hearts.Model
             return !isANull && a.Kind != b;
         }
 
-        public static bool operator > (Card a, Kind b)
+        public static bool operator >(Card a, Kind b)
         {
             bool isANull = ReferenceEquals(null, a);
 
             return !isANull && a.Kind > b;
         }
 
-        public static bool operator < (Card a, Kind b)
+        public static bool operator <(Card a, Kind b)
         {
             bool isANull = ReferenceEquals(null, a);
 
@@ -134,11 +154,16 @@ namespace Hearts.Model
         /// <returns>An integer from 0–51 unique to that card</returns>
         public override int GetHashCode()
         {
+            return this.cachedHashCode;
+        }
+
+        private int RecalculateHashCode()
+        {
             int kVal = (int)this.Kind - 2;
             int sVal = (int)this.Suit;
-            int hash = kVal + sVal * 13;
+            int hashcode = kVal + sVal * 13;
 
-            return hash;
+            return hashcode;
         }
     }
 }
